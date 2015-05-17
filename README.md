@@ -1,2 +1,9 @@
 # helpthecity
-Repositorio de TCC - Help The City
+Repositorio de TCC do Help The City
+
+Alunos:
+ALIANE APARECIDA LEAL
+ANDRÉ GUILHERME DE MELO BARREIRO
+MARIA PAULA DE OLIVEIRA BARBOSA
+PABLO LUÍS DA MOTA NORA
+
