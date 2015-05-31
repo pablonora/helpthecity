@@ -30,14 +30,14 @@ module.exports = function (grunt) {
         ],
         tasks: ['develop', 'delayed-livereload']
       },
-      css: {
-        files: [
-          'public/css/*.css'
-        ],
-        options: {
-          livereload: reloadPort
-        }
-      },
+//      css: {
+//        files: [
+//          'public/css/*.css'
+//        ],
+//        options: {
+//          livereload: reloadPort
+//        }
+//      },
       views: {
         files: [
           'app/views/*.marko',

@@ -9,7 +9,7 @@ var app = express();
 require('./config/express')(app, config);
 
 db.sequelize
-  .sync()
+  .sync({force: true})
   .then(function () {
     app.listen(config.port);
   }).catch(function (e) {

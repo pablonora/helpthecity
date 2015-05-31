@@ -4,7 +4,6 @@ var fs = require('fs'),
   path = require('path'),
   Sequelize = require('sequelize'),
   config = require('../../config/config'),
-  dao = require('../daos/init')
   db = {};
 
 var sequelize = new Sequelize(config.db, {
