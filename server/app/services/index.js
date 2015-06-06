@@ -3,15 +3,16 @@
 var glob = require('glob');
 
 module.exports = function (app, config) {
-  app.daos = {};
+  app.services = {};
   
-  var daos = glob.sync(config.root + '/app/daos/*.js', {
+  var services = glob.sync(config.root + '/app/services/*.js', {
     ignore: [
-      config.root + '/app/daos/index.js'
+      config.root + '/app/services/common.js',
+      config.root + '/app/services/index.js'
     ]
   });
-  daos.forEach(function (dao) {
-    app.daos[getName(dao)] = require(dao);
+  services.forEach(function (service) {
+    app.services[getName(service)] = require(service)(app);
   });
 };
 
