@@ -33,6 +33,10 @@ module.exports = function (app) {
       app.services.usuario.login(req.body.login, req.body.pass).then(function (result) {
         res.send(result);
       });
+    },
+    logout: function (req, res) {
+      //TODO
+      res.send('logged out');
     }
   };
   

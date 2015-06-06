@@ -11,6 +11,7 @@ require('./config/express')(app, config);
 require('./app/daos')(app, config);
 require('./app/services')(app, config);
 require('./app/controllers')(app, config);
+require('./app/routes')(app, config);
 
 db.sequelize
   .sync() // use {force: true} as parameter when changing something into database tables.

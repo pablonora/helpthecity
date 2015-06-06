@@ -33,4 +33,6 @@ var config = {
   }
 };
 
+config[env].url = '/htc/api';
+
 module.exports = config[env];

@@ -32,6 +32,9 @@ module.exports = function (app) {
       return app.daos.usuario.login(login, pass).then(function (data) {
         return data;
       });
+    },
+    logout: function () {
+      // TODO
     }
   };
   
