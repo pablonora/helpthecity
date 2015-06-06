@@ -10,6 +10,7 @@ require('./config/express')(app, config);
 // Load server essential functionalities
 require('./app/daos')(app, config);
 require('./app/services')(app, config);
+require('./app/controllers')(app, config);
 
 db.sequelize
   .sync() // use {force: true} as parameter when changing something into database tables.
