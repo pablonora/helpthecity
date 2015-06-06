@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
     env = process.env.NODE_ENV || 'development';
@@ -9,7 +11,7 @@ var config = {
       name: 'helpthecity'
     },
     port: 3000,
-    db: 'postgres://postgres:1z7s5q3a90@localhost:5432/helpthecity-development'
+    db: 'postgres://postgres:postgres@localhost:5432/helpthecity-development'
   },
 
   test: {
@@ -18,7 +20,7 @@ var config = {
       name: 'helpthecity'
     },
     port: 3000,
-    db: 'postgres://localhost:5432/helpthecity-test'
+    db: 'postgres://postgres:postgres@localhost:5432/helpthecity-test'
   },
 
   production: {
@@ -27,7 +29,7 @@ var config = {
       name: 'helpthecity'
     },
     port: 3000,
-    db: 'postgres://localhost:5432/helpthecity-production'
+    db: 'postgres://postgres:postgres@localhost:5432/helpthecity-production'
   }
 };
 

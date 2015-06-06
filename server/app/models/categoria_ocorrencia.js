@@ -5,7 +5,8 @@ module.exports = function (sequelize, dataTypes) {
   var CategoriaOcorrencia = sequelize.define('CategoriaOcorrencia', {
     id: {
       type: dataTypes.BIGINT,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     nome: {
       type: dataTypes.CHAR(13),

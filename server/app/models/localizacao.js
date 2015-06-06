@@ -5,7 +5,8 @@ module.exports = function (sequelize, dataTypes) {
   var Localizacao = sequelize.define('Localizacao', {
     id: {
       type: dataTypes.BIGINT,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     latitude: {
       type: dataTypes.DECIMAL,

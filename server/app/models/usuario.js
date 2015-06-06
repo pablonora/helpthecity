@@ -5,7 +5,8 @@ module.exports = function (sequelize, DataTypes) {
   var Usuario = sequelize.define('Usuario', {
     id: {
       type: DataTypes.BIGINT,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     ativo: {
       type: DataTypes.CHAR(1),
@@ -59,7 +60,7 @@ module.exports = function (sequelize, DataTypes) {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE'
         });
-        Usuario.hasMany(models.Ocorrencia, { through: models.Up, foreignKey: 'usuario_fk' });
+        Usuario.belongsToMany(models.Ocorrencia, { through: models.Up, foreignKey: 'usuario_fk' });
       }
     },
     getterMethods: {

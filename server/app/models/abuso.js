@@ -5,7 +5,8 @@ module.exports = function (sequelize, dataTypes) {
   var Abuso = sequelize.define('Abuso', {
     id: {
       type: dataTypes.BIGINT,
-      primaryKey: true      
+      primaryKey: true,
+      autoIncrement: true      
     },
     comentario: {
       type: dataTypes.CHAR(255),

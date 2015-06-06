@@ -5,7 +5,8 @@ module.exports = function (sequelize, DataTypes) {
   var Configuracao = sequelize.define('Configuracao', {
     id: {
       type: DataTypes.BIGINT,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     raioAbrangencia: {
       field: 'raio_abrangencia',
