@@ -6,6 +6,7 @@ var express = require('express'),
   app = express();
 
 require('./config/express')(app, config);
+require('./config/passport')(app, config);
 
 // Load server essential functionalities
 require('./app/daos')(app, config);

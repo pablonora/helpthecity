@@ -13,7 +13,7 @@ var UsuarioDAO= {
         user.tipo,
         user.senha,
         user.sexo,
-        user.configuracao_id
+        user.configuracao.configuracao_id
       ],
       type: sequelize.QueryTypes.INSERT
     }).then(function (user) {
@@ -51,8 +51,6 @@ var UsuarioDAO= {
       replacements: [id],
       type: sequelize.QueryTypes.SELECT
     }).then(function (user) {
-      if(user !== [])
-      user.senha = '';
       return user;
     });
   },
@@ -60,23 +58,15 @@ var UsuarioDAO= {
     return sequelize.query('SELECT * FROM usuario', {
       type: sequelize.QueryTypes.SELECT
     }).then(function (users) {
-      return users.forEach(function (user) {
-        user.senha = ''
-      }).then(function () {
-        return users;
-      });
+      return users;
     });
   },
-  login: function (login, pass) {
-    return sequelize.query('SELECT * FROM usuario WHERE login = ? AND senha = ?', {
-      replacements: [
-        login,
-        pass
-      ],
+  readByEmail: function (email) {
+    return sequelize.query('SELECT * FROM usuario WHERE email = ?', {
+      replacements: [email],
       type: sequelize.QueryTypes.SELECT
     }).then(function (user) {
-      user.senha = '';
-      return user;
+      return user[0];
     });
   }
 };

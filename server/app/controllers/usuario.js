@@ -1,12 +1,21 @@
 'use strict';
 
+var sequelize = require('../models').sequelize;
+
 module.exports = function (app) {
 
   var UsuarioController = {
     create: function (req, res) {
-      app.services.usuario.create(req.body).then(function (result) {
-        res.send(result)
-      });
+      return sequelize.transaction(function (t) {
+        return app.services.configuracao.create(req.body.configuracao).then(function (id) {
+          req.body.configuracao.configuracao_id = id;
+          return app.services.usuario.create(req.body).then(function (result) {
+            return result;
+          });
+        });
+      }).then(function (result) {
+        res.json(result);
+      }); 
     },
     update: function (req, res) {
       req.body.id = req.params.id;
@@ -26,17 +35,13 @@ module.exports = function (app) {
     },
     readByCriteria: function (req, res) {
       app.services.usuario.readByCriteria(req.query.criteria).then(function (result) {
-        res.send(result);
+        res.json(result);
       });
     },
-    login: function (req, res) {
-      app.services.usuario.login(req.body.login, req.body.pass).then(function (result) {
-        res.send(result);
+    readByEmail: function (req, res) {
+      app.services.usuario.readByEmail(req.query.email).then(function (result) {
+        res.json(result);
       });
-    },
-    logout: function (req, res) {
-      //TODO
-      res.send('logged out');
     }
   };
   

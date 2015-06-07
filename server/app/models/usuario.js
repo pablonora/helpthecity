@@ -10,6 +10,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     ativo: {
       type: DataTypes.CHAR(1),
+      defaultValue: 'S',
       allowNull: false
     },
     cpf: {
@@ -19,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     imagem: {
       type: DataTypes.BLOB,
-      allowNull: false
+      allowNull: true
     },
     email: {
       type: DataTypes.CHAR(50),
@@ -28,15 +29,16 @@ module.exports = function (sequelize, DataTypes) {
     },
     tipo: {
       type: DataTypes.CHAR(1),
+      defaultValue: 'U',
       allowNull: false
     },
     senha: {
-      type: DataTypes.CHAR(25),
+      type: DataTypes.CHAR(60),
       allowNull: false
     },
     sexo: {
       type: DataTypes.CHAR(1),
-      allowNull: false
+      allowNull: true
     }
   }, {
     timestamps: false,

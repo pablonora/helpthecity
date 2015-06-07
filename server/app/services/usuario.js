@@ -1,12 +1,15 @@
 'use strict';
 
+var bcrypt = require('bcryptjs');
+
 module.exports = function (app) {
   
   var UsuarioService = {
     create: function (usuario) {
+      usuario.senha = bcrypt.hashSync(usuario.senha, 6);
       return app.daos.usuario.create(usuario).then(function (data) {
         return data;
-      });
+      });                                      
     },
     update: function (model) {
       return app.daos.usuario.update(model).then(function (data) {
@@ -28,13 +31,10 @@ module.exports = function (app) {
         return data;
       });
     },
-    login: function (login, pass) {
-      return app.daos.usuario.login(login, pass).then(function (data) {
+    readByEmail: function (email) {
+      return app.daos.usuario.readByEmail(email).then(function (data) {
         return data;
       });
-    },
-    logout: function () {
-      // TODO
     }
   };
   

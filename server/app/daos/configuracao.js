@@ -1,25 +1,28 @@
 'use strict';
 
-var sequelize = require('../models').sequelize;
+var models = require('../models'),
+    sequelize = models.sequelize;
 
 var ConfiguracaoDAO = {
-  create: function (model) {
-    return sequelize.query('INSERT INTO configuracao(raio_abrangencia) VALUES (?)', {
-      replacements: [model.raio_abrangencia],
-      type: sequelize.QueryTypes.INSERT
-    }).then(function (model) {
-      return model;
+  create: function (configuracao) {
+    return sequelize.query('INSERT INTO configuracao(raio_abrangencia) VALUES (?) RETURNING id', {
+      replacements: [configuracao.raio_abrangencia],
+      type: sequelize.QueryTypes.INSERT,
+      model: models.Configuracao
+    }).then(function (configuracao) {
+      console.log(configuracao[0].id);
+      return configuracao[0].id;
     });
   },
-  update: function (model) {
+  update: function (configuracao) {
     return sequelize.query('UPDATE configuracao SET raio_abrangencia=? WHERE id = ?', {
       replacements: [
-        model.raio_abrangencia,
-        model.id
+        configuracao.raio_abrangencia,
+        configuracao.id
       ],
       type: sequelize.QueryTypes.UPDATE
-    }).then(function (model) {
-      return model;
+    }).then(function (configuracao) {
+      return configuracao;
     });
   },
   delete: function (id) {
@@ -34,15 +37,15 @@ var ConfiguracaoDAO = {
     return sequelize.query('SELECT * FROM configuracao WHERE id = ?', {
       replacements: [id],
       type: sequelize.QueryTypes.SELECT
-    }).then(function (model) {
-      return model;
+    }).then(function (configuracao) {
+      return configuracao;
     });
   },
   readByCriteria: function (criteria) {
     return sequelize.query('SELECT * FROM configuracao', {
       type: sequelize.QueryTypes.SELECT
-    }).then(function (models) {
-      return models;
+    }).then(function (configuracoes) {
+      return configuracoes;
     });
   }
 };

@@ -5,7 +5,7 @@ module.exports = function (app) {
   var CategoriaOcorrenciaController = {
     create: function (req, res) {
       app.services.categoriaOcorrencia.create(req.body).then(function (result) {
-        res.send(result)
+        res.json(result);
       });
     },
     update: function (req, res) {
@@ -26,7 +26,7 @@ module.exports = function (app) {
     },
     readByCriteria: function (req, res) {
       app.services.categoriaOcorrencia.readByCriteria(req.query.criteria).then(function (result) {
-        res.send(result);
+        res.json(result);
       });
     }
   };

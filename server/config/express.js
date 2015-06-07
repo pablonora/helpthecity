@@ -8,6 +8,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     compress = require('compression'),
     methodOverride = require('method-override'),
+    session = require('express-session'),
     fs = require('fs');
 
 module.exports = function (app, config) {
@@ -28,22 +29,23 @@ module.exports = function (app, config) {
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
+  app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
   
-  app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
-  
-  if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-      res.status(err.status || 500);
-      res.send(err);
-    });
-  }
-
-  app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-      res.end('error');
-  });
+//  app.use(function (req, res, next) {
+//    var err = new Error('Not Found');
+//    err.status = 404;
+//    next(err);
+//  });
+//  
+//  if (app.get('env') === 'development') {
+//    app.use(function (err, req, res, next) {
+//      res.status(err.status || 500);
+//      res.send(err);
+//    });
+//  }
+//
+//  app.use(function (err, req, res, next) {
+//    res.status(err.status || 500);
+//      res.end('error');
+//  });
 };

@@ -1,10 +1,10 @@
 'use strict';
 
 var fs = require('fs'),
-  path = require('path'),
-  Sequelize = require('sequelize'),
-  config = require('../../config/config'),
-  db = {};
+    path = require('path'),
+    Sequelize = require('sequelize'),
+    config = require('../../config/config'),
+    db = {};
 
 var sequelize = new Sequelize(config.db, {
   storage: config.storage
