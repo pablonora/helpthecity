@@ -7,28 +7,28 @@ based on the application idea. Reports will include photos, descriptions, locali
 ## Database
 The database actually has 8 tables, all named in Brazilian Portuguese because is an requirement at this stage.</br>
 
-**abuso**</br>
+**abuse**</br>
 All abuse reports made by users are store into this table;<br/>
 
-**categoria_abuso**</br>
+**abuse_category**</br>
 The abuse categories are stored into this table;<br/>
 
-**categoria_ocorrencia**<br/>
-The report categories are stored into this table;<br/>
-
-**configuracao**<br/>
+**configuration**<br/>
 User specific configurations are stored into this table;<br/>
 
-**localizacao**<br/>
+**localization**<br/>
 Reports localization are store into this table;<br/>
 
-**ocorrencia**</br>
+**report**</br>
 User reports will are stored into this table;<br/>
+
+**report_category**<br/>
+The report categories are stored into this table;<br/>
 
 **up**</br>
 Reports relevance urgency are stored into this table;<br/>
 
-**usuario**</br>
+**user**</br>
 User data are stored into this table;<br/>
 
 ## Architecture

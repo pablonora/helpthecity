@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = function (sequelize, dataTypes) {
-  
+
   var Up = sequelize.define('Up', {
-    data: {
+    date: {
       type: dataTypes.DATE,
       allowNull: false
     }
@@ -13,16 +13,16 @@ module.exports = function (sequelize, dataTypes) {
     freezeTableName: true,
     underscored: true,
     getterMethods: {
-      getData: function () {
-        return this.data;
+      getDate: function () {
+        return this.date;
       }
     },
     setterMethods: {
-      setData: function (data) {
-        this.data = data;
+      setDate: function (date) {
+        this.date = date;
       }
     }
   });
-  
+
   return Up;
 };

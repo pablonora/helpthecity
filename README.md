@@ -29,12 +29,14 @@ This one will be available to any public organization who might want to help. It
 user abuses reports and other tools to help the application keep away the reports who aren't real. Also it will be possible
 to classify different areas using a map, to take a better look on specific characteristics of each place and give a
 wide vision of how to improve it.<br/>
+<br/>
 
+####Help us
+We encourage everyone who might feel excited to help us to improve the software or even the idea! Feel free to fork the
+project and send us improvements!<br/>
+<br/>
 
-We encourage everyone who might feel excited to help, to feel free to fork and send us improvements!
-
-
-Final Course Work students:<br/>
+###### Final Course Work students
 Aliane Aparecida Leal<br/>
 André Guilherme De Melo Barreiro<br/>
 Maria Paula De Oliveira Barbosa<br/>
