@@ -1,56 +1,76 @@
 'use strict';
 
-var sequelize = require('../models').sequelize;
+var models = require('../models'),
+	sequelize = models.sequelize;
 
 var AbuseDAO = {
-  create: function (abuse) {
-    return sequelize.query('INSERT INTO abuse(comment, user_fk, abuse_category_fk) VALUES (?, ?, ?)', {
-      replacements: [
+	create: function (abuse) {
+		return sequelize.query('INSERT INTO abuse(comment, userId, "abuseCategoryId") VALUES (?, ?, ?) RETURNING id', {
+			replacements: [
         abuse.comment,
-        abuse.user_id,
-        abuse.abuse_category_id
+        abuse.userId,
+        abuse.abuseCategoryId
       ],
-      type: sequelize.QueryTypes.INSERT
-    }).then(function (abuse) {
-      return abuse;
-    });
-  },
-  update: function (abuse) {
-    return sequelize.query('UPDATE abuse SET comment=?, user_fk=?, abuse_category_fk=? WHERE id = ?', {
-      replacements: [
+			type: sequelize.QueryTypes.INSERT,
+			model: models.Abuse
+		}).then(function (id) {
+			return id;
+		});
+	},
+	update: function (abuse) {
+		return sequelize.query('UPDATE abuse SET comment=?, userId=?, "abuseCategoryId"=? WHERE id = ? RETURNING id', {
+			replacements: [
         abuse.comment,
-        abuse.user_id,
-        abuse.abuse_category_id,
+        abuse.userId,
+        abuse.abuseCategoryId,
         abuse.id
       ],
-      type: sequelize.QueryTypes.UPDATE
-    }).then(function (abuse) {
-      return abuse;
-    });
-  },
-  delete: function (id) {
-    return sequelize.query('DELETE FROM abuse WHERE id = ?', {
-      replacements: [id],
-      type: sequelize.QueryTypes.DELETE
-    }).then(function (ok) {
-      return ok;
-    });
-  },
-  readById: function (id) {
-    return sequelize.query('SELECT * FROM abuse WHERE id = ?', {
-      replacements: [id],
-      type: sequelize.QueryTypes.SELECT
-    }).then(function (abuse) {
-      return abuse;
-    });
-  },
-  readByCriteria: function (criteria) {
-    return sequelize.query('SELECT * FROM abuse', {
-      type: sequelize.QueryTypes.SELECT
-    }).then(function (abuses) {
-      return abuses;
-    });
-  }
+			type: sequelize.QueryTypes.UPDATE,
+			model: models.Abuse
+		}).then(function (id) {
+			return id;
+		});
+	},
+	delete: function (id) {
+		return sequelize.query('DELETE FROM abuse WHERE id = ?', {
+			replacements: [id],
+			type: sequelize.QueryTypes.DELETE,
+			model: models.Abuse
+		}).then(function (ok) {
+			return ok;
+		});
+	},
+	readById: function (id) {
+		return sequelize.query('SELECT * FROM abuse WHERE id = ?', {
+			replacements: [id],
+			type: sequelize.QueryTypes.SELECT,
+			model: models.Abuse
+		}).then(function (abuse) {
+			return abuse;
+		});
+	},
+	readByCriteria: function (criteria) {
+		return sequelize.query(createQuery(criteria), {
+			type: sequelize.QueryTypes.SELECT,
+			model: models.Abuse
+		}).then(function (abuses) {
+			return abuses;
+		});
+	}
 };
 
 module.exports = AbuseDAO;
+
+function createQuery(criteria) {
+	var query = 'SELECT * FROM abuse WHERE 1=1';
+	if (criteria.comment) {
+		query += ' AND comment = \'' + criteria.comment + '\'';
+	}
+	if (criteria.userId) {
+		query += ' AND "userId" = ' + criteria.userId;
+	}
+	if (criteria.abuseCategoryId) {
+		query += ' AND "abuseCategoryId" = ' + criteria.abuseCategoryId;
+	}
+	return query;
+};
