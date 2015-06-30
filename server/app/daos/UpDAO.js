@@ -15,6 +15,8 @@ var UpDAO = {
 			model: models.Up
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	update: function (up) {
@@ -30,6 +32,8 @@ var UpDAO = {
 			model: models.Up
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	delete: function (id) {
@@ -39,6 +43,8 @@ var UpDAO = {
 			model: models.Up
 		}).then(function (ok) {
 			return ok;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readById: function (id) {
@@ -48,6 +54,8 @@ var UpDAO = {
 			model: models.Up
 		}).then(function (up) {
 			return up;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readByCriteria: function (criteria) {
@@ -57,6 +65,8 @@ var UpDAO = {
 			model: models.Up
 		}).then(function (ups) {
 			return ups;
+		}).catch(function (err) {
+			return err.message;
 		});
 	}
 };

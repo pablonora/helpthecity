@@ -1,12 +1,12 @@
 'use strict'
 
-describe('UserDAO:', function () {
+describe('ReportDAO:', function () {
 	var should = require('chai').should,
 		bcrypt = require('bcryptjs'),
 		Report = require('../../app/models').Report,
 		ReportDAO = require('../../app/daos/ReportDAO');
 
-	context('When creating a user', function () {
+	context('When creating a report', function () {
 
 		it('should be able to create a report if all the data is provided', function (done) {
 			var report = Report.build({

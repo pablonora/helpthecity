@@ -19,6 +19,8 @@ var UserDAO = {
 			model: models.User
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	update: function (user) {
@@ -37,6 +39,8 @@ var UserDAO = {
 			model: models.User
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	delete: function (id) {
@@ -46,6 +50,8 @@ var UserDAO = {
 			model: models.User
 		}).then(function (ok) {
 			return ok;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readById: function (id) {
@@ -56,6 +62,8 @@ var UserDAO = {
 		}).then(function (user) {
 			user.password = '';
 			return user;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readByCriteria: function (criterion) {
@@ -68,6 +76,8 @@ var UserDAO = {
 			}).then(function () {
 				return users;
 			});
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	login: function (email) {
@@ -77,6 +87,8 @@ var UserDAO = {
 			model: models.User
 		}).then(function (user) {
 			return user;
+		}).catch(function (err) {
+			return err.message;
 		});
 	}
 };

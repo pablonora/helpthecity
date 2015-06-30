@@ -14,6 +14,8 @@ var AbuseCategoryDAO = {
 			model: models.AbuseCategory,
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	update: function (abuseCategory) {
@@ -27,6 +29,8 @@ var AbuseCategoryDAO = {
 			model: models.AbuseCategory
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	delete: function (id) {
@@ -36,6 +40,8 @@ var AbuseCategoryDAO = {
 			model: models.AbuseCategory
 		}).then(function (ok) {
 			return ok;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readById: function (id) {
@@ -45,6 +51,8 @@ var AbuseCategoryDAO = {
 			model: models.AbuseCategory
 		}).then(function (abuseCategory) {
 			return abuseCategory;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readByCriteria: function (criteria) {
@@ -53,6 +61,8 @@ var AbuseCategoryDAO = {
 			model: models.AbuseCategory
 		}).then(function (abuseCategories) {
 			return abuseCategories;
+		}).catch(function (err) {
+			return err.message;
 		});
 	}
 };

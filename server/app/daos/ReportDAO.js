@@ -19,6 +19,8 @@ var ReportDAO = {
 			model: models.Report
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	update: function (report) {
@@ -37,6 +39,8 @@ var ReportDAO = {
 			model: models.Report
 		}).then(function (id) {
 			return id;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	delete: function (id) {
@@ -46,6 +50,8 @@ var ReportDAO = {
 			model: models.Report
 		}).then(function (ok) {
 			return ok;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readById: function (id) {
@@ -55,6 +61,8 @@ var ReportDAO = {
 			model: models.Report
 		}).then(function (report) {
 			return report;
+		}).catch(function (err) {
+			return err.message;
 		});
 	},
 	readByCriteria: function (criteria) {
@@ -63,6 +71,8 @@ var ReportDAO = {
 			model: models.Report
 		}).then(function (reports) {
 			return reports;
+		}).catch(function (err) {
+			return err.message;
 		});
 	}
 };
