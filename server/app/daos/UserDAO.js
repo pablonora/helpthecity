@@ -81,12 +81,12 @@ var UserDAO = {
 		});
 	},
 	login: function (email) {
-		return sequelize.query('SELECT * FROM user WHERE email = ?', {
+		return sequelize.query('SELECT * FROM "user" WHERE email = ?', {
 			replacements: [email],
 			type: sequelize.QueryTypes.SELECT,
 			model: models.User
 		}).then(function (user) {
-			return user;
+			return user[0];
 		}).catch(function (err) {
 			return err.message;
 		});
