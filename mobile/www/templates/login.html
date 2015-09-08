@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="css/login.css">
+<ion-view hide-nav-bar="true">
+	<ion-content id="background">
+		<div id="content">
+			<div id="text">
+				<h1 id="title">Help The City</h1>
+				<h4>Bem vindo ao futuro</h4>
+				<p>Conecte-se agora e ajude a sua cidade a se tornar um lugar melhor</p>
+			</div>
+			<div id="form-container">
+				<div id="login-container" class="center">
+					<input type="email" ng-model="email" placeholder="E-mail">
+					<br>
+					<input type="password" ng-model="password" placeholder="Senha">
+					<br>
+					<button id="login" ng-click="login(email, password)">ENTRAR</button>
+				</div>
+
+				<div class="center">
+					<a id="password" ui-sref="#">Esqueci minha senha</a>
+				</div>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>
