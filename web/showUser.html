@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link href="css/style.css" rel="stylesheet">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body>
+    <div class="navbar-fixed">
+        <nav class="teal">
+            <div class="nav-wrapper">
+                <ul class="left hide-on-med-and-down">
+                    <li><img class="logo-home" src="img/logo - Copia.png"></li>
+                </ul>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="abuse.html">Abusos</a></li>
+                    <li class="active"><a href="user.html">Usu&aacute;rios</a></li>
+                    <li><a href="report.html">Ocorr&ecirc;ncias</a></li>
+                    <li><a href="index.html">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br/>
+    <a class="waves-effect waves-light btn" href="user.html"><i class="mdi-navigation-arrow-back left"></i>Voltar</a>
+
+    <div class="row" style="max-width: 650px; margin: 0 auto 10px;">
+        <h3 align="center">Visualizar Usu&aacute;rio</h3>
+        <center>
+            <img src="img/lih.jpg" class="circle responsive-img user-photo">
+        </center>
+
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s2">
+                    <input type="checkbox" id="active" />
+                    <label for="active"></label>
+                </div>
+                <div class="input-field col s4">
+                    <input value="LihLeal" id="user" type="text" class="validate" disabled>
+                    <label for="user">Usu&aacute;rio</label>
+                </div>
+                <div class="input-field col s6">
+                    <input value="lih_lealaparecida@hotmail.com" id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input value="Aliane Aparecida Leal" id="name" type="text" class="validate">
+                    <label for="username">Username</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s3">
+                    <select class="browser-default" id="gender">
+                        <option value="0" disabled>Sexo</option>
+                        <option value="1" selected>F</option>
+                        <option value="2">M</option>
+                    </select>
+                </div>
+                <div class="input-field col s6">
+                    <select class="browser-default" id="gender">
+                        <option value="0" disabled>Tipo</option>
+                        <option value="1" selected>Administrador</option>
+                        <option value="2">Comum</option>
+                    </select>
+                </div>
+            </div>
+            <!--<div class="input-field col s6">
+           <select class="browser-default" id="abuseCategory">
+            <option value="0" disabled>Selecione a Caegoria do Abuso</option>
+      <option value="1" selected>Viola&ccedil;&atilde;o dos termos de uso</option>
+      <option value="2">Spam</option>
+      <option value="3">Acredito que n&atilde;o deveria estar no HTC</option>
+               <option value="4">Conte&uacute;do obsceno</option>
+    </select>
+    
+        </div>-->
+    </div>
+
+    <center>
+        <button type="submit" class="waves-effect waves-light btn" id="enter">Salvar</button>
+        <center>
+            </form>
+            </div>
+
+            <!--Import jQuery before materialize.js-->
+            <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+            <script type="text/javascript" src="js/materialize.min.js"></script>
+</body>
+
+</html>
