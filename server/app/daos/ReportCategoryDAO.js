@@ -50,7 +50,7 @@ var ReportCategoryDAO = {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.ReportCategoryDAO
 		}).then(function (reportCategory) {
-			return reportCategory;
+			return reportCategory[0];
 		}).catch(function (err) {
 			return err.message;
 		});

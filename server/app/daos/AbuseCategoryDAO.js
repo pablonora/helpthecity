@@ -50,7 +50,7 @@ var AbuseCategoryDAO = {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.AbuseCategory
 		}).then(function (abuseCategory) {
-			return abuseCategory;
+			return abuseCategory[0];
 		}).catch(function (err) {
 			return err.message;
 		});

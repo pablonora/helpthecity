@@ -4,13 +4,12 @@ module.exports = function (app) {
 
   var AbuseController = {
     create: function (req, res) {
-      app.services.Abuse.create(req.body).then(function (result) {
+      app.services.Abuse.create(req.body.abuse).then(function (result) {
         res.json(result);
       });
     },
     update: function (req, res) {
-      req.body.id = req.params.id;
-      app.services.Abuse.update(req.body).then(function (result) {
+      app.services.Abuse.update(req.body.abuse).then(function (result) {
         res.json(result);
       });
     },
