@@ -8,6 +8,16 @@ module.exports = function (sequelize, DataTypes) {
 			primaryKey: true,
 			autoIncrement: true
 		},
+		name: {
+			type: DataTypes.CHAR(100),
+			allowNull: false,
+			validate: {
+				max: {
+					args: 100,
+					msg: 'Max permitted is 100'
+				}
+			}
+		},
 		active: {
 			type: DataTypes.CHAR(1),
 			defaultValue: 'Y',
@@ -15,12 +25,12 @@ module.exports = function (sequelize, DataTypes) {
 			validate: {
 				is: {
 					args: ['Y | N'],
-					msg: 'Must be Y for active or N for don\'t'
+					msg: 'Must be Y for active or N for not'
 				}
 			}
 		},
 		image: {
-			type: DataTypes.BLOB,
+			type: DataTypes.TEXT,
 			allowNull: true
 		},
 		email: {

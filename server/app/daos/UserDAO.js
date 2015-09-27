@@ -7,6 +7,7 @@ var UserDAO = {
 	create: function (user) {
 		return sequelize.query('INSERT INTO "user"(name, active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
+				user.name,
         user.active,
         user.image,
         user.email,
@@ -26,6 +27,7 @@ var UserDAO = {
 	update: function (user) {
 		return sequelize.query('UPDATE "user" SET name=? active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id', {
 			replacements: [
+				user.name,
         user.active,
         user.image,
         user.email,

@@ -23,7 +23,7 @@ module.exports = function (sequelize, dataTypes) {
 			}
 		},
 		image: {
-			type: dataTypes.BLOB,
+			type: dataTypes.TEXT,
 			allowNull: false
 		},
 		latitude: {
