@@ -2,7 +2,7 @@
 
 angular.module('htc.controllers')
 
-.controller('reportController', ['$scope', '$stateParams', 'reportService', function ($scope, $stateParams, reportService) {
+.controller('userController', ['$scope', '$stateParams', 'userService', function ($scope, $stateParams, userService) {
 	$scope.report = reportService.get($stateParams.reportId);
 	$scope.relevance = function (report) {
 		reportService.relevance(report);
