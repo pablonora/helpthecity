@@ -8,7 +8,7 @@ module.exports = function (sequelize, dataTypes) {
 			primaryKey: true,
 			autoIncrement: true
 		},
-		comment: {
+		description: {
 			type: dataTypes.CHAR(255),
 			allowNull: false,
 			validate: {
@@ -47,16 +47,16 @@ module.exports = function (sequelize, dataTypes) {
 			getId: function () {
 				return this.getDataValue('id');
 			},
-			getComment: function () {
-				return this.getDataValue('comment');
+			getDescription: function () {
+				return this.getDataValue('description');
 			}
 		},
 		setterMethods: {
 			setId: function (id) {
 				this.setDataValue('id', this.id);
 			},
-			setComment: function (comment) {
-				this.setDataValue('comment', this.comment);
+			setDescription: function (description) {
+				this.setDataValue('description', this.description);
 			}
 		}
 	});

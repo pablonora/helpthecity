@@ -53,14 +53,13 @@ var UpDAO = {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.Up
 		}).then(function (up) {
-			return up;
+			return up[0];
 		}).catch(function (err) {
 			return err.message;
 		});
 	},
 	readByCriteria: function (criteria) {
 		return sequelize.query(createQuery(criteria), {
-			replacements: ['1=1'],
 			type: sequelize.QueryTypes.SELECT,
 			model: models.Up
 		}).then(function (ups) {

@@ -4,13 +4,12 @@ module.exports = function (app) {
 
   var ReportCategoryController = {
     create: function (req, res) {
-      app.services.ReportCategory.create(req.body).then(function (result) {
+      app.services.ReportCategory.create(req.body.reportCategory).then(function (result) {
         res.json(result);
       });
     },
     update: function (req, res) {
-      req.body.id = req.params.id;
-      app.services.ReportCategory.update(req.body).then(function (result) {
+      app.services.ReportCategory.update(req.body.reportCategory).then(function (result) {
         res.json(result);
       });
     },

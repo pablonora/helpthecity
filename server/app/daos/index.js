@@ -21,8 +21,14 @@ function getName(path) {
   var start = path.lastIndexOf('/') + 1,
     name = path.substring(start).split('.')[0];
 
+	name = capitalizeFirstLetter(name);
+	
   // removes the word 'dao' of the file name
   name = name.split('DAO')[0];
 
   return name;
-};
+}
+
+function capitalizeFirstLetter() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

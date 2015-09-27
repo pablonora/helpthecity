@@ -15,8 +15,7 @@ module.exports = function (app) {
 			});
 		},
 		update: function (req, res) {
-			req.body.id = req.params.id;
-			app.services.User.update(req.body).then(function (result) {
+			app.services.User.update(req.body.user).then(function (result) {
 				res.json(result);
 			});
 		},

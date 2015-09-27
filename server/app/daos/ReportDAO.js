@@ -60,7 +60,7 @@ var ReportDAO = {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.Report
 		}).then(function (report) {
-			return report;
+			return report[0];
 		}).catch(function (err) {
 			return err.message;
 		});
