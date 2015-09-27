@@ -27,6 +27,6 @@ function getName(path) {
   return name;
 }
 
-function capitalizeFirstLetter() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+function capitalizeFirstLetter(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }
