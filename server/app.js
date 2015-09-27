@@ -17,8 +17,8 @@ require('./app/routes')(app, config);
 db.sequelize
 	.sync() // use {force: true} as parameter when changing something into database tables.
 	.then(function () {
-		app.listen(config.port, function () {
-			console.log('Server started!');
+		app.listen(config.port, function () {	
+			console.log('Server started on ip: ' + this.address().address + ' port: ' + this.address().port);
 		});
 	}).catch(function (e) {
 		throw new Error(e);

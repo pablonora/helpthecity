@@ -13,7 +13,7 @@ module.exports = function (app, config) {
 
 	// Passport session setup.
 	//   To support persistent login sessions, Passport needs to be able to
-	//   serialize users into and deserialize users out of the session.  Typically,
+	//   serialize users into and deserialize users out of the session. Typically,
 	//   this will be as simple as storing the user ID when serializing, and finding
 	//   the user by ID when deserializing.
 	passport.serializeUser(function (user, done) {
@@ -36,6 +36,7 @@ module.exports = function (app, config) {
 				if (user.length === 0) return done(null, false, {
 					message: 'Unknown user ' + email
 				});
+				
 				bcrypt.compare(password, user.password, function (err, res) {
 					if (err) return done(err);
 					if (!res) return done(null, false, {
@@ -57,8 +58,10 @@ module.exports = function (app, config) {
 			// Manually establish the session...
 			req.login(user, function (err) {
 				if (err) return next(err);
-
-				return res.send('User authenticated');
+								
+				user.password = '';
+				
+				return res.send(user);
 			});
 		})(req, res, next);
 	});

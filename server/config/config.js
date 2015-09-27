@@ -19,7 +19,7 @@ var config = {
     app: {
       name: 'helpthecity'
     },
-    port: 3000,
+    port: 5000,
     db: 'postgres://postgres:postgres@localhost:5432/helpthecity-test'
   },
 
@@ -28,7 +28,7 @@ var config = {
     app: {
       name: 'helpthecity'
     },
-    port: 3000,
+    port: 5000,
     db: 'postgres://postgres:postgres@localhost:5432/helpthecity-production'
   }
 };

@@ -35,7 +35,13 @@ module.exports = function (app, config) {
 		saveUninitialized: true,
 		resave: true
 	}));
-	app.use(modelInjector);
+
+	app.use(function (req, res, next) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Cretendtials", true);
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		next();
+	});
 
 	//  app.use(function (req, res, next) {
 	//    var err = new Error('Not Found');
