@@ -2,12 +2,16 @@
 
 angular.module('htc.controllers')
 
-.controller('userController', ['$scope', '$stateParams', 'userService', function ($scope, $stateParams, userService) {
-	$scope.report = reportService.get($stateParams.reportId);
-	$scope.relevance = function (report) {
-		reportService.relevance(report);
+.controller('userController', ['$scope', 'userService', function ($scope, userService) {
+	$scope.user = {};
+
+	$scope.createUser = function () {
+		userService.createUser($scope.user, function (response) {									 
+			console.log(response);
+		});
 	};
-	$scope.postDate = function (report) {
-		return reportService.getPostDate(report);
+
+	$scope.getImage = function () {
+
 	};
 }]);

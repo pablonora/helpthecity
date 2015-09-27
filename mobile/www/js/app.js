@@ -3,7 +3,7 @@
 var app = angular.module('htc', ['ionic', 'htc.controllers', 'htc.services']);
 
 // Define all angular modules that will be used to get them in other files
-angular.module('htc.controllers', ['ionic']);
+angular.module('htc.controllers', []);
 angular.module('htc.services', []);
 
 app.run(function ($ionicPlatform) {
@@ -20,7 +20,8 @@ app.run(function ($ionicPlatform) {
   });
 });
 
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
+	$httpProvider.defaults.withCredentials = true;
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -59,7 +60,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     .state('registerUser', {
       url: '/registerUser',
       templateUrl: 'templates/registerUser.html',
-      controller: 'reportController'
+      controller: 'userController',
+      controllerAs: 'userCtrl'
     })
     /*===List of Reports===*/
     .state('tab.listOfReports', {
@@ -101,7 +103,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home');
 
-});
+}]);
 
 app.config(function ($ionicConfigProvider) {
   $ionicConfigProvider.views.maxCache(10);
