@@ -17,7 +17,11 @@ module.exports = function (sequelize, dataTypes) {
 					msg: 'Max permitted is 255'
 				}
 			}
-		}
+		},
+		date: {
+			type: dataTypes.DATE,
+			allowNull: false
+		},
 	}, {
 		timestamps: false,
 		tableName: 'abuse',
@@ -49,6 +53,9 @@ module.exports = function (sequelize, dataTypes) {
 			},
 			getDescription: function () {
 				return this.getDataValue('description');
+			},
+			getDate: function () {
+				return this.getDataValue('date');
 			}
 		},
 		setterMethods: {
@@ -57,6 +64,9 @@ module.exports = function (sequelize, dataTypes) {
 			},
 			setDescription: function (description) {
 				this.setDataValue('description', this.description);
+			},
+			setDate: function (description) {
+				this.setDataValue('date', this.date);
 			}
 		}
 	});

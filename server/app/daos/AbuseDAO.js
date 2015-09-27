@@ -5,10 +5,11 @@ var models = require('../models'),
 
 var AbuseDAO = {
 	create: function (abuse) {
-		return sequelize.query('INSERT INTO abuse(description, userId, "abuseCategoryId") VALUES (?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO abuse(description, userId, date, "abuseCategoryId") VALUES (?, ?, ?, ?) RETURNING id', {
 			replacements: [
         abuse.description,
         abuse.userId,
+        abuse.date,
         abuse.abuseCategoryId
       ],
 			type: sequelize.QueryTypes.INSERT,
@@ -20,10 +21,11 @@ var AbuseDAO = {
 		});
 	},
 	update: function (abuse) {
-		return sequelize.query('UPDATE abuse SET description=?, userId=?, "abuseCategoryId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE abuse SET description=?, userId=?, date=? "abuseCategoryId"=? WHERE id = ? RETURNING id', {
 			replacements: [
         abuse.description,
         abuse.userId,
+        abuse.date,
         abuse.abuseCategoryId,
         abuse.id
       ],
@@ -78,6 +80,9 @@ function createQuery(criteria) {
 	}
 	if (criteria.userId) {
 		query += ' AND "userId" = ' + criteria.userId;
+	}
+	if (criteria.date) {
+		query += ' AND date = \'' + criteria.date + '\'';
 	}
 	if (criteria.abuseCategoryId) {
 		query += ' AND "abuseCategoryId" = ' + criteria.abuseCategoryId;
