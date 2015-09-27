@@ -5,10 +5,11 @@ var models = require('../models'),
 
 var AbuseDAO = {
 	create: function (abuse) {
-		return sequelize.query('INSERT INTO abuse(comment, userId, "abuseCategoryId") VALUES (?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO abuse(description, userId, date, "abuseCategoryId") VALUES (?, ?, ?, ?) RETURNING id', {
 			replacements: [
-        abuse.comment,
+        abuse.description,
         abuse.userId,
+        abuse.date,
         abuse.abuseCategoryId
       ],
 			type: sequelize.QueryTypes.INSERT,
@@ -20,10 +21,11 @@ var AbuseDAO = {
 		});
 	},
 	update: function (abuse) {
-		return sequelize.query('UPDATE abuse SET comment=?, userId=?, "abuseCategoryId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE abuse SET description=?, userId=?, date=? "abuseCategoryId"=? WHERE id = ? RETURNING id', {
 			replacements: [
-        abuse.comment,
+        abuse.description,
         abuse.userId,
+        abuse.date,
         abuse.abuseCategoryId,
         abuse.id
       ],
@@ -52,7 +54,7 @@ var AbuseDAO = {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.Abuse
 		}).then(function (abuse) {
-			return abuse;
+			return abuse[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -73,11 +75,14 @@ module.exports = AbuseDAO;
 
 function createQuery(criteria) {
 	var query = 'SELECT * FROM abuse WHERE 1=1';
-	if (criteria.comment) {
-		query += ' AND comment = \'' + criteria.comment + '\'';
+	if (criteria.description) {
+		query += ' AND description = \'' + criteria.comment + '\'';
 	}
 	if (criteria.userId) {
 		query += ' AND "userId" = ' + criteria.userId;
+	}
+	if (criteria.date) {
+		query += ' AND date = \'' + criteria.date + '\'';
 	}
 	if (criteria.abuseCategoryId) {
 		query += ' AND "abuseCategoryId" = ' + criteria.abuseCategoryId;

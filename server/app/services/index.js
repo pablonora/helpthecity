@@ -22,8 +22,14 @@ function getName(path) {
   var start = path.lastIndexOf('/') + 1,
     name = path.substring(start).split('.')[0];
 
+	name = capitalizeFirstLetter(name);
+	
   // removes the word 'route' of the file name
   name = name.split('Service')[0];
 
   return name;
-};
+}
+
+function capitalizeFirstLetter(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}

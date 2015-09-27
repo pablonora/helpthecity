@@ -5,8 +5,9 @@ var models = require('../models'),
 
 var UserDAO = {
 	create: function (user) {
-		return sequelize.query('INSERT INTO "user"(active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO "user"(name, active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
+				user.name,
         user.active,
         user.image,
         user.email,
@@ -24,8 +25,9 @@ var UserDAO = {
 		});
 	},
 	update: function (user) {
-		return sequelize.query('UPDATE "user" SET active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE "user" SET name=? active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id', {
 			replacements: [
+				user.name,
         user.active,
         user.image,
         user.email,
@@ -61,7 +63,7 @@ var UserDAO = {
 			model: models.User
 		}).then(function (user) {
 			user.password = '';
-			return user;
+			return user[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -97,6 +99,9 @@ module.exports = UserDAO;
 
 function createQuery(criteria) {
 	var query = 'SELECT * FROM user WHERE 1=1';
+	if (criteria.name) {
+		query += ' AND name = \'' + criteria.name + '\'';
+	}
 	if (criteria.active) {
 		query += ' AND active = \'' + criteria.active + '\'';
 	}

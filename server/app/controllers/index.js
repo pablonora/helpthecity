@@ -18,9 +18,15 @@ function getName(path) {
   // find the starting position of the file name, then gets the name without the extension
   var start = path.lastIndexOf('/') + 1,
     name = path.substring(start).split('.')[0];
+	
+	name = capitalizeFirstLetter(name);
 
   // removes the word 'controller' of the file name
   name = name.split('Controller')[0];
 
   return name;
-};
+}
+
+function capitalizeFirstLetter(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}

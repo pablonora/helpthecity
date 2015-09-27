@@ -8,7 +8,7 @@ module.exports = function (sequelize, dataTypes) {
 			primaryKey: true,
 			autoIncrement: true
 		},
-		comment: {
+		description: {
 			type: dataTypes.CHAR(255),
 			allowNull: false,
 			validate: {
@@ -17,7 +17,11 @@ module.exports = function (sequelize, dataTypes) {
 					msg: 'Max permitted is 255'
 				}
 			}
-		}
+		},
+		date: {
+			type: dataTypes.DATE,
+			allowNull: false
+		},
 	}, {
 		timestamps: false,
 		tableName: 'abuse',
@@ -47,16 +51,22 @@ module.exports = function (sequelize, dataTypes) {
 			getId: function () {
 				return this.getDataValue('id');
 			},
-			getComment: function () {
-				return this.getDataValue('comment');
+			getDescription: function () {
+				return this.getDataValue('description');
+			},
+			getDate: function () {
+				return this.getDataValue('date');
 			}
 		},
 		setterMethods: {
 			setId: function (id) {
 				this.setDataValue('id', this.id);
 			},
-			setComment: function (comment) {
-				this.setDataValue('comment', this.comment);
+			setDescription: function (description) {
+				this.setDataValue('description', this.description);
+			},
+			setDate: function (description) {
+				this.setDataValue('date', this.date);
 			}
 		}
 	});
