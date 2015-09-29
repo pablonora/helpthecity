@@ -1,25 +1,17 @@
-<link rel="stylesheet" href="css/login.css">
-<ion-view hide-nav-bar="true">
-	<ion-content id="background">
-		<div id="content">
-			<div id="text">
-				<h1 id="title">Help The City</h1>
-				<h4>Bem vindo ao futuro</h4>
-				<p>Conecte-se agora e ajude a sua cidade a se tornar um lugar melhor</p>
-			</div>
-			<div id="form-container">
-				<div id="login-container" class="center">
-					<input type="email" ng-model="email" placeholder="E-mail">
-					<br>
-					<input type="password" ng-model="password" placeholder="Senha">
-					<br>
-					<button id="login" ng-click="login(email, password)">ENTRAR</button>
-				</div>
 
-				<div class="center">
-					<a id="password" ui-sref="#">Esqueci minha senha</a>
-				</div>
-			</div>
-		</div>
+
+ <ion-view view-title="Help the City">
+	<ion-content>		
+		<div class="list">
+  <label class="item item-input item-stacked-label">
+    <span class="input-label">E-mail</span>
+    <input type="text" placeholder="usuário" data-ng-model="e-mail">
+  </label>
+  <label class="item item-input item-stacked-label">
+    <span class="input-label">Senha</span>
+    <input type="password" placeholder="senha" data-ng-model="senha">
+  </label>
+</div>
+<a class="button button-clear icon-left ion-ios-paperplane" href="#/tab/listOfReports">Entrar</a>
 	</ion-content>
 </ion-view>

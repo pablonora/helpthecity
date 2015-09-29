@@ -16,7 +16,7 @@ angular.module('htc.controllers')
 			email: email,
 			password: password
 		};
-
+		
 		$http.post(routerService.loginUrl, JSON.stringify(data)).then(function (response) {
 			console.log('successfully authenticated');
 			console.log(response);

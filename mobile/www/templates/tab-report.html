@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="css/report.css">
+
+ <ion-view view-title="Help the City">
+  <ion-content>
+      	<label class="item item-input item-select">
+    		<div class="input-label">
+      			
+				Categoria
+    		</div>
+    		<select>
+      			<option value="0">Defesa Civil</option>
+     			<option value="1">Iluminação</option>
+      			<option value="2">Saneamento Básico</option>
+      			<option value="3">Saúde</option>
+      			<option value="4">Segurança</option>
+      			<option value="5">Vias públicas</option>
+      			<option value="6">Trânsito</option>
+    		</select>
+  		</label>
+      <label class="item item-input"> 
+           <input  ng-model="abuse.comment" type="text" placeholder="Deixe seu comentário">
+      </label>
+	  <button class="button button-clear icon-left ion-image" ng-click="getImage()">Adicione uma foto camera</button>
+  </ion-content>
+</ion-view>

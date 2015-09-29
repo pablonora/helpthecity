@@ -1,29 +1,28 @@
-<!-- Footer tabs -->
-<ion-tabs class="tabs-icon-only tabs-color-active-positive">
+<!--
+Create tabs with an icon and label, using the tabs-positive style.
+Each tab's child <ion-nav-view> directive will have its own
+navigation history that also transitions its views in and out.
+-->
+<ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
-  <!-- Reports Tab -->
-  <ion-tab icon-off="ion-ios-home" icon-on="ion-ios-home-outline" ui-sref="tab.reports">
-    <ion-nav-view name="tab-reports"></ion-nav-view>
+  <!-- List of Reports Tab -->
+  <ion-tab title="Início" icon-off="ion-ios-home-outline" icon-on="ion-ios-home-outline" href="#/tab/listOfReports">
+    <ion-nav-view name="tab-listOfReports"></ion-nav-view>
   </ion-tab>
 
-  <!-- Maps Tab -->
-  <ion-tab icon-off="ion-ios-albums" icon-on="ion-ios-albums-outline" ui-sref="tab.map">
-    <ion-nav-view name="tab-map"></ion-nav-view>
+  <!-- Search Tab -->
+  <ion-tab title="Procurar" icon-off="ion-ios-search" icon-on="ion-ios-search" href="#/tab/search">
+    <ion-nav-view name="tab-search"></ion-nav-view>
   </ion-tab>
 
-  <!-- New Report Tab -->
-  <ion-tab icon-off="ion-ios-paper" icon-on="ion-ios-paper-outline" ui-sref="tab.new">
-    <ion-nav-view name="tab-new"></ion-nav-view>
+  <!-- Report Tab -->
+  <ion-tab title="Ocorrência" icon-off="ion-compose" icon-on="ion-compose" href="#/tab/report">
+    <ion-nav-view name="tab-report"></ion-nav-view>
   </ion-tab>
 
-	<!-- Profile Tab -->
-  <ion-tab icon-off="ion-ios-person" icon-on="ion-ios-person-outline" ui-sref="tab.profile">
-    <ion-nav-view name="tab-profile"></ion-nav-view>
-  </ion-tab>
-
-  <!-- Settings Tab -->
-  <ion-tab icon-off="ion-ios-person" icon-on="ion-ios-person-outline" ui-sref="tab.settings">
-    <ion-nav-view name="tab-settings"></ion-nav-view>
+  <!-- Profile User Tab -->
+  <ion-tab title="Perfil" icon-off="ion-person" icon-on="ion-person" href="#/tab/editProfile">
+    <ion-nav-view name="tab-editProfile"></ion-nav-view>
   </ion-tab>
 
 </ion-tabs>
