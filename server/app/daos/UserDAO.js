@@ -68,16 +68,12 @@ var UserDAO = {
 			return err.message;
 		});
 	},
-	readByCriteria: function (criterion) {
+	readByCriteria: function (criteria) {
 		return sequelize.query(createQuery(criteria), {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.User
 		}).then(function (users) {
-			return users.forEach(function (user) {
-				user.password = '';
-			}).then(function () {
-				return users;
-			});
+			return users;
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -98,30 +94,32 @@ var UserDAO = {
 module.exports = UserDAO;
 
 function createQuery(criteria) {
-	var query = 'SELECT * FROM user WHERE 1=1';
-	if (criteria.name) {
-		query += ' AND name = \'' + criteria.name + '\'';
-	}
-	if (criteria.active) {
-		query += ' AND active = \'' + criteria.active + '\'';
-	}
-	if (criteria.image) {
-		query += ' AND image = ' + criteria.image;
-	}
-	if (criteria.email) {
-		query += ' AND email = \'' + criteria.email + '\'';
-	}
-	if (criteria.type) {
-		query += ' AND type = \'' + criteria.type + '\'';
-	}
-	if (criteria.password) {
-		query += ' AND password = \'' + criteria.password + '\'';
-	}
-	if (criteria.gender) {
-		query += ' AND gender = \'' + criteria.gender + '\'';
-	}
-	if (criteria.coverageRadius) {
-		query += ' AND coverageRadius = ' + criteria.coverageRadius;
+	var query = 'SELECT * FROM "user" WHERE 1=1';
+	if (criteria) {
+		if (criteria.name) {
+			query += ' AND name = \'' + criteria.name + '\'';
+		}
+		if (criteria.active) {
+			query += ' AND active = \'' + criteria.active + '\'';
+		}
+		if (criteria.image) {
+			query += ' AND image = ' + criteria.image;
+		}
+		if (criteria.email) {
+			query += ' AND email = \'' + criteria.email + '\'';
+		}
+		if (criteria.type) {
+			query += ' AND type = \'' + criteria.type + '\'';
+		}
+		if (criteria.password) {
+			query += ' AND password = \'' + criteria.password + '\'';
+		}
+		if (criteria.gender) {
+			query += ' AND gender = \'' + criteria.gender + '\'';
+		}
+		if (criteria.coverageRadius) {
+			query += ' AND coverageRadius = ' + criteria.coverageRadius;
+		}
 	}
 	return query;
 };
