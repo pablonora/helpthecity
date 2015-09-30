@@ -21,7 +21,7 @@ module.exports = function (sequelize, dataTypes) {
 		date: {
 			type: dataTypes.DATE,
 			allowNull: false
-		},
+		}
 	}, {
 		timestamps: false,
 		tableName: 'abuse',
@@ -45,6 +45,14 @@ module.exports = function (sequelize, dataTypes) {
 					onUpdate: 'CASCADE',
 					onDelete: 'CASCADE'
 				});
+				Abuse.belongsTo(models.Report, {
+					foreignKey: {
+						name: 'reportId',
+						allowNull: false
+					},
+					onUpdate: 'CASCADE',
+					onDelete: 'CASCADE'
+				});
 			}
 		},
 		getterMethods: {
@@ -60,13 +68,13 @@ module.exports = function (sequelize, dataTypes) {
 		},
 		setterMethods: {
 			setId: function (id) {
-				this.setDataValue('id', this.id);
+				this.setDataValue('id', id);
 			},
 			setDescription: function (description) {
-				this.setDataValue('description', this.description);
+				this.setDataValue('description', description);
 			},
-			setDate: function (description) {
-				this.setDataValue('date', this.date);
+			setDate: function (date) {
+				this.setDataValue('date', date);
 			}
 		}
 	});

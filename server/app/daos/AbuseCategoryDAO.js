@@ -13,7 +13,7 @@ var AbuseCategoryDAO = {
 			type: sequelize.QueryTypes.INSERT,
 			model: models.AbuseCategory,
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -28,7 +28,7 @@ var AbuseCategoryDAO = {
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.AbuseCategory
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -39,7 +39,7 @@ var AbuseCategoryDAO = {
 			type: sequelize.QueryTypes.DELETE,
 			model: models.AbuseCategory
 		}).then(function (ok) {
-			return ok;
+			return ok[0];
 		}).catch(function (err) {
 			return err.message;
 		});

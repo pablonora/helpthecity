@@ -19,7 +19,7 @@ module.exports = function (sequelize, dataTypes) {
 		},
 		setterMethods: {
 			setDate: function (date) {
-				this.setDataValue('date', this.date);
+				this.setDataValue('date', date);
 			}
 		}
 	});

@@ -13,7 +13,7 @@ var ReportCategoryDAO = {
 			type: sequelize.QueryTypes.INSERT,
 			model: models.ReportCategoryDAO
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -28,7 +28,7 @@ var ReportCategoryDAO = {
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.ReportCategoryDAO
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -39,7 +39,7 @@ var ReportCategoryDAO = {
 			type: sequelize.QueryTypes.DELETE,
 			model: models.ReportCategoryDAO
 		}).then(function (ok) {
-			return ok;
+			return ok[0];
 		}).catch(function (err) {
 			return err.message;
 		});

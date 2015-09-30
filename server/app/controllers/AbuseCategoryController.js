@@ -9,6 +9,7 @@ module.exports = function (app) {
 			});
 		},
 		update: function (req, res) {
+			req.body.abuseCategory.id = req.params.id;
 			app.services.AbuseCategory.update(req.body.abuseCategory).then(function (result) {
 				res.json(result);
 			});

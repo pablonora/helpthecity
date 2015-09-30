@@ -5,34 +5,36 @@ var models = require('../models'),
 
 var AbuseDAO = {
 	create: function (abuse) {
-		return sequelize.query('INSERT INTO abuse(description, userId, date, "abuseCategoryId") VALUES (?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO abuse(description, date, "userId", "abuseCategoryId", "reportId") VALUES (?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
         abuse.description,
-        abuse.userId,
         abuse.date,
-        abuse.abuseCategoryId
+        abuse.userId,
+        abuse.abuseCategoryId,
+				abuse.reportId
       ],
 			type: sequelize.QueryTypes.INSERT,
 			model: models.Abuse
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
 	},
 	update: function (abuse) {
-		return sequelize.query('UPDATE abuse SET description=?, userId=?, date=? "abuseCategoryId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE abuse SET description=?, date=?, "userId"=?, "abuseCategoryId"=?, "reportId"=? WHERE id = ? RETURNING id', {
 			replacements: [
         abuse.description,
-        abuse.userId,
         abuse.date,
+        abuse.userId,
         abuse.abuseCategoryId,
+				abuse.reportId,
         abuse.id
       ],
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.Abuse
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -43,7 +45,7 @@ var AbuseDAO = {
 			type: sequelize.QueryTypes.DELETE,
 			model: models.Abuse
 		}).then(function (ok) {
-			return ok;
+			return ok[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -78,14 +80,17 @@ function createQuery(criteria) {
 	if (criteria.description) {
 		query += ' AND description = \'' + criteria.comment + '\'';
 	}
-	if (criteria.userId) {
-		query += ' AND "userId" = ' + criteria.userId;
-	}
 	if (criteria.date) {
 		query += ' AND date = \'' + criteria.date + '\'';
 	}
+	if (criteria.userId) {
+		query += ' AND "userId" = ' + criteria.userId;
+	}
 	if (criteria.abuseCategoryId) {
 		query += ' AND "abuseCategoryId" = ' + criteria.abuseCategoryId;
+	}
+	if (criteria.reportId) {
+		query += ' AND "reportId" = ' + criteria.reportId;
 	}
 	return query;
 };

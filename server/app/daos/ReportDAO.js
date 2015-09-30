@@ -5,32 +5,34 @@ var models = require('../models'),
 
 var ReportDAO = {
 	create: function (report) {
-		return sequelize.query('INSERT INTO report(date, description, image, latitude, longitude, "reportCategoryId", "userId") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO report(date, description, image, latitude, longitude, precision, "reportCategoryId", "userId") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
         report.date,
         report.description,
         report.image,
 				report.latitude,
 				report.longitude,
+				report.precision,
         report.reportCategoryId,
         report.userId,
       ],
 			type: sequelize.QueryTypes.INSERT,
 			model: models.Report
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
 	},
 	update: function (report) {
-		return sequelize.query('UPDATE report SET date=?, description=?, image=?, latitude=?, longitude=?, "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE report SET date=?, description=?, image=?, latitude=?, longitude=?, precision=? "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
 			replacements: [
         report.date,
         report.description,
         report.image,
 				report.latitude,
 				report.longitude,
+				report.precision,
         report.reportCategoryId,
         report.userId,
         report.id
@@ -38,7 +40,7 @@ var ReportDAO = {
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.Report
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -49,7 +51,7 @@ var ReportDAO = {
 			type: sequelize.QueryTypes.DELETE,
 			model: models.Report
 		}).then(function (ok) {
-			return ok;
+			return ok[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -95,6 +97,9 @@ function createQuery(criteria) {
 	}
 	if (criteria.longitude) {
 		query += ' AND longitude >= ' + (criteria.longitude - (criteria.coverageRadius / 2)) + ' AND longitude <= ' + (criteria.longitude + (criteria.coverageRadius / 2));
+	}
+	if(criteria.precision) {
+		query += ' AND precision = ' + criteria.precision;
 	}
 	if (criteria.reportCategoryId) {
 		query += ' AND "reportCategoryId" = ' + criteria.reportCategoryId;
