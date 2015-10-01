@@ -122,6 +122,9 @@ module.exports = function (sequelize, DataTypes) {
 			getId: function () {
 				return this.getDataValue('id');
 			},
+			getName: function () {
+				this.getDataValue('name');
+			},
 			getActive: function () {
 				return this.getDataValue('active');
 			},
@@ -146,28 +149,31 @@ module.exports = function (sequelize, DataTypes) {
 		},
 		setterMethods: {
 			setId: function (id) {
-				this.setDataValue('id', this.id);
+				this.setDataValue('id', id);
+			},
+			setName: function (name) {
+				this.setDataValue('name', name);
 			},
 			setActive: function (active) {
-				this.setDataValue('active', this.active);
+				this.setDataValue('active', active);
 			},
 			setImage: function (image) {
-				this.setDataValue('image', this.image);
+				this.setDataValue('image', image);
 			},
 			setEmail: function (email) {
-				this.setDataValue('email', this.email);
+				this.setDataValue('email', email);
 			},
 			setType: function (type) {
-				this.setDataValue('type', this.type);
+				this.setDataValue('type', type);
 			},
 			setPassword: function (password) {
-				this.setDataValue('password', this.password);
+				this.setDataValue('password', password);
 			},
 			setGender: function (gender) {
-				this.setDataValue('gender', this.gender);
+				this.setDataValue('gender', gender);
 			},
 			setCoverageRadius: function (coverageRadius) {
-				this.setDataValue('coverageRadius', this.coverageRadius);
+				this.setDataValue('coverageRadius', coverageRadius);
 			}
 		}
 	});

@@ -41,6 +41,10 @@ module.exports = function (sequelize, dataTypes) {
 				min: -180,
 				max: 180
 			}
+		},
+		precision: {
+			type: dataTypes.INTEGER,
+			allowNull: false
 		}
 	}, {
 		timestamps: false,
@@ -89,26 +93,32 @@ module.exports = function (sequelize, dataTypes) {
 			},
 			getLongitude: function () {
 				return this.getDataValue('longitude');
+			},
+			getPrecision: function () {
+				return this.getDataValue('precision');
 			}
 		},
 		setterMethods: {
 			setId: function (id) {
-				this.setDataValue('id', this.id);
+				this.setDataValue('id', id);
 			},
 			setDate: function (date) {
-				this.setDataValue('date', this.date);
+				this.setDataValue('date', date);
 			},
 			setDescription: function (description) {
-				this.setDataValue('description', this.description);
+				this.setDataValue('description', description);
 			},
 			setImage: function (image) {
-				this.setDataValue('image', this.image);
+				this.setDataValue('image', image);
 			},
 			setLatitude: function (latitude) {
-				this.setDataValue('latitude', this.latitude);
+				this.setDataValue('latitude', latitude);
 			},
 			setLongitude: function (longitude) {
-				this.setDataValue('longitude', this.longitude);
+				this.setDataValue('longitude', longitude);
+			},
+			setPrecision: function (precision) {
+				this.setDataValue('precision', precision);
 			}
 		}
 	});

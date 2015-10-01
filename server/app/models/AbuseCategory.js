@@ -59,13 +59,13 @@ module.exports = function (sequelize, dataTypes) {
 		},
 		setterMethods: {
 			setId: function (id) {
-				this.setDataValue('id', this.id);
+				this.setDataValue('id', id);
 			},
 			setName: function (name) {
-				this.setDataValue('name', this.name);
+				this.setDataValue('name', name);
 			},
 			setDescription: function (description) {
-				this.setDataValue('description', this.description);
+				this.setDataValue('description', description);
 			}
 		}
 	});

@@ -7,7 +7,7 @@ module.exports = function (app) {
 	var UserController = {
 		create: function (req, res) {
 			return sequelize.transaction(function (t) {
-				return app.services.User.create(user).then(function (result) {
+				return app.services.User.create(req.body.user).then(function (result) {
 					return result;
 				});
 			}).then(function (result) {
@@ -15,6 +15,7 @@ module.exports = function (app) {
 			});
 		},
 		update: function (req, res) {
+			req.body.user.id = req.params.id;
 			app.services.User.update(req.body.user).then(function (result) {
 				res.json(result);
 			});

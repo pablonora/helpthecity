@@ -9,6 +9,7 @@ module.exports = function (app) {
       });
     },
     update: function (req, res) {
+			req.body.reportCategory.id = req.params.id;
       app.services.ReportCategory.update(req.body.reportCategory).then(function (result) {
         res.json(result);
       });

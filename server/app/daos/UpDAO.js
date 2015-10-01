@@ -14,7 +14,7 @@ var UpDAO = {
 			type: sequelize.QueryTypes.INSERT,
 			model: models.Up
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -31,7 +31,7 @@ var UpDAO = {
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.Up
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -42,7 +42,7 @@ var UpDAO = {
 			type: sequelize.QueryTypes.DELETE,
 			model: models.Up
 		}).then(function (ok) {
-			return ok;
+			return ok[0];
 		}).catch(function (err) {
 			return err.message;
 		});

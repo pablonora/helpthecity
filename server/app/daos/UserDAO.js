@@ -19,14 +19,29 @@ var UserDAO = {
 			type: sequelize.QueryTypes.INSERT,
 			model: models.User
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
 	},
 	update: function (user) {
-		return sequelize.query('UPDATE "user" SET name=? active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id', {
-			replacements: [
+		var query = '',
+			replacements = [];
+		if (user.password == null) {
+			query = 'UPDATE "user" SET name=?, active=?, image=?, email=?, type=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id';
+			replacements = [
+				user.name,
+        user.active,
+        user.image,
+        user.email,
+        user.type,
+        user.gender,
+        user.coverageRadius,
+        user.id
+			];
+		} else {
+			query = 'UPDATE "user" SET name=?, active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id';
+			replacements = [
 				user.name,
         user.active,
         user.image,
@@ -36,11 +51,14 @@ var UserDAO = {
         user.gender,
         user.coverageRadius,
         user.id
-      ],
+			];
+		}
+		return sequelize.query(query, {
+			replacements: replacements,
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.User
 		}).then(function (id) {
-			return id;
+			return id[0];
 		}).catch(function (err) {
 			return err.message;
 		});
@@ -51,7 +69,7 @@ var UserDAO = {
 			type: sequelize.QueryTypes.DELETE,
 			model: models.User
 		}).then(function (ok) {
-			return ok;
+			return ok[0];
 		}).catch(function (err) {
 			return err.message;
 		});

@@ -9,6 +9,7 @@ module.exports = function (app) {
       });
     },
     update: function (req, res) {
+			req.body.report.id = req.params.id;
       app.services.Report.update(req.body.report).then(function (result) {
         res.json(result);
       });

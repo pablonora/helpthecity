@@ -32,7 +32,9 @@ module.exports = function (app, config) {
 		},
 		function verify(email, password, done) {
 			return app.daos.User.login(email).then(function (user) {
-				//      if (err) return done(err);
+				if (user == null) return done(null, false, {
+					message: 'User not found'
+				});
 				if (user.length === 0) return done(null, false, {
 					message: 'Unknown user ' + email
 				});
