@@ -1,0 +1,50 @@
+<div class="navbar-fixed">
+  <nav class="teal">
+    <div class="nav-wrapper">
+      <ul class="right hide-on-med-and-down">
+        <li><img class="logo-home" src="images/logo - Copia.png"></li>
+      </ul>
+      <ul class="left hide-on-med-and-down">
+        <li><a href="/#/home">In&iacute;cio</a></li>
+        <li class="active"><a href="/#/abuse">Abusos</a></li>
+        <li><a href="/#/user">Usu&aacute;rios</a></li>
+        <li><a href="/#/report">Ocorr&ecirc;ncias</a></li>
+        <li><a href="/#/">Sair</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br/>
+<div class="row" style="max-width: 650px; margin: 0 auto 10px;">
+  <h3 align="center">Visualizar Abuso</h3>
+  <div id="showAbuse-container">
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s3">
+          <input value="{{username}}" ng-model="username" id="username" type="text" class="validate" disabled>
+        </div>
+        <div class="input-field col s3">
+          <input value="{{date | date:'yyyy-MM-dd'}}" ng-model="date" id="date" type="date" disabled>
+        </div>
+        <label>Categoria do Abuso</label>
+        <div class="input-field col s6">
+          <select class="browser-default" ng-model="abuseCategoryId" name="abuseCategoryId" id="abuseCategoryId">
+            <option value="" disabled>Selecione a Caegoria do Abuso</option>
+            <option value="{{abuseCategory.id}}" ng-repeat="abuseCategory in abuseCategories">{{abuseCategory.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea ng-model="description" id="description" class="materialize-textarea" value="{{description}}"></textarea>
+          <label for="comment">Coment&aacute;rio</label>
+        </div>
+      </div>
+      <center>
+        <a class="waves-effect waves-light btn" href="/#/abuse"><i class="mdi-navigation-arrow-back left"></i>Voltar</a>
+        <div class="waves-effect waves-light btn" ng-click="updateAbuse()">Salvar</div>
+        <div class="waves-effect waves-light btn" ng-click="deleteAbuse()"><i class="mdi-action-delete right"></i>Deletar</div>
+        <center>
+    </div>
+  </div>
+</div>
