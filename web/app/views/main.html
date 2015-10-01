@@ -1,0 +1,19 @@
+<img class="logo-login" src="images/logo.png">
+<div id="login-container" style="max-width: 500px; margin: 0 auto 10px;">
+  <div class="col s12 m4">
+
+    <div class="input-field">
+      <i class="mdi-action-account-circle prefix"></i>
+      <input type="email" ng-model="email" id="email" name="email" maxlength="30">
+      <label for="email">Email</label>
+    </div>
+    <div class="input-field">
+      <i class="mdi-communication-vpn-key prefix"></i>
+      <input type="password" ng-model="password" id="password" name="password" maxlength="30">
+      <label for="password">Senha</label>
+    </div>
+    <center>
+      <button class="waves-effect waves-light btn" id="enter" ng-click="login(email, password)"><i class="mdi-content-send right"></i>Entrar</button>
+      <center>
+  </div>
+</div>

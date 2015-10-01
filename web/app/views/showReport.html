@@ -1,0 +1,85 @@
+<div class="navbar-fixed">
+  <nav class="teal">
+    <div class="nav-wrapper">
+      <ul class="right hide-on-med-and-down">
+        <li><img class="logo-home" src="images/logo - Copia.png"></li>
+      </ul>
+      <ul class="left hide-on-med-and-down">
+        <li><a href="/#/home">In&iacute;cio</a></li>
+        <li><a href="/#/abuse">Abusos</a></li>
+        <li><a href="/#/user">Usu&aacute;rios</a></li>
+        <li class="active"><a href="/#/report">Ocorr&ecirc;ncias</a></li>
+        <li><a href="/#/">Sair</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br/>
+<div class="row" style="max-width: 650px; margin: 0 auto 10px;">
+  <h3 align="center">Visualizar Ocorr&ecirc;ncia</h3>
+  <center>
+    <img ng-src="{{image}}" id="image" class="report-image">
+    </img>
+  </center>
+  <div id=showReport-container>
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s4">
+          <input value="{{username}}" ng-model="username" id="username" type="text" class="validate" disabled>
+        </div>
+        <div class="input-field col s4">
+          <input value="{{date | date:'yyyy-MM-dd'}}" ng-model="date" id="date" type="date" disabled>
+          <label for="date"></label>
+        </div>
+        <div class="input-field col s4">
+          <select class="browser-default" ng-model="reportCategoryId" name="reportCategoryId" id="reportCategoryId">
+            <option value="0" disabled>Categoria</option>
+            <option value="1">Saneamento</option>
+            <option value="2">Seguran&ccedil;a</option>
+            <option value="3">Ilumina&ccedil;&atilde;o</option>
+            <option value="4">Tr&acirc;nsito</option>
+            <option value="5">Vias P&uacute;blicas</option>
+            <option value="6">Sa&uacute;de</option>
+            <option value="7">Defesa Civil</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea ng-model="description" name="description" id="description" value="{{description}}" class="materialize-textarea"></textarea>
+          <label for="comment">Descri&ccedil;&atilde;o</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <input type="text" ng-model="latitude" name="latitude" id="latitude" value="{{latitude}}" />
+          <label for="latitude">Latitude</label>
+        </div>
+        <div class="input-field col s4">
+          <input type="text" ng-model="longitude" value="{{longitude}}" name="longitude" id="longitude" />
+          <label for="longitude">Longitude</label>
+        </div>
+        <div class="input-field col s4">
+          <input type="text" value="200" id="precision" />
+          <label for="precision">Precis&atilde;o(M)</label>
+        </div>
+      </div>
+      <!--<div class="input-field col s6">
+           <select class="browser-default" id="abuseCategory">
+            <option value="0" disabled>Selecione a Caegoria do Abuso</option>
+      <option value="1" selected>Viola&ccedil;&atilde;o dos termos de uso</option>
+      <option value="2">Spam</option>
+      <option value="3">Acredito que n&atilde;o deveria estar no HTC</option>
+               <option value="4">Conte&uacute;do obsceno</option>
+    </select>
+    
+        </div>-->
+    </div>
+  </div>
+  <center>
+    <a class="waves-effect waves-light btn" href="/#/report"><i class="mdi-navigation-arrow-back left"></i>Voltar</a>
+    <div class="waves-effect waves-light btn" ng-click="updateReport()">Salvar</div>
+    <div class="waves-effect waves-light btn" ng-click="deleteReport()"><i class="mdi-action-delete right"></i>Deletar</div>
+    <center>
+</div>
+</div>

@@ -1,0 +1,82 @@
+<div class="navbar-fixed">
+  <nav class="teal">
+    <div class="nav-wrapper">
+      <ul class="right hide-on-med-and-down">
+        <li><img class="logo-home" src="images/logo - Copia.png"></li>
+      </ul>
+      <ul class="left hide-on-med-and-down">
+        <li><a href="/#/home">In&iacute;cio</a></li>
+        <li><a href="/#/abuse">Abusos</a></li>
+        <li class="active"><a href="/#/user">Usu&aacute;rios</a></li>
+        <li><a href="/#/report">Ocorr&ecirc;ncias</a></li>
+        <li><a href="/#/">Sair</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br/>
+<div class="row" style="max-width: 650px; margin: 0 auto 10px;">
+  <h3 align="center">Visualizar Usu&aacute;rio</h3>
+  <center>
+    <img ng-src="{{image}}" class="circle responsive-img user-photo"></img>
+  </center>
+  <br/>
+  <div id=showUser-container>
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s3">
+        </div>
+        <!--
+          <div class="input-field col s4">
+            <input value="LihLeal" ng-model="user" id="user" type="text" class="validate" disabled>
+          </div>
+-->
+        <div class="input-field col s6">
+          <label class="active" for="email">Email</label>
+          <input ng-model="email" value="{{email}}" name="email" id="email" type="email" class="validate" enable>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label class="active" for="name">Nome</label>
+          <input ng-model="name" value="{{name}}" name="name" id="name" type="text" class="validate" enable>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s3">
+          <label class="active" for="gender">Sexo</label>
+          <select ng-model="gender" class="browser-default" name="gender" id="gender">
+            <option value="0" disabled>Sexo</option>
+            <option value="F">F</option>
+            <option value="M">M</option>
+          </select>
+        </div>
+
+        <div class="input-field col s6">
+          <label class="active" for="type">Tipo</label>
+          <select ng-model="type" class="browser-default" name="type" id="type">
+            <option value="0" disabled>Tipo</option>
+            <option value="U">Comum</option>
+            <option value="A">Administrador</option>
+          </select>
+        </div>
+      </div>
+      <!--<div class="input-field col s6">
+           <select class="browser-default" id="abuseCategory">
+            <option value="0" disabled>Selecione a Caegoria do Abuso</option>
+      <option value="1" selected>Viola&ccedil;&atilde;o dos termos de uso</option>
+      <option value="2">Spam</option>
+      <option value="3">Acredito que n&atilde;o deveria estar no HTC</option>
+               <option value="4">Conte&uacute;do obsceno</option>
+    </select>
+    
+        </div>-->
+    </div>
+  </div>
+  <center>
+    <a class="waves-effect waves-light btn" href="/#/user"><i class="mdi-navigation-arrow-back left"></i>Voltar</a>
+    <div class="waves-effect waves-light btn" ng-click="updateUser()">Salvar</div>
+    <div class="waves-effect waves-light btn" ng-click="deleteUser()"><i class="mdi-action-delete right"></i>Deletar</div>
+    <center>
+      </form>
+</div>
