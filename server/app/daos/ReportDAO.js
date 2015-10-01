@@ -25,7 +25,7 @@ var ReportDAO = {
 		});
 	},
 	update: function (report) {
-		return sequelize.query('UPDATE report SET date=?, description=?, image=?, latitude=?, longitude=?, precision=? "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE report SET date=?, description=?, image=?, latitude=?, longitude=?, precision=?, "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
 			replacements: [
         report.date,
         report.description,

@@ -37,7 +37,15 @@ module.exports = function (app, config) {
 	}));
 
 	app.use(function (req, res, next) {
-		res.header('Access-Control-Allow-Origin', 'http://192.168.4.214:9000');
+		var maria = '192.168.5.248',
+			andre = '192.168.5.190',
+			ip = req.connection.remoteAddress.split(':'),
+			origin = 'http://';
+		ip = ip[ip.length-1];
+		if(ip === maria) origin += ip + ':3000';
+		if(ip === andre) origin += ip + ':9000';
+		
+		res.header('Access-Control-Allow-Origin', origin);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
 		res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');

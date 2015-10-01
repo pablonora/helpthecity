@@ -5,9 +5,10 @@ var models = require('../models'),
 
 var UserDAO = {
 	create: function (user) {
-		return sequelize.query('INSERT INTO "user"(name, active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO "user"(name, cpf, active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
 				user.name,
+				user.cpf,
         user.active,
         user.image,
         user.email,
@@ -40,18 +41,22 @@ var UserDAO = {
         user.id
 			];
 		} else {
-			query = 'UPDATE "user" SET name=?, active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id';
-			replacements = [
-				user.name,
-        user.active,
-        user.image,
-        user.email,
-        user.type,
-        user.password,
-        user.gender,
-        user.coverageRadius,
-        user.id
-			];
+			if (user.oldPassword === readById(user.id).data.password) {
+				query = 'UPDATE "user" SET name=?, active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id';
+				replacements = [
+					user.name,
+					user.active,
+					user.image,
+					user.email,
+					user.type,
+					user.password,
+					user.gender,
+					user.coverageRadius,
+					user.id
+				];
+			} else {
+				throw new Error('Password doesn\'t match');
+			}
 		}
 		return sequelize.query(query, {
 			replacements: replacements,
@@ -91,6 +96,11 @@ var UserDAO = {
 			type: sequelize.QueryTypes.SELECT,
 			model: models.User
 		}).then(function (users) {
+			if (users.length > 0) {
+				users.forEach(function (user) {
+					user.password = '';
+				});
+			}
 			return users;
 		}).catch(function (err) {
 			return err.message;
@@ -116,6 +126,9 @@ function createQuery(criteria) {
 	if (criteria) {
 		if (criteria.name) {
 			query += ' AND name = \'' + criteria.name + '\'';
+		}
+		if (criteria.cpf) {
+			query += ' AND cpf = \'' + criteria.cpf + '\'';
 		}
 		if (criteria.active) {
 			query += ' AND active = \'' + criteria.active + '\'';

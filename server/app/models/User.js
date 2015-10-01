@@ -18,6 +18,16 @@ module.exports = function (sequelize, DataTypes) {
 				}
 			}
 		},
+		cpf: {
+			type: DataTypes.BIGINT(11),
+			allowNull: false,
+			validate: {
+				max: {
+					args: 11,
+					msg: 'Max permitted is 11'
+				}
+			}
+		},
 		active: {
 			type: DataTypes.CHAR(1),
 			defaultValue: 'Y',
@@ -125,6 +135,9 @@ module.exports = function (sequelize, DataTypes) {
 			getName: function () {
 				this.getDataValue('name');
 			},
+			getCpf: function () {
+				this.getDataValue('cpf');
+			},
 			getActive: function () {
 				return this.getDataValue('active');
 			},
@@ -153,6 +166,9 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			setName: function (name) {
 				this.setDataValue('name', name);
+			},
+			setCpf: function (name) {
+				this.setDataValue('cpf', cpf);
 			},
 			setActive: function (active) {
 				this.setDataValue('active', active);
