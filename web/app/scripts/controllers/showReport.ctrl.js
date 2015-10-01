@@ -12,6 +12,7 @@ angular.module('htc.controllers')
   $scope.precision = '';
   $scope.userId = '';
   $scope.id = $routeParams.id;
+  $scope.reportCategories = [];
 
   $http.get(routerService.getReportUrl + $scope.id).then(function (report) {
     console.log(report);
@@ -23,9 +24,14 @@ angular.module('htc.controllers')
     $scope.userId = report.data.userId;
     $scope.precision = report.data.precision;
     $scope.reportCategoryId = report.data.reportCategoryId.toString();
+
     $http.get(routerService.getUserUrl + report.data.userId).then(function (user) {
       $scope.username = user.data.name;
     });
+  });
+
+  $http.get(routerService.getListReportCategoryUrl + '?criteria=null').then(function (reportCategories) {
+    $scope.reportCategories = reportCategories.data;
   });
 
   $scope.deleteReport = function () {

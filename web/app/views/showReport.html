@@ -35,14 +35,8 @@
         <div class="input-field col s4">
           <label class="active" for="reportCategoryId">Categoria</label>
           <select class="browser-default" ng-model="reportCategoryId" name="reportCategoryId" id="reportCategoryId">
-            <option value="0" disabled>Categoria</option>
-            <option value="1">Saneamento</option>
-            <option value="2">Seguran&ccedil;a</option>
-            <option value="3">Ilumina&ccedil;&atilde;o</option>
-            <option value="4">Tr&acirc;nsito</option>
-            <option value="5">Vias P&uacute;blicas</option>
-            <option value="6">Sa&uacute;de</option>
-            <option value="7">Defesa Civil</option>
+           <option value="" disabled>Categoria</option>
+            <option value="{{reportCategory.id}}" ng-repeat="reportCategory in reportCategories">{{reportCategory.name}}</option>
           </select>
         </div>
       </div>

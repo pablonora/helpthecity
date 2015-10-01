@@ -18,6 +18,16 @@
 <div class="row" style="max-width: 650px; margin: 0 auto 10px;">
   <h3 align="center">Visualizar Abuso</h3>
   <div id="showAbuse-container">
+    <div class="cols12">
+      <div class="row">
+        <div class="input-field col s12">
+          <center>
+            <label class="active" for="report">Ocorrência</label>
+            <input type="text" value="{{reportDate | date:'dd-MM-yyyy'}} - {{reportDescription}}" name="report" id="report" disabled>
+          </center>
+        </div>
+      </div>
+    </div>
     <div class="col s12">
       <div class="row">
         <div class="input-field col s3">
@@ -40,12 +50,13 @@
         <div class="input-field col s12">
           <label class="active" for="description">Comentário</label>
           <textarea ng-model="description" name="description" id="description" class="materialize-textarea" value="{{description}}"></textarea>
-
         </div>
       </div>
       <center>
         <a class="waves-effect waves-light btn" href="/#/abuse"><i class="mdi-navigation-arrow-back left"></i>Voltar</a>
-        <div class="waves-effect waves-light btn" ng-click="updateAbuse()">Salvar</div>
+        <div class="waves-effect waves-light btn" ng-click="updateAbuse()">
+          </i>Salvar</div>
+        <a class="waves-effect waves-light btn" href="/#/showReport/{{reportId}}">Ocorrência</a>
         <div class="waves-effect waves-light btn" ng-click="deleteAbuse()"><i class="mdi-action-delete right"></i>Deletar</div>
         <center>
     </div>
