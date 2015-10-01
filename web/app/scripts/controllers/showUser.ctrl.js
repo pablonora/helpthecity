@@ -8,6 +8,7 @@ angular.module('htc.controllers')
   $scope.gender = '';
   $scope.name = '';
   $scope.image = '';
+  $scope.cpf = '';
   $scope.coverageRadius = '';
   $scope.active = '';
   $scope.id = $routeParams.id;
@@ -18,6 +19,7 @@ angular.module('htc.controllers')
     $scope.gender = user.data.gender;
     $scope.name = user.data.name;
     $scope.image = user.data.image;
+    $scope.cpf = user.data.cpf;
     $scope.id = user.data.id;
     $scope.coverageRadius = user.data.coverageRadius;
     $scope.active = user.data.active;
@@ -31,7 +33,7 @@ angular.module('htc.controllers')
     }, function (response) {
       console.log(response);
     });
-  }
+  };
 
   $scope.updateUser = function () {
     var data = {
@@ -41,9 +43,10 @@ angular.module('htc.controllers')
         name: $scope.name,
         gender: $scope.gender,
         type: $scope.type,
+        cpf: $scope.cpf,
         coverageRadius: $scope.coverageRadius,
         active: $scope.active
-        
+
       }
     };
 
@@ -54,6 +57,6 @@ angular.module('htc.controllers')
     }, function (response) {
       console.log(response);
     });
-  }
+  };
 
 }]);

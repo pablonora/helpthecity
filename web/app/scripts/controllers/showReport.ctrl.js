@@ -9,6 +9,7 @@ angular.module('htc.controllers')
   $scope.latitude = '';
   $scope.longitude = '';
   $scope.reportCategoryId = '';
+  $scope.precision = '';
   $scope.userId = '';
   $scope.id = $routeParams.id;
 
@@ -20,6 +21,7 @@ angular.module('htc.controllers')
     $scope.latitude = report.data.latitude;
     $scope.longitude = report.data.longitude;
     $scope.userId = report.data.userId;
+    $scope.precision = report.data.precision;
     $scope.reportCategoryId = report.data.reportCategoryId.toString();
     $http.get(routerService.getUserUrl + report.data.userId).then(function (user) {
       $scope.username = user.data.name;
@@ -33,7 +35,7 @@ angular.module('htc.controllers')
     }, function (response) {
       console.log(response);
     });
-  }
+  };
 
   $scope.updateReport = function () {
     var data = {
@@ -43,6 +45,7 @@ angular.module('htc.controllers')
         description: $scope.description,
         latitude: $scope.latitude,
         longitude: $scope.longitude,
+        precision: $scope.precision,
         reportCategoryId: $scope.reportCategoryId,
         userId: $scope.userId
       }
@@ -55,6 +58,6 @@ angular.module('htc.controllers')
     }, function (response) {
       console.log(response);
     });
-  }
+  };
 
 }]);

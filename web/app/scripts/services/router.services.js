@@ -21,6 +21,5 @@ angular.module('htc.services')
     deleteReportUrl: baseURL + 'report/',
     updateReportUrl: baseURL + 'report/',
     getListAbuseCategoryUrl: baseURL + 'abuseCategory'
-
   };
 });
