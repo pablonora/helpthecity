@@ -1,17 +1,25 @@
+<link rel="stylesheet" href="style.css">
 
-
- <ion-view view-title="Help the City">
-	<ion-content>		
-		<div class="list">
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">E-mail</span>
-    <input type="text" placeholder="usuário" data-ng-model="e-mail">
-  </label>
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Senha</span>
-    <input type="password" placeholder="senha" data-ng-model="senha">
-  </label>
-</div>
-<a class="button button-clear icon-left ion-ios-paperplane" href="#/tab/listOfReports">Entrar</a>
-	</ion-content>
+<ion-view>
+  <ion-nav-title>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <div class="card">
+        <div class="item item-text-wrap" id="textOfLogin">
+          Login
+        </div>
+      </div>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">E-mail</span>
+        <input type="text" placeholder="Email" ng-model="email">
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Senha</span>
+        <input type="password" placeholder="Senha" ng-model="senha">
+      </label>
+    </div>
+    <button class="button" id="buttonEntrar" ng-click="login(email, senha)">Entrar</button>
+  </ion-content>
 </ion-view>

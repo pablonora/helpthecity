@@ -21,7 +21,7 @@ app.run(function ($ionicPlatform) {
 });
 
 app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
-	$httpProvider.defaults.withCredentials = true;
+  $httpProvider.defaults.withCredentials = true;
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -59,9 +59,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
     /*===Register User===*/
     .state('registerUser', {
       url: '/registerUser',
-      templateUrl: 'templates/registerUser.html',
-      controller: 'userController',
-      controllerAs: 'userCtrl'
+      views: {
+        'home': {
+          templateUrl: 'templates/registerUser.html',
+          controller: 'userController',
+          controllerAs: 'userCtrl'
+        }
+      }
     })
     /*===List of Reports===*/
     .state('tab.listOfReports', {
@@ -69,7 +73,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
       views: {
         'tab-listOfReports': {
           templateUrl: 'templates/tab-listOfReports.html',
-          controller: 'reportController'
+          controller: 'reportController',
+          controllerAs: 'homeCtrl'
         }
       }
     })
@@ -79,7 +84,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
       views: {
         'tab-search': {
           templateUrl: 'templates/tab-search.html',
-          controller: 'reportController'
+          controller: 'reportController',
+          controllerAs: 'homeCtrl'
         }
       }
     })
@@ -89,7 +95,19 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
       views: {
         'tab-report': {
           templateUrl: 'templates/tab-report.html',
-          controller: 'reportController'
+          controller: 'reportController',
+          controllerAs: 'homeCtrl'
+        }
+      }
+    })
+    /*===Edit Profile===*/
+    .state('tab.editProfile', {
+      url: '/editProfile',
+      views: {
+        'tab-editProfile': {
+          templateUrl: 'templates/tab-editProfile.html',
+          controller: 'userController',
+          controllerAs: 'userCtrl'
         }
       }
     })
@@ -97,7 +115,15 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
     .state('abuse', {
       url: '/abuse',
       templateUrl: 'templates/tab-abuse.html',
-      controller: 'reportController'
+      controller: 'reportController',
+      controllerAs: 'homeCtrl'
+    })
+     /*===Map===*/
+    .state('map', {
+      url: '/map',
+      templateUrl: 'templates/tab-map.html',
+      controller: 'reportController',
+      controllerAs: 'reportCtrl'
     });
 
   // if none of the above states are matched, use this as the fallback

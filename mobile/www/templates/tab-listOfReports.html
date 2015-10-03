@@ -1,13 +1,15 @@
- <link rel="stylesheet" href="css/listOfReports.css">
+<link rel="stylesheet" href="style.css">
  
- <ion-view view-title="Help the City">
+ <ion-view>
+   <ion-nav-title>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
   <ion-content>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="report in reports" type="item-text-wrap">
-        <img ng-src="{{report.userId.image}}">
-        <p>{{report.userId.name}}</p>
+        <img ng-src="{{report.image}}" alt="Imagem do Perfil">
         <p>{{report.description}}</p>
-        <p><img ng-src="{{report.image}}"></p>
+        <p><img ng-src="{{report.image}}" alt="Imagem da Ocorrência"></p>
         <div> 
             <a class="button button-clear icon-left ion-thumbsup">Curtir</a>
             <a class="button button-clear icon-left ion-navicon" href="#/abuse">Denunciar</a>

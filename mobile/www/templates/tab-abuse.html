@@ -1,5 +1,10 @@
-<link rel="stylesheet" href="css/abuse.css">
+<link rel="stylesheet" href="style.css">
 
+<ion-view>
+<ion-nav-title>
+ <a class="button button-clear icon-left ion-chevron-left" href="#/tab/listOfReports"></a>
+  <span class="title-htc">Help the City</span>
+</ion-nav-title>
 <ion-content>
 <div class="card">
   <div class="item item-divider">
@@ -8,7 +13,7 @@
         </div>
         <ion-radio value="0" ng-model="abuseCategory.id">Violação dos Termos de Uso</ion-radio>
         <ion-radio value="1" ng-model="abuseCategory.id">Spam</ion-radio>
-        <ion-radio value="2" ng-model="abuseCategory.id">Acredito que não deveria estar no HTC
+        <ion-radio value="2" ng-model="abuseCategory.id">Não deveria estar no HTC
         </ion-radio>    
         <ion-radio value="3" ng-model="abuseCategory.id">Conteúdo obsceno </ion-radio>
   </div>
@@ -21,5 +26,6 @@
         </label>
   </div>
 </div>
-        <a class="button button-clear icon-left ion-ios-paperplane" ng-click="saveAbuse(abuseCategory.id, abuse.description)" href="#/tab/listOfReports">Enviar</a>
+        <a class="button button-enviar" ng-click="saveAbuse(abuseCategory.id, abuse.description)" href="#/tab/listOfReports">Enviar</a>
 </ion-content>
+</ion-view>

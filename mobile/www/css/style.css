@@ -1,9 +1,55 @@
-#abuseBotton{
-	margin-right: 5% !important;
+.htcTitle {
+  margin-left: 29%;
+  color: white;
 }
 
-//tab-search
-#container{
-	margin-right: 50% !important;
-	margin-left: 5%;
+#buttonEnviar {
+  width: 30%;
+  margin-top: 3%;
+  margin-left: 35%;
+  color: #006064;
+  background-color: white;
+}
+
+#buttonEntrar {
+  width: 30%;
+  margin-top: 3%;
+  margin-left: 35%;
+  color: #006064;
+  background-color: white;
+}
+
+.icon{
+  color: #006064;
+}
+
+/*===HOME===*/
+
+#backgroundHome {
+  background-color: #006064;
+}
+
+#logoHome {
+  margin-left: 25%;
+  margin-top: 25%
+}
+
+#buttonHome {
+  width: 50%;
+  margin-top: 3%;
+  margin-left: 24%;
+  color: azure;
+  background-color: #006064;
+}
+
+
+/*===LOGIN===*/
+
+#textOfLogin {
+  margin-left: 31%;
+  color: #006064;
+  font-size: 20pt;
+}
+
+
 }

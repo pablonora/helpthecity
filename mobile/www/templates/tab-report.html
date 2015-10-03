@@ -1,25 +1,28 @@
-<link rel="stylesheet" href="css/report.css">
+<link rel="stylesheet" href="style.css">
 
- <ion-view view-title="Help the City">
+<ion-view>
+  <ion-nav-title>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
   <ion-content>
-      	<label class="item item-input item-select">
-    		<div class="input-label">
-      			
-				Categoria
-    		</div>
-    		<select>
-      			<option value="0">Defesa Civil</option>
-     			<option value="1">Iluminação</option>
-      			<option value="2">Saneamento Básico</option>
-      			<option value="3">Saúde</option>
-      			<option value="4">Segurança</option>
-      			<option value="5">Vias públicas</option>
-      			<option value="6">Trânsito</option>
-    		</select>
-  		</label>
-      <label class="item item-input"> 
-           <input  ng-model="abuse.comment" type="text" placeholder="Deixe seu comentário">
-      </label>
-	  <button class="button button-clear icon-left ion-image" ng-click="getImage()">Adicione uma foto camera</button>
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Categoria
+      </div>
+      <select>
+        <option value="0">Defesa Civil</option>
+        <option value="1">Iluminação</option>
+        <option value="2">Saneamento Básico</option>
+        <option value="3">Saúde</option>
+        <option value="4">Segurança</option>
+        <option value="5">Vias públicas</option>
+        <option value="6">Trânsito</option>
+      </select>
+    </label>
+    <label class="item item-input">
+      <input ng-model="abuse.comment" type="text" placeholder="Deixe seu comentário">
+    </label>
+    <a class="button button-enviar" ng-click="showGoogleMap()">Mapa</a><br/>
+    <button class="button button-clear icon-left ion-image" ng-click="getImage()">Adicione uma foto</button>
   </ion-content>
 </ion-view>
