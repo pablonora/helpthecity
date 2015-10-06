@@ -142,7 +142,7 @@ function createAbuse(abuse) {
 		id: abuse.id,
 		abuseCategoryId: abuse.abuseCategoryId,
 		userId: abuse.userId,
-		comment: abuse.comment
+		description: abuse.description
 	});
 	return model;
 };
@@ -194,6 +194,7 @@ function createUser(user) {
 	var model = User.build({
 		id: user.id,
 		name: user.name,
+		cpf: user.cpf,
 		gender: user.gender,
 		email: user.email,
 		password: user.password,

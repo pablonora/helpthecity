@@ -7,6 +7,7 @@ module.exports = function (app) {
 	var UserController = {
 		create: function (req, res) {
 			return sequelize.transaction(function (t) {
+				console.log(req.body.user.password);
 				return app.services.User.create(req.body.user).then(function (result) {
 					return result;
 				});

@@ -7,7 +7,7 @@
 	<ion-content>
 		<div class="item item-avatar">
 			<img ng-src="{{user.image}}" alt="Imagem do Perfil">
-			<button class="button button-clear" ng-click="getImage(user)">Alterar Imagem</button>
+			<button class="button button-clear" ng-click="getImage(user.image)">Alterar Imagem</button>
 		</div>
 		<label class="item item-input">
 			<i class="icon ion-person placeholder-icon"></i>
@@ -35,6 +35,6 @@
 			</select>
 		</label>
 		<br/>
-		<a class="button button-ligth" id="buttonEnviar" href="#/home">Enviar</a>
+		<a class="button button-ligth" id="buttonEnviar" href="#/home" ng-click="createUser()">Enviar</a>
 	</ion-content>
 </ion-view>

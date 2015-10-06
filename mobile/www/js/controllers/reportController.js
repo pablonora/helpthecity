@@ -1,16 +1,34 @@
 angular.module('htc.controllers')
 
-.controller('reportController', ['$scope', '$http', 'routerService', function ($scope, $http, routerService) {
+.controller('reportController', ['$scope', '$http', 'routerService', 'localStorageService', function ($scope, $http, routerService, localStorageService) {
+
+  /* This method is responsable for get Reports*/
+  $scope.listOfReports = [];
+
+  $scope.getListOfReports = function () {
+
+    //Pegar a lista de reports
+    console.log(localStorageService.get('user'));
+    $http.get(routerService.getListOfReports + '?criteria=null').then(function (reports) {
+      reports.data.forEach(function (report) {
+        //Pegar o usuário daquele report
+        console.log(localStorageService.get('user'));
+        $http.get(routerService.getUserUrl + report.userId).then(function (user) {
+          //console.log(user.data);
+          $scope.listOfReports.push({
+            reportDescription: report.description,
+            reportImage: report.image,
+            userName: user.data.name,
+            userImage: user.data.image
+
+          });
+        });
+      });
+    });
+  };
 
 
-  $scope.reports = [];
-  $http.get(routerService.getListOfReports + '?criteria=null').then(function (reports) {
-    $scope.reports = reports.data;
-    console.log(reports.data);
-  });
-
-
-
+  /* This method is responsable for capturated a image*/
   $scope.getImage = function () {
     // Retrieve image file location from specified source
     navigator.camera.getPicture(
@@ -27,7 +45,12 @@ angular.module('htc.controllers')
   };
 
   $scope.saveAbuse = function () {
-    alert('enviado!');
+    navigator.notification.alert(
+      'You are the winner!', // message
+      alertDismissed, // callback
+      'Game Over', // title
+      'Done' // buttonName
+    );
 
   };
   //google map
@@ -51,4 +74,4 @@ angular.module('htc.controllers')
   };
   //google maps
 
-}]);
+      }]);

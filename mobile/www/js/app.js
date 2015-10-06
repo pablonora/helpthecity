@@ -96,7 +96,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
         'tab-report': {
           templateUrl: 'templates/tab-report.html',
           controller: 'reportController',
-          controllerAs: 'homeCtrl'
+          controllerAs: 'reportCtrl'
         }
       }
     })

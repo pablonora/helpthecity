@@ -58,8 +58,8 @@ module.exports = function (app, config) {
     resave: true
   }));
 	app.use(function (req, res, next) {
-		var maria = '192.168.5.248',
-			andre = '192.168.5.190',
+		var maria = '192.168.0.109',
+			andre = '192.168.0.109',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
 		ip = ip[ip.length-1];
