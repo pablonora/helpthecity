@@ -3,12 +3,13 @@
 angular.module('htc.services')
 
 .factory('userService', ['$http', 'routerService', function ($http, routerService) {
-	return {
-		createUser: function (user, cb) {
-			$http.post(routerService.createUserUrl, user).then(function (response) {
-				console.log(response);
-				cb(response);
-			});
-		}
-	};
+  return {
+    createUser: function (data, cb) {
+      console.log(data);
+      $http.post(routerService.createUserUrl, JSON.stringify(data)).then(function (response) {
+        console.log(response);
+        cb(response);
+      });
+    }
+  }
 }]);

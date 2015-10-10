@@ -1,99 +1,105 @@
- <link rel="stylesheet" href="css/listOfReports.css">
- 
- <ion-view view-title="Help The City">
+<link rel="stylesheet" href="style.css">
+
+<ion-view>
+  <ion-nav-title>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
   <ion-content animation="slide-left-right-ios7">
     <ion-slide-box active-slide="myActiveSlide">
-  <ion-slide>
-    <div class="box blue">
-	<label class="item item-input item-select">
-    		<div class="input-label">
-      			Categoria
-    		</div>
-    		<select>
-      			<option value="0">Defesa Civil</option>
-     			<option value="1">Iluminação</option>
-      			<option value="2">Saneamento Básico</option>
-      			<option value="3">Saúde</option>
-      			<option value="4">Segurança</option>
-      			<option value="5">Vias públicas</option>
-      			<option value="6">Trânsito</option>
-    		</select>
-  		</label>
-		<div id="containerSearch" data-ng-if="1 === 1">
-		<ion-list > <!--colocar um ng-if pra saber se a lista está vazia -->
-      			<ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
-        			<img ng-src="{{report.image}}">
-        			<h2>{{report.userId.name}}</h2>
-        			<p>{{report.description}}</p>
-     			 </ion-item>
-    	</ion-list>
-		</div>
-	</div>
-  </ion-slide>
-  <ion-slide>
-    <label class="item item-input item-select">
-    		<div class="input-label">
-      			Distância
-    		</div>
-    		<select>
-      			<option value="0">1Km</option>
-     			<option value="1">5Km</option>
-      			<option value="2">10Km</option>
-      			<option value="3">15Km</option>
-      			<option value="4">20Km</option>
-    		</select>
-  		</label>
-		<div id="containerSearch" data-ng-if="1 === 1">
-		<ion-list > <!--colocar um ng-if pra saber se a lista está vazia -->
-      			<ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
-        			<img ng-src="{{report.image}}">
-        			<h2>{{report.userId.name}}</h2>
-        			<p>{{report.description}}</p>
-     			 </ion-item>
-    	</ion-list>
-		</div>
-  </ion-slide>
-  <ion-slide>
-    <label class="item item-input item-select">
-    		<div class="input-label">
-      			Período
-    		</div>
-    		<select>
-      			<option value="0">1 dia</option>
-     			<option value="1">5 dias</option>
-      			<option value="2">10 dias</option>
-      			<option value="3">15 dias</option>
-      			<option value="4">1 mês</option>
-    		</select>
-  		</label>
-		<div id="containerSearch" data-ng-if="1 === 1">
-		<ion-list > <!--colocar um ng-if pra saber se a lista está vazia -->
-      			<ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
-        			<img ng-src="{{report.image}}">
-        			<h2>{{report.userId.name}}</h2>
-        			<p>{{report.description}}</p>
-        			
-     			 </ion-item>
-    	</ion-list>
-		</div>
-  </ion-slide>
-  <ion-slide>
-	<div id="containerSearch" data-ng-if="1 === 1">
-	<label class="item item-input">
-    		<div class="input-label">
-      			Mais curtidos
-    		</div>
-  		</label>
-		<ion-list > <!--colocar um ng-if pra saber se a lista está vazia -->
-      			<ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
-        			<img ng-src="{{report.image}}">
-        			<h2>{{report.userId.name}}</h2>
-        			<p>{{report.description}}</p>       			
-     			 </ion-item>
-    	</ion-list>
-		</div>
-  </ion-slide>
-</ion-slide-box>
-  </ion-content>
- </ion-view>
+      <ion-slide>
+        <div class="box blue">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Categoria
+            </div>
+            <select>
+              <option value="0">Defesa Civil</option>
+              <option value="1">Iluminação</option>
+              <option value="2">Saneamento Básico</option>
+              <option value="3">Saúde</option>
+              <option value="4">Segurança</option>
+              <option value="5">Vias públicas</option>
+              <option value="6">Trânsito</option>
+            </select>
+          </label>
+          <div id="containerSearch" data-ng-if="1 === 1">
+            <ion-list>
+              <!--colocar um ng-if pra saber se a lista está vazia -->
+              <ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
+                <img ng-src="{{report.image}}">
+                <h2>{{report.userId.name}}</h2>
+                <p>{{report.description}}</p>
+              </ion-item>
+            </ion-list>
+          </div>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Distância
+          </div>
+          <select>
+            <option value="0">1Km</option>
+            <option value="1">5Km</option>
+            <option value="2">10Km</option>
+            <option value="3">15Km</option>
+            <option value="4">20Km</option>
+          </select>
+        </label>
+        <div id="containerSearch" data-ng-if="1 === 1">
+          <ion-list>
+            <!--colocar um ng-if pra saber se a lista está vazia -->
+            <ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
+              <img ng-src="{{report.image}}">
+              <h2>{{report.userId.name}}</h2>
+              <p>{{report.description}}</p>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Período
+          </div>
+          <select>
+            <option value="0">1 dia</option>
+            <option value="1">5 dias</option>
+            <option value="2">10 dias</option>
+            <option value="3">15 dias</option>
+            <option value="4">1 mês</option>
+          </select>
+        </label>
+        <div id="containerSearch" data-ng-if="1 === 1">
+          <ion-list>
+            <!--colocar um ng-if pra saber se a lista está vazia -->
+            <ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
+              <img ng-src="{{report.image}}">
+              <h2>{{report.userId.name}}</h2>
+              <p>{{report.description}}</p>
 
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div id="containerSearch" data-ng-if="1 === 1">
+          <label class="item item-input">
+            <div class="input-label">
+              Mais curtidos
+            </div>
+          </label>
+          <ion-list>
+            <!--colocar um ng-if pra saber se a lista está vazia -->
+            <ion-item class="item item-thumbnail-left" ng-repeat="report in reports">
+              <img ng-src="{{report.image}}">
+              <h2>{{report.userId.name}}</h2>
+              <p>{{report.description}}</p>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
+  </ion-content>
+</ion-view>

@@ -25,43 +25,39 @@
     <div class="col s12">
       <div class="row">
         <div class="input-field col s4">
+          <label class="active" for="username">Usuário</label>
           <input value="{{username}}" ng-model="username" id="username" type="text" class="validate" disabled>
         </div>
         <div class="input-field col s4">
+          <label class="active" for="date">Data</label>
           <input value="{{date | date:'yyyy-MM-dd'}}" ng-model="date" id="date" type="date" disabled>
-          <label for="date"></label>
         </div>
         <div class="input-field col s4">
+          <label class="active" for="reportCategoryId">Categoria</label>
           <select class="browser-default" ng-model="reportCategoryId" name="reportCategoryId" id="reportCategoryId">
-            <option value="0" disabled>Categoria</option>
-            <option value="1">Saneamento</option>
-            <option value="2">Seguran&ccedil;a</option>
-            <option value="3">Ilumina&ccedil;&atilde;o</option>
-            <option value="4">Tr&acirc;nsito</option>
-            <option value="5">Vias P&uacute;blicas</option>
-            <option value="6">Sa&uacute;de</option>
-            <option value="7">Defesa Civil</option>
+           <option value="" disabled>Categoria</option>
+            <option value="{{reportCategory.id}}" ng-repeat="reportCategory in reportCategories">{{reportCategory.name}}</option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
+          <label class="active" for="description">Descrição</label>
           <textarea ng-model="description" name="description" id="description" value="{{description}}" class="materialize-textarea"></textarea>
-          <label for="comment">Descri&ccedil;&atilde;o</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s4">
+          <label class="active" for="latitude">Latitude</label>
           <input type="text" ng-model="latitude" name="latitude" id="latitude" value="{{latitude}}" />
-          <label for="latitude">Latitude</label>
         </div>
         <div class="input-field col s4">
+          <label class="active" for="longitude">Longitude</label>
           <input type="text" ng-model="longitude" value="{{longitude}}" name="longitude" id="longitude" />
-          <label for="longitude">Longitude</label>
         </div>
         <div class="input-field col s4">
-          <input type="text" value="200" id="precision" />
-          <label for="precision">Precis&atilde;o(M)</label>
+          <label class="active" for="precision">Precisão</label>
+          <input type="text" value="{{precision}}" name="precision" id="precision" />
         </div>
       </div>
       <!--<div class="input-field col s6">

@@ -1,25 +1,41 @@
-<ion-view view-title="Help The City">
+<link rel="stylesheet" href="style.css">
+
+<ion-view>
+  <ion-nav-title>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
   <ion-content>
     <div class="item item-avatar">
-      <img ng-src="https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png">
-      <button class="button button-clear ion-edit" ng-click="getImage()">Editar</button>
+      <img ng-src="{{user.image}}" alt="Imagem do Perfil">
+      <button class="button button-clear" ng-click="getImage()">Alterar Imagem</button>
     </div>
     <label class="item item-input">
       <i class="icon ion-person placeholder-icon"></i>
-      <input type="text" placeholder="Nome">
+      <input type="text" data-ng-model="user.name" placeholder="Nome">
+    </label>
+    <label class="item item-input">
+      <i class="icon ion-locked placeholder-icon"></i>
+      <input type="password" data-ng-model="user.password" placeholder="Senha">
     </label>
     <label class="item item-input">
       <i class="icon ion-email placeholder-icon"></i>
-      <input type="text" placeholder="E-mail">
+      <input type="text" data-ng-model="user.email" placeholder="E-mail">
+    </label>
+    <label class="item item-input">
+      <i class="icon ion-document placeholder-icon"></i>
+      <input type="number" data-ng-model="user.cpf" placeholder="CPF">
     </label>
     <label class="item item-input item-select">
       <div class="input-label">
         <i class="icon ion-transgender placeholder-icon"></i> Sexo
       </div>
-      <select>
-        <option value="0">Feminino</option>
-        <option value="1">Masculino</option>
+      <select data-ng-model="user.gender">
+        <option value="F">Feminino</option>
+        <option value="M">Masculino</option>
       </select>
     </label>
+    <br/>
+    <a class="button button-clear icon-left ion-navicon" href="#/abuse">Denunciar</a>
+    <a class="button button-ligth buttonEnviar" href="#/listOfReports">Enviar</a>
   </ion-content>
 </ion-view>

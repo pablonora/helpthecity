@@ -3,11 +3,18 @@
 angular.module('htc.services')
 
 .factory('routerService', function () {
-	var baseURL = '192.168.0.101:5000/htc/api/';
-	
-	return {
-		loginUrl: baseURL + 'login',
-		createUserUrl: baseURL + 'user',
-		getUserUrl: baseURL + 'user'
-	};
+  var baseURL = 'http://192.168.1.108:5000/htc/api/';
+
+  return {
+    loginUrl: baseURL + 'login',
+    
+    createAbuseUrl: baseURL + 'abuse',
+
+    createUserUrl: baseURL + 'user',
+    getUserUrl: baseURL + 'user/',
+    updateUserUrl: baseURL + 'user/',
+
+    createReportUrl: baseURL + 'report',
+    getListOfReports: baseURL + 'report'
+  };
 });

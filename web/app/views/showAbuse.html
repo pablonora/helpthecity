@@ -18,16 +18,28 @@
 <div class="row" style="max-width: 650px; margin: 0 auto 10px;">
   <h3 align="center">Visualizar Abuso</h3>
   <div id="showAbuse-container">
+    <div class="cols12">
+      <div class="row">
+        <div class="input-field col s12">
+          <center>
+            <label class="active" for="report">Ocorrência</label>
+            <input type="text" value="{{reportDate | date:'dd-MM-yyyy'}} - {{reportDescription}}" name="report" id="report" disabled>
+          </center>
+        </div>
+      </div>
+    </div>
     <div class="col s12">
       <div class="row">
         <div class="input-field col s3">
-          <input value="{{username}}" ng-model="username" id="username" type="text" class="validate" disabled>
+          <label class="active" for="username">Usuário</label>
+          <input value="{{username}}" ng-model="username" name="username" id="username" type="text" class="validate" disabled>
         </div>
         <div class="input-field col s3">
-          <input value="{{date | date:'yyyy-MM-dd'}}" ng-model="date" id="date" type="date" disabled>
+          <label class="active" for="date">Data</label>
+          <input value="{{date | date:'yyyy-MM-dd'}}" ng-model="date" name="date" id="date" type="date" disabled>
         </div>
-        <label>Categoria do Abuso</label>
         <div class="input-field col s6">
+          <label class="active" for="abuseCategoryId">Categoria do Abuso</label>
           <select class="browser-default" ng-model="abuseCategoryId" name="abuseCategoryId" id="abuseCategoryId">
             <option value="" disabled>Selecione a Caegoria do Abuso</option>
             <option value="{{abuseCategory.id}}" ng-repeat="abuseCategory in abuseCategories">{{abuseCategory.name}}</option>
@@ -36,13 +48,15 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <textarea ng-model="description" id="description" class="materialize-textarea" value="{{description}}"></textarea>
-          <label for="comment">Coment&aacute;rio</label>
+          <label class="active" for="description">Comentário</label>
+          <textarea ng-model="description" name="description" id="description" class="materialize-textarea" value="{{description}}"></textarea>
         </div>
       </div>
       <center>
         <a class="waves-effect waves-light btn" href="/#/abuse"><i class="mdi-navigation-arrow-back left"></i>Voltar</a>
-        <div class="waves-effect waves-light btn" ng-click="updateAbuse()">Salvar</div>
+        <div class="waves-effect waves-light btn" ng-click="updateAbuse()">
+          </i>Salvar</div>
+        <a class="waves-effect waves-light btn" href="/#/showReport/{{reportId}}">Ocorrência</a>
         <div class="waves-effect waves-light btn" ng-click="deleteAbuse()"><i class="mdi-action-delete right"></i>Deletar</div>
         <center>
     </div>

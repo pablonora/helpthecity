@@ -1,25 +1,31 @@
-<link rel="stylesheet" href="css/abuse.css">
+<link rel="stylesheet" href="style.css">
 
-<ion-content>
-<div class="card">
-  <div class="item item-divider">
-            <div>
-            <h2 class="title">O que está acontecendo</h2>
+<ion-view>
+  <ion-nav-title>
+    <a class="button button-clear icon-left ion-chevron-left buttonBack" href="#/tab/listOfReports"></a>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
+  <ion-content>
+    <div class="card">
+      <div class="item item-divider">
+        <div>
+          <h2 class="title">O que está acontecendo</h2>
         </div>
         <ion-radio value="0" ng-model="abuseCategory.id">Violação dos Termos de Uso</ion-radio>
         <ion-radio value="1" ng-model="abuseCategory.id">Spam</ion-radio>
-        <ion-radio value="2" ng-model="abuseCategory.id">Acredito que não deveria estar no HTC
-        </ion-radio>    
+        <ion-radio value="2" ng-model="abuseCategory.id">Não deveria estar no HTC
+        </ion-radio>
         <ion-radio value="3" ng-model="abuseCategory.id">Conteúdo obsceno </ion-radio>
-  </div>
-  <div class="item item-text-wrap">
-			<div>
-            <h2 class="title">Deixe seu comentário</h2>
+      </div>
+      <div class="item item-text-wrap">
+        <div>
+          <h2 class="title">Deixe seu comentário</h2>
         </div>
-            <label class="item item-input"> 
-           <input  ng-model="abuse.description" type="text" placeholder="Deixe seu comentário aqui">
+        <label class="item item-input">
+          <input ng-model="abuse.description" type="text" placeholder="Deixe seu comentário aqui">
         </label>
-  </div>
-</div>
-        <a class="button button-clear icon-left ion-ios-paperplane" ng-click="saveAbuse(abuseCategory.id, abuse.description)" href="#/tab/listOfReports">Enviar</a>
-</ion-content>
+      </div>
+    </div>
+    <button class="button buttonEnviar" ng-click="saveAbuse()">Enviar</button>
+  </ion-content>
+</ion-view>

@@ -7,8 +7,10 @@ angular.module('htc.controllers')
   $scope.abuseCategoryId = '';
   $scope.username = '';
   $scope.userId = '';
-  $scope.reportId =  '';
+  $scope.reportId = '';
   $scope.date = '';
+  $scope.reportId = '';
+  $scope.reportDescription = '';
   $scope.id = $routeParams.id;
   $scope.abuseCategories = [];
 
@@ -19,7 +21,13 @@ angular.module('htc.controllers')
     $scope.userId = abuse.data.userId;
     $scope.reportId = abuse.data.reportId;
     $scope.date = abuse.data.date;
-    
+
+    $http.get(routerService.getReportUrl + abuse.data.reportId).then(function (report) {
+      console.log(report);
+      $scope.reportDate = report.data.date;
+      $scope.reportDescription = report.data.description;
+    });
+
     $http.get(routerService.getUserUrl + abuse.data.userId).then(function (user) {
       $scope.username = user.data.name;
     });
@@ -36,7 +44,7 @@ angular.module('htc.controllers')
     }, function (response) {
       console.log(response);
     });
-  }
+  };
 
   $scope.updateAbuse = function () {
     var data = {
@@ -55,6 +63,6 @@ angular.module('htc.controllers')
     }, function (response) {
       console.log(response);
     });
-  }
+  };
 
 }]);

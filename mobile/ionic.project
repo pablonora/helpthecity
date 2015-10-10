@@ -1,4 +1,11 @@
+
 {
   "name": "HelpTheCity",
-  "app_id": ""
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/htc/api",
+      "proxyUrl":"http://192.168.1.108:5000/htc/api"
+    }
+    ]
 }

@@ -1,23 +1,28 @@
-<ion-view view-title="Help the City">
+<link rel="stylesheet" href="style.css">
+
+ <ion-view>
+  <ion-nav-title>
+    <span class="htcTitle">Help the City</span>
+  </ion-nav-title>
 	<ion-content>
 		<div class="item item-avatar">
-			<img ng-src="https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png" data-ng-model="user.image">
-			<button class="button button-clear ion-edit" ng-click="getImage()">Editar</button>
+			<img ng-src="{{user.image}}" alt="Imagem do Perfil">
+			<button class="button button-clear" ng-click="getImage(user.image)">Alterar Imagem</button>
 		</div>
 		<label class="item item-input">
 			<i class="icon ion-person placeholder-icon"></i>
 			<input type="text" data-ng-model="user.name" placeholder="Nome">
 		</label>
 		<label class="item item-input">
-			<i class="icon ion-email placeholder-icon"></i>
+			<i class="icon ion-locked placeholder-icon"></i>
 			<input type="password" data-ng-model="user.password" placeholder="Senha">
 		</label>
 		<label class="item item-input">
-			<i class="icon ion-locked placeholder-icon"></i>
+			<i class="icon ion-email placeholder-icon"></i>
 			<input type="text" data-ng-model="user.email" placeholder="E-mail">
 		</label>
 		<label class="item item-input">
-			<i class="icon ion-locked placeholder-icon"></i>
+			<i class="icon ion-document placeholder-icon"></i>
 			<input type="number" data-ng-model="user.cpf" placeholder="CPF">
 		</label>
 		<label class="item item-input item-select">
@@ -30,6 +35,6 @@
 			</select>
 		</label>
 		<br/>
-		<a class="button button-clear icon-left ion-ios-paperplane" data-ng-click="createUser()">Enviar</a>
+		<a class="button button-ligth buttonEnviar" href="#/home" ng-click="createUser()">Enviar</a>
 	</ion-content>
 </ion-view>
