@@ -74,7 +74,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
         'tab-listOfReports': {
           templateUrl: 'templates/tab-listOfReports.html',
           controller: 'reportController',
-          controllerAs: 'homeCtrl'
+          controllerAs: 'reportCtrl'
         }
       }
     })
@@ -115,8 +115,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
     .state('abuse', {
       url: '/abuse',
       templateUrl: 'templates/tab-abuse.html',
-      controller: 'reportController',
-      controllerAs: 'homeCtrl'
+      controller: 'abuseController',
+      controllerAs: 'abuseCtrl'
     })
      /*===Map===*/
     .state('map', {

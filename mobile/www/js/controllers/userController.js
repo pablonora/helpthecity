@@ -9,7 +9,7 @@ angular.module('htc.controllers')
     image: 'img/user-icon.png',
     type: 'U'
   };
-
+//Create User
   $scope.createUser = function () {
     alert($scope.user.cpf);
     var data = {
@@ -29,7 +29,7 @@ angular.module('htc.controllers')
       console.log(response);
     });
   };
-
+  //Get Image of Profile
   $scope.getImage = function () {
     navigator.camera.getPicture(
       function onSuccess(imageData) {

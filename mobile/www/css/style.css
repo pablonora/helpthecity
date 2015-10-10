@@ -2,8 +2,10 @@
   margin-left: 29%;
   color: white;
 }
-
-#buttonEnviar {
+.buttonBack{
+  color: white;
+}
+.buttonEnviar{
   width: 30%;
   margin-top: 3%;
   margin-left: 35%;

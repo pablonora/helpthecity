@@ -1,20 +1,35 @@
 angular.module('htc.controllers')
 
-.controller('reportController', ['$scope', '$http', 'routerService', 'localStorageService', function ($scope, $http, routerService, localStorageService) {
+.controller('reportController', ['$scope', '$http', '$location', 'reportService', 'routerService', 'localStorageService', function ($scope, $http, $location, reportService, routerService, localStorageService) {
 
-  /* This method is responsable for get Reports*/
+  /* Register report */
+  $scope.createReport = function () {
+
+    var data = {
+      report: {
+        date: '2015-10-03 18:08:25.715-03',
+        description: 'teste',
+        image: 'teste',
+        latitude: -22.206368,
+        longitude: -45.909593,
+        precision: 200,
+        reportCategory: 1,
+        userId: 1
+      }
+    };
+    reportService.createReport(data, function (response) {
+      console.log(response);
+    });
+    $location.path('/tab/listOfReports');
+  };
+
+  /* Get Reports*/
   $scope.listOfReports = [];
 
   $scope.getListOfReports = function () {
-
-    //Pegar a lista de reports
-    console.log(localStorageService.get('user'));
     $http.get(routerService.getListOfReports + '?criteria=null').then(function (reports) {
       reports.data.forEach(function (report) {
-        //Pegar o usuário daquele report
-        console.log(localStorageService.get('user'));
         $http.get(routerService.getUserUrl + report.userId).then(function (user) {
-          //console.log(user.data);
           $scope.listOfReports.push({
             reportDescription: report.description,
             reportImage: report.image,
@@ -27,51 +42,25 @@ angular.module('htc.controllers')
     });
   };
 
-
-  /* This method is responsable for capturated a image*/
+  /* Capturated a image*/
   $scope.getImage = function () {
-    // Retrieve image file location from specified source
     navigator.camera.getPicture(
-      function (message) {
-        alert('get picture sucess');
+      function onSuccess(imageData) {
+        $scope.report.image = "data:image/jpeg;base64," + imageData;
       },
       function (message) {
-        alert('get picture failed');
+        alert('teste');
       }, {
         quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
-      });
-  };
-
-  $scope.saveAbuse = function () {
-    navigator.notification.alert(
-      'You are the winner!', // message
-      alertDismissed, // callback
-      'Game Over', // title
-      'Done' // buttonName
-    );
-
-  };
-  //google map
-  $scope.showGoogleMap = function GoogleMap() {
-
-    this.initialize = function () {
-      var map = showMap();
-    }
-
-    var showMap = function () {
-      var mapOptions = {
-        zoom: 4,
-        center: new google.maps.LatLng(-33, 151),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        destinationType: navigator.camera.DestinationType.DATA_URL,
+        sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+        allowEdit: false,
+        targetWidth: 100,
+        targetHeight: 100,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
       }
-
-      var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
-      return map;
-    }
+    );
   };
-  //google maps
 
-      }]);
+  }]);
