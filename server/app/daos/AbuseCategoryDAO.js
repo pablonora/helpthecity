@@ -77,5 +77,6 @@ function createQuery(criteria) {
 	if (criteria.description) {
 		query += ' AND description = \'' + criteria.description + '\'';
 	}
+	query += ' ORDER BY name';
 	return query;
 };
