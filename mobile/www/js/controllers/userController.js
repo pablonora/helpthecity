@@ -2,16 +2,16 @@
 
 angular.module('htc.controllers')
 
-.controller('userController', ['$scope', 'userService', function ($scope, userService) {
-  $scope.user = {
+.controller('userController', ['$scope', '$location', 'userService', 'localStorageService', function ($scope, $location, userService, localStorageService) {
+  $scope.user = localStorageService.getObject('user', null) || {
     active: 'Y',
     coverageRadius: 1,
     image: 'img/user-icon.png',
     type: 'U'
   };
-//Create User
+  
+  /*Create User*/
   $scope.createUser = function () {
-    alert($scope.user.cpf);
     var data = {
       user: {
         image: $scope.user.image,
@@ -25,15 +25,18 @@ angular.module('htc.controllers')
         password: $scope.user.password
       }
     };
-    userService.createUser(data, function (response) {
+    userService.createUser(data, function (user) {
       console.log(response);
     });
+    $location.path('/login');
   };
+
   //Get Image of Profile
   $scope.getImage = function () {
     navigator.camera.getPicture(
       function onSuccess(imageData) {
         $scope.user.image = "data:image/jpeg;base64," + imageData;
+        $scope.$apply();
       },
       function (message) {
         alert('teste');

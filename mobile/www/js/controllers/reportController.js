@@ -31,9 +31,11 @@ angular.module('htc.controllers')
       reports.data.forEach(function (report) {
         $http.get(routerService.getUserUrl + report.userId).then(function (user) {
           $scope.listOfReports.push({
+            reportId: report.id,
             reportDescription: report.description,
             reportImage: report.image,
             userName: user.data.name,
+            userId: user.data.id,
             userImage: user.data.image
 
           });
@@ -62,5 +64,10 @@ angular.module('htc.controllers')
       }
     );
   };
+  /*Up*/
+  $scope.likeReport = function () {
+    console.log("entrou");
+    $scope.like = "like";
+  }
 
   }]);

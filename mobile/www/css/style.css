@@ -1,14 +1,16 @@
 .htcTitle {
-  margin-left: 29%;
+  color: white;
+  text-align: center;
+}
+
+.buttonBack {
   color: white;
 }
-.buttonBack{
-  color: white;
-}
-.buttonEnviar{
+
+.buttonEnviar {
   width: 30%;
   margin-top: 3%;
-  margin-left: 35%;
+  margin-left: 50%;
   color: #006064;
   background-color: white;
 }
@@ -49,7 +51,9 @@
 /*===LOGIN===*/
 
 #textOfLogin {
-  margin-left: 31%;
+  margin-left: 35%;
+  margin-top: 10%;
+  margin-bottom: 10%;
   color: #006064;
   font-size: 20pt;
 }
@@ -58,14 +62,7 @@
 /*===LIST OF REPORTS===*/
 
 .like {
-  height: 50px;
-  width: 50px;
-  border: #000 solid 2px;
-  border-radius: 100%;
-}
-
-.likeHover {
-  background: #1862b5;
+  background-color: red;
 }
 
 

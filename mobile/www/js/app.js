@@ -113,7 +113,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($
     })
     /*===Abuse===*/
     .state('abuse', {
-      url: '/abuse',
+      url: '/abuse?:userId?:reportId',
       templateUrl: 'templates/tab-abuse.html',
       controller: 'abuseController',
       controllerAs: 'abuseCtrl'
