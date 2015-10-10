@@ -5,7 +5,7 @@ var models = require('../models'),
 
 var UserDAO = {
 	create: function (user) {
-		return sequelize.query('INSERT INTO "user"(name, cpf, active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO "user"(name, cpf, active, image, email, type, password, gender, "coverageRadius") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
 				user.name,
 				user.cpf,

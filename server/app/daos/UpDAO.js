@@ -5,7 +5,7 @@ var models = require('../models'),
 
 var UpDAO = {
 	create: function (up) {
-		return sequelize.query('INSERT INTO up(date, "userId", "reportId") VALUES (?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO up(date, "userId", "reportId") VALUES (to_timestamp(?), ?, ?) RETURNING id', {
 			replacements: [
         up.date,
         up.userId,
@@ -20,7 +20,7 @@ var UpDAO = {
 		});
 	},
 	update: function (up) {
-		return sequelize.query('UPDATE up SET date=?, "userId"=?, "reportId"=? WHERE "userId" = ? AND "reportId" = ? RETURNING id', {
+		return sequelize.query('UPDATE up SET date=to_timestamp(?), "userId"=?, "reportId"=? WHERE "userId" = ? AND "reportId" = ? RETURNING id', {
 			replacements: [
         up.date,
         up.userId,
@@ -75,7 +75,7 @@ module.exports = UpDAO;
 function createQuery(criteria) {
 	var query = 'SELECT * FROM up WHERE 1=1';
 	if (criteria.date) {
-		query += ' AND date = \'' + criteria.date + '\'';
+		query += ' AND date = \'to_timestamp(' + criteria.date + '\')';
 	}
 	if (criteria.userId) {
 		query += ' AND "userId" = ' + criteria.userId;

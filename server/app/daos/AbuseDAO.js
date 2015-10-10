@@ -5,7 +5,7 @@ var models = require('../models'),
 
 var AbuseDAO = {
 	create: function (abuse) {
-		return sequelize.query('INSERT INTO abuse(description, date, "userId", "abuseCategoryId", "reportId") VALUES (?, ?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO abuse(description, date, "userId", "abuseCategoryId", "reportId") VALUES (?, to_timestamp(?), ?, ?, ?) RETURNING id', {
 			replacements: [
         abuse.description,
         abuse.date,
@@ -22,7 +22,7 @@ var AbuseDAO = {
 		});
 	},
 	update: function (abuse) {
-		return sequelize.query('UPDATE abuse SET description=?, date=?, "userId"=?, "abuseCategoryId"=?, "reportId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE abuse SET description=?, date=to_timestamp(?), "userId"=?, "abuseCategoryId"=?, "reportId"=? WHERE id = ? RETURNING id', {
 			replacements: [
         abuse.description,
         abuse.date,
@@ -81,7 +81,7 @@ function createQuery(criteria) {
 		query += ' AND description = \'' + criteria.comment + '\'';
 	}
 	if (criteria.date) {
-		query += ' AND date = \'' + criteria.date + '\'';
+		query += ' AND date = to_timestamp(\'' + criteria.date + '\')';
 	}
 	if (criteria.userId) {
 		query += ' AND "userId" = ' + criteria.userId;

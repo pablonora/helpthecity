@@ -11,7 +11,7 @@ var config = {
       name: 'helpthecity'
     },
     port: 5000,
-    db: 'postgres://postgres:andrezin@localhost:5432/helpthecity-development'
+    db: 'postgres://postgres:postgres@localhost:5432/helpthecity-development'
   },
 
   test: {

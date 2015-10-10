@@ -1,71 +1,49 @@
 'use strict';
 
 var express = require('express'),
-  glob = require('glob'),
-  favicon = require('serve-favicon'),
-  logger = require('morgan'),
-  cookieParser = require('cookie-parser'),
-  bodyParser = require('body-parser'),
-  compress = require('compression'),
-  methodOverride = require('method-override'),
-  session = require('express-session'),
-  fs = require('fs'),
-  modelInjector = require('../app/middlewares/modelInjector');
+	glob = require('glob'),
+	favicon = require('serve-favicon'),
+	logger = require('morgan'),
+	cookieParser = require('cookie-parser'),
+	bodyParser = require('body-parser'),
+	compress = require('compression'),
+	methodOverride = require('method-override'),
+	session = require('express-session'),
+	fs = require('fs'),
+	modelInjector = require('../app/middlewares/modelInjector');
 
 module.exports = function (app, config) {
 
-  var env, controllers, daos;
+	var env, controllers, daos;
 
-  env = process.env.NODE_ENV || 'development';
-  app.locals.ENV = env;
-  app.locals.ENV_DEVELOPMENT = env === 'development';
-  // app.use(favicon(config.root + '/public/img/favicon.ico'));
-  app.use(logger('dev'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
-  app.use(cookieParser());
-  app.use(compress());
-  app.use(express.static(config.root + '/public'));
-  app.use(methodOverride());
-  app.use(session({
-    secret: 'supernova',
-    saveUninitialized: true,
-    resave: true
-  }));
-  app.use(modelInjector);
-  app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
+	env = process.env.NODE_ENV || 'development';
+	app.locals.ENV = env;
+	app.locals.ENV_DEVELOPMENT = env === 'development';
+	// app.use(favicon(config.root + '/public/img/favicon.ico'));
 
-  // app.use(favicon(config.root + '/public/img/favicon.ico'));
-  app.use(logger('dev'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
-  app.use(cookieParser());
-  app.use(compress());
-  app.use(express.static(config.root + '/public'));
-  app.use(methodOverride());
-  app.use(session({
-    secret: 'supernova',
-    saveUninitialized: true,
-    resave: true
-  }));
+	app.use(logger('dev'));
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({
+		extended: true
+	}));
+	app.use(cookieParser());
+	app.use(compress());
+	app.use(express.static(config.root + '/public'));
+	app.use(methodOverride());
+	app.use(session({
+		secret: 'supernova',
+		saveUninitialized: true,
+		resave: true
+	}));
 	app.use(function (req, res, next) {
-		var maria = '192.168.5.248',
-			andre = '192.168.5.190',
+		var maria = '192.168.4.52',
+			andre = '192.168.4.240',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
-		ip = ip[ip.length-1];
-		if(ip === maria) origin += ip + ':3000';
-		if(ip === andre) origin += ip + ':9000';
-		
+		ip = ip[ip.length - 1];
+		if (ip === maria) origin += ip + ':3000';
+		if (ip === andre) origin += ip + ':9000';
+
 		res.header('Access-Control-Allow-Origin', origin);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
