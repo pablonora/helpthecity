@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="style.css">
-
 <ion-view>
   <ion-nav-title>
     <a class="button button-clear icon-left ion-chevron-left buttonBack" href="#/tab/listOfReports"></a>
@@ -11,11 +9,9 @@
         <div>
           <h2 class="title">O que está acontecendo</h2>
         </div>
-        <ion-radio value="0" ng-model="abuseCategory.id">Violação dos Termos de Uso</ion-radio>
-        <ion-radio value="1" ng-model="abuseCategory.id">Spam</ion-radio>
-        <ion-radio value="2" ng-model="abuseCategory.id">Não deveria estar no HTC
-        </ion-radio>
-        <ion-radio value="3" ng-model="abuseCategory.id">Conteúdo obsceno </ion-radio>
+        <div>
+          <ion-radio ng-repeat="abuseCategory in abuseCategoriesList" value="{{abuseCategory.id}}" ng-model="abuse.categoryId">{{abuseCategory.name}}</ion-radio>
+        </div>
       </div>
       <div class="item item-text-wrap">
         <div>

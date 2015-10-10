@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="style.css">
-
 <ion-view>
   <ion-nav-title>
     <span class="htcTitle">Help the City</span>
@@ -12,8 +10,8 @@
         <p>{{report.reportDescription}}</p>
         <p><img ng-src="{{report.reportImage}}" alt="Imagem da Ocorrência"></p>
         <div>
-          <a class="button button-clear icon-left ion-thumbsup">Curtir</a>
-          <a class="button button-clear icon-left ion-navicon" href="#/abuse">Denunciar</a>
+          <a class="button button-clear icon-left ion-thumbsup" ng-class="like" ng-click="likeReport()">Curtir</a>
+          <a class="button button-clear icon-left ion-navicon" href="#/abuse?userId={{report.userId}}&reportId={{report.reportId}}">Denunciar</a>
         </div>
       </ion-item>
     </ion-list>

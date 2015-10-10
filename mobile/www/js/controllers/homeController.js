@@ -18,11 +18,9 @@ angular.module('htc.controllers')
     };
 
     $http.post(routerService.loginUrl, JSON.stringify(data)).then(function (response) {
-      console.log('successfully authenticated');
-      console.log(response);
+      localStorageService.setObject('user', response.data);
       $location.path('/tab/listOfReports');
     }, function (response) {
-      console.log(response);
       alert('Tente novamente!');
     });
   };

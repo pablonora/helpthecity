@@ -3,14 +3,12 @@
 angular.module('htc.services')
 
 .factory('reportService', ['$http', 'routerService', function ($http, routerService) {
-  $scope.reports = [];
+  var reports = [];
   return {
     
     //Create report
     createReport: function (report, cb) {
-      console.log(report);
       $http.post(routerService.createReportUrl, JSON.stringify(report)).then(function (response) {
-        console.log(response);
         cb(response);
       });
     },
@@ -18,8 +16,7 @@ angular.module('htc.services')
     //Get list of reports
     getReports: function (reports) {
       $http.get(routerService.getListOfReports + '?criteria=null').then(function (reports) {
-        $scope.reports = reports.data;
-        //console.log(reports.data);
+        reports.reports = reports.data;
       });
       return reports;
     },
@@ -64,4 +61,4 @@ angular.module('htc.services')
       return result;
     }
   };
-});
+}]);

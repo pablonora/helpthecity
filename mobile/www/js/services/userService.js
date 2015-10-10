@@ -7,8 +7,7 @@ angular.module('htc.services')
     createUser: function (data, cb) {
       console.log(data);
       $http.post(routerService.createUserUrl, JSON.stringify(data)).then(function (response) {
-        console.log(response);
-        cb(response);
+        cb(response.data);
       });
     }
   }
