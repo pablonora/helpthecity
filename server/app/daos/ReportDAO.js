@@ -5,7 +5,7 @@ var models = require('../models'),
 
 var ReportDAO = {
 	create: function (report) {
-		return sequelize.query('INSERT INTO report(date, description, image, latitude, longitude, precision, "reportCategoryId", "userId") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO report(date, description, image, latitude, longitude, precision, "reportCategoryId", "userId") VALUES (to_timestamp(?), ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
         report.date,
         report.description,
@@ -25,7 +25,7 @@ var ReportDAO = {
 		});
 	},
 	update: function (report) {
-		return sequelize.query('UPDATE report SET date=?, description=?, image=?, latitude=?, longitude=?, precision=?, "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
+		return sequelize.query('UPDATE report SET date=to_timestamp(?), description=?, image=?, latitude=?, longitude=?, precision=?, "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
 			replacements: [
         report.date,
         report.description,
@@ -84,7 +84,7 @@ module.exports = ReportDAO;
 function createQuery(criteria) {
 	var query = 'SELECT * FROM report WHERE 1=1';
 	if (criteria.date) {
-		query += ' AND date = \'' + criteria.date + '\'';
+		query += ' AND date = \'to_timestamp(' + criteria.date + '\')';
 	}
 	if (criteria.description) {
 		query += ' AND description = \'' + criteria.description + '\'';
