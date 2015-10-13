@@ -9,4 +9,5 @@ module.exports = function (app, config) {
   app.delete(config.url + '/report/:id', auth, Report.delete);
   app.get(config.url + '/report/:id', auth, Report.readById);
   app.get(config.url + '/report', auth, Report.readByCriteria);
+  app.get(config.url + '/reportsWithUsers', auth, Report.readAllWithUsers);
 };

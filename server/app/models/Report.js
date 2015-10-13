@@ -74,52 +74,6 @@ module.exports = function (sequelize, dataTypes) {
 					foreignKey: 'reportId'
 				});
 			}
-		},
-		getterMethods: {
-			getId: function () {
-				return this.getDataValue('id');
-			},
-			getDate: function () {
-				return this.getDataValue('date');
-			},
-			getDescription: function () {
-				return this.getDataValue('description');
-			},
-			getImage: function () {
-				return this.getDataValue('image');
-			},
-			getLatitude: function () {
-				return this.getDataValue('latitude');
-			},
-			getLongitude: function () {
-				return this.getDataValue('longitude');
-			},
-			getPrecision: function () {
-				return this.getDataValue('precision');
-			}
-		},
-		setterMethods: {
-			setId: function (id) {
-				this.setDataValue('id', id);
-			},
-			setDate: function (date) {
-				this.setDataValue('date', date);
-			},
-			setDescription: function (description) {
-				this.setDataValue('description', description);
-			},
-			setImage: function (image) {
-				this.setDataValue('image', image);
-			},
-			setLatitude: function (latitude) {
-				this.setDataValue('latitude', latitude);
-			},
-			setLongitude: function (longitude) {
-				this.setDataValue('longitude', longitude);
-			},
-			setPrecision: function (precision) {
-				this.setDataValue('precision', precision);
-			}
 		}
 	});
 

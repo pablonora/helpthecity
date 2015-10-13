@@ -38,11 +38,13 @@ module.exports = function (app, config) {
 	app.use(function (req, res, next) {
 		var maria = '192.168.4.52',
 			andre = '192.168.4.240',
+			pablo = '192.168.0.108',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
 		ip = ip[ip.length - 1];
 		if (ip === maria) origin += ip + ':3000';
-		if (ip === andre) origin += ip + ':9000';
+		else if (ip === andre) origin += ip + ':9000';
+		else if (ip === pablo) origin += ip + ':3000';
 
 		res.header('Access-Control-Allow-Origin', origin);
 		res.header('Access-Control-Allow-Credentials', true);

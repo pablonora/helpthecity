@@ -24,10 +24,15 @@ module.exports = function (app) {
 			});
 		},
 		readByCriteria: function (criteria) {
-			return app.daos.Report.readByCriteria(criteria).then(function (report) {
-				return report;
+			return app.daos.Report.readByCriteria(criteria).then(function (reports) {
+				return reports;
 			});
-		}
+		},
+		readAllWithUsers: function () {
+			return app.daos.Report.readAllWithUsers().then(function (reports) {
+				return reports;
+			});
+		},
 	};
 
 	return ReportService;

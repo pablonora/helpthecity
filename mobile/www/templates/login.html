@@ -1,25 +1,24 @@
-<link rel="stylesheet" href="style.css">
-
 <ion-view>
-  <ion-nav-title>
-    <p class="htcTitle">Help the City</p>
-  </ion-nav-title>
-  <ion-content>
-    <div class="list">
-      <div>
-        <div id="textOfLogin">
-          Login
-        </div>
-      </div>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">E-mail</span>
-        <input type="text" placeholder="Email" ng-model="email">
-      </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">Senha</span>
-        <input type="password" placeholder="Senha" ng-model="password">
-      </label>
-    </div>
-    <button class="button" id="buttonEntrar" ng-click="login(email, password)">Entrar</button>
-  </ion-content>
+	<ion-nav-title>
+		<p class="htcTitle">Help the City</p>
+	</ion-nav-title>
+	<ion-content>
+		<div class="list">
+			<div>
+				<div id="textOfLogin">
+					Login
+				</div>
+			</div>
+			<form name="form" novalidate class="form" ng-class="{submitted:form.submitted}">
+				<label class="item item-input item-stacked-label">
+					<span class="input-label">E-mail</span>
+					<input type="email" placeholder="Email" name="email" ng-model="user.email" required/>
+				</label>
+				<label class="item item-input item-stacked-label">
+					<span class="input-label">Senha</span>
+					<input type="password" placeholder="Senha" name="password" ng-model="user.password" required/>
+				</label>
+				<input type="submit" class="button" id="button-login" ng-click="validate(form) && login()" value="Entrar" />
+			</form>
+	</ion-content>
 </ion-view>

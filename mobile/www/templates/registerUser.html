@@ -1,40 +1,41 @@
-<link rel="stylesheet" href="style.css">
-
- <ion-view>
-  <ion-nav-title>
-    <span class="htcTitle">Help the City</span>
-  </ion-nav-title>
+<ion-view>
+	<ion-nav-title>
+		<span class="htcTitle">Help the City</span>
+	</ion-nav-title>
 	<ion-content>
-		<div class="item item-avatar">
-			<img ng-src="{{user.image}}" alt="Imagem do Perfil">
-			<button class="button button-clear" ng-click="getImage(user.image)">Alterar Imagem</button>
-		</div>
-		<label class="item item-input">
-			<i class="icon ion-person placeholder-icon"></i>
-			<input type="text" data-ng-model="user.name" placeholder="Nome">
-		</label>
-		<label class="item item-input">
-			<i class="icon ion-locked placeholder-icon"></i>
-			<input type="password" data-ng-model="user.password" placeholder="Senha">
-		</label>
-		<label class="item item-input">
-			<i class="icon ion-email placeholder-icon"></i>
-			<input type="text" data-ng-model="user.email" placeholder="E-mail">
-		</label>
-		<label class="item item-input">
-			<i class="icon ion-document placeholder-icon"></i>
-			<input type="number" data-ng-model="user.cpf" placeholder="CPF">
-		</label>
-		<label class="item item-input item-select">
-			<div class="input-label">
-				<i class="icon ion-transgender placeholder-icon"></i> Sexo
+		<form name="form" novalidate class="form" ng-class="{submitted:form.submitted}">
+			<div class="item item-avatar">
+				<img ng-src="{{user.image}}" alt="Imagem do Perfil">
+				<button class="button button-clear" ng-click="getImage(user.image)">Alterar Imagem</button>
 			</div>
-			<select data-ng-model="user.gender">
-				<option value="F">Feminino</option>
-				<option value="M">Masculino</option>
-			</select>
-		</label>
-		<br/>
-		<button class="button button-ligth buttonEnviar" ng-click="createUser()">Enviar</button>
+			<label class="item item-input">
+				<i class="icon ion-person placeholder-icon"></i>
+				<input type="text" data-ng-model="user.name" name="name" placeholder="Nome" required>
+			</label>
+			<label class="item item-input">
+				<i class="icon ion-email placeholder-icon"></i>
+				<input type="email" data-ng-model="user.email" name="email" placeholder="E-mail" required>
+			</label>
+			<label class="item item-input">
+				<i class="icon ion-locked placeholder-icon"></i>
+				<input type="password" data-ng-model="user.password" name="password" placeholder="Senha" required>
+			</label>
+			<label class="item item-input">
+				<i class="icon ion-document placeholder-icon"></i>
+				<input type="number" data-ng-model="user.cpf" name="cpf" placeholder="CPF" required>
+			</label>
+			<label class="item item-input item-select">
+				<div class="input-label">
+					<i class="icon ion-transgender placeholder-icon"></i> Sexo
+				</div>
+				<select data-ng-model="user.gender" name="gender" required>
+					<option value="F">Feminino</option>
+					<option value="M">Masculino</option>
+				</select>
+			</label>
+			<br/>
+			<input type="submit" class="button button-light button-send" ng-click="validate(form) && createUser()" value="Enviar">
+			</button>
+		</form>
 	</ion-content>
 </ion-view>

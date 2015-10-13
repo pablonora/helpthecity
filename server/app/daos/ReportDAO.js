@@ -7,15 +7,15 @@ var ReportDAO = {
 	create: function (report) {
 		return sequelize.query('INSERT INTO report(date, description, image, latitude, longitude, precision, "reportCategoryId", "userId") VALUES (to_timestamp(?), ?, ?, ?, ?, ?, ?, ?) RETURNING id', {
 			replacements: [
-        report.date,
-        report.description,
-        report.image,
-				report.latitude,
-				report.longitude,
-				report.precision,
-        report.reportCategoryId,
-        report.userId,
-      ],
+			report.date,
+			report.description,
+			report.image,
+			report.latitude,
+			report.longitude,
+			report.precision,
+			report.reportCategoryId,
+			report.userId,
+		],
 			type: sequelize.QueryTypes.INSERT,
 			model: models.Report
 		}).then(function (id) {
@@ -27,16 +27,16 @@ var ReportDAO = {
 	update: function (report) {
 		return sequelize.query('UPDATE report SET date=to_timestamp(?), description=?, image=?, latitude=?, longitude=?, precision=?, "reportCategoryId"=?, "userId"=? WHERE id = ? RETURNING id', {
 			replacements: [
-        report.date,
-        report.description,
-        report.image,
-				report.latitude,
-				report.longitude,
-				report.precision,
-        report.reportCategoryId,
-        report.userId,
-        report.id
-      ],
+			report.date,
+			report.description,
+			report.image,
+			report.latitude,
+			report.longitude,
+			report.precision,
+			report.reportCategoryId,
+			report.userId,
+			report.id
+		],
 			type: sequelize.QueryTypes.UPDATE,
 			model: models.Report
 		}).then(function (id) {
@@ -76,6 +76,19 @@ var ReportDAO = {
 		}).catch(function (err) {
 			return err.message;
 		});
+	},
+	readAllWithUsers: function () {
+		return models.Report.findAll({
+			include: [{
+				model: models.User
+				}]
+		}).then(function (reports) {
+			reports.forEach(function (report) {
+				report.User.password = '';
+				report.User.cpf = '';
+			});
+			return reports;
+		});
 	}
 };
 
@@ -98,7 +111,7 @@ function createQuery(criteria) {
 	if (criteria.longitude) {
 		query += ' AND longitude >= ' + (criteria.longitude - (criteria.coverageRadius / 2)) + ' AND longitude <= ' + (criteria.longitude + (criteria.coverageRadius / 2));
 	}
-	if(criteria.precision) {
+	if (criteria.precision) {
 		query += ' AND precision = ' + criteria.precision;
 	}
 	if (criteria.reportCategoryId) {

@@ -17,12 +17,17 @@ module.exports = function (app, config) {
   //   this will be as simple as storing the user ID when serializing, and finding
   //   the user by ID when deserializing.
   passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user.id + '%' + user.email, 6);
   });
 
-  passport.deserializeUser(function (id, done) {
-    return app.daos.User.readById(id).then(function (user) {
-      done(null, user);
+  passport.deserializeUser(function (hash, done) {
+		var userId = hash.split('%')[0];
+    return app.daos.User.readById(userId).then(function (user) {
+			if (user.id + '%' + user.email === hash) {
+      	done(null, user);
+			} else {
+				done('Corrupted information on session');
+			}
     });
   });
   passport.use(new LocalStrategy({
@@ -58,6 +63,9 @@ module.exports = function (app, config) {
       // Manually establish the session...
       req.login(user, function (err) {
         if (err) return next(err);
+				user.password = '';
+				user.cpf = '';
+    		console.log('LOGGIN IN ' + user.email);
         return res.send(user);
       });
     })(req, res, next);
@@ -65,7 +73,7 @@ module.exports = function (app, config) {
 
   app.delete(config.url + '/logout', auth, function (req, res) {
     var email = req.user.email;
-    console.log('LOGGIN OUT ' + email)
+    console.log('LOGGIN OUT ' + email);
     req.logout();
     req.session.notice = 'You have successfully been logged out ' + email + '!';
   });

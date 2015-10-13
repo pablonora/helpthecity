@@ -54,28 +54,6 @@ module.exports = function (sequelize, dataTypes) {
 					onDelete: 'CASCADE'
 				});
 			}
-		},
-		getterMethods: {
-			getId: function () {
-				return this.getDataValue('id');
-			},
-			getDescription: function () {
-				return this.getDataValue('description');
-			},
-			getDate: function () {
-				return this.getDataValue('date');
-			}
-		},
-		setterMethods: {
-			setId: function (id) {
-				this.setDataValue('id', id);
-			},
-			setDescription: function (description) {
-				this.setDataValue('description', description);
-			},
-			setDate: function (date) {
-				this.setDataValue('date', date);
-			}
 		}
 	});
 

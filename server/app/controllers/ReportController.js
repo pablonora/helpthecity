@@ -28,6 +28,11 @@ module.exports = function (app) {
       app.services.Report.readByCriteria(req.query.criteria).then(function (result) {
         res.json(result);
       });
+    },
+		readAllWithUsers: function (req, res) {
+      app.services.Report.readAllWithUsers().then(function (result) {
+        res.json(result);
+      });
     }
   };
 

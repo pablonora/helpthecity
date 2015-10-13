@@ -2,7 +2,7 @@
 
 angular.module('htc.controllers')
 
-.controller('userController', ['$scope', '$location', 'userService', 'localStorageService', function ($scope, $location, userService, localStorageService) {
+.controller('userController', ['$ionicHistory', '$scope', '$location', 'userService', 'localStorageService', function ($ionicHistory, $scope, $location, userService, localStorageService) {
   $scope.user = localStorageService.getObject('user', null) || {
     active: 'Y',
     coverageRadius: 1,
@@ -27,8 +27,14 @@ angular.module('htc.controllers')
     };
     userService.createUser(data, function (user) {
       console.log(response);
-    });
-    $location.path('/login');
+			$ionicHistory.goBack();
+			$location.path('/login');
+    }, function (err) {
+			console.log(err);
+			if (err === '') {
+				popupService.showAlert('O servidor está indisponível, tente novamente mais tarde');
+			}
+		});    
   };
 
   //Get Image of Profile
@@ -39,7 +45,6 @@ angular.module('htc.controllers')
         $scope.$apply();
       },
       function (message) {
-        alert('teste');
       }, {
         quality: 50,
         destinationType: navigator.camera.DestinationType.DATA_URL,
@@ -52,4 +57,35 @@ angular.module('htc.controllers')
       }
     );
   };
+	
+	$scope.validate = function (form) {
+		var result = true;
+		form.submitted = true;
+		if (!form.$valid) {
+			if ($scope.user.name == null || $scope.user.name == '') {
+				form.name.$setValidity('required', false);
+				result = false;
+			}
+			if ($scope.user.email == null || $scope.user.email == '') {
+				form.email.$setValidity('required', false);
+				result = false;
+			}
+			if ($scope.user.password == null || $scope.user.password == '') {
+				form.password.$setValidity('required', false);
+				result = false;
+			}
+			if ($scope.user.cpf == null || $scope.user.cpf == '' || $scope.user.cpf.length != 11) {
+				form.cpf.$setValidity('required', false);
+				result = false;
+			}
+			if ($scope.user.gender == null || $scope.user.gender == '') {
+				form.gender.$setValidity('required', false);
+				result = false;
+			}
+		}
+		if (!result) {
+			popupService.showAlert('Preencha os dados solicitados');
+		}
+		return result;
+	};
 }]);
