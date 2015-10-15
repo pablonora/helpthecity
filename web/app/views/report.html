@@ -14,12 +14,8 @@
     </div>
   </nav>
 </div>
-<br/>
-<ul class="collection with-header" style="max-width: 500px; margin: 0 auto 10px;">
-  <li class="collection-header">
-    <h5>Ocorr&ecirc;ncias</h5>
-  </li>
-  <li ng-repeat="report in reports">
-    <a href="/#/showReport/{{report.id}}" class="collection-item">{{report.date | date:'dd-MM-yyyy'}} - {{report.description}}</a>
-  </li>
-</ul>
+<map center="-22.206368,-45.909593" zoom="4" default-style="false">
+  <div ng-repeat="report in reports">
+    <marker position="{{report.latitude}},{{report.longitude}}" on-click="click({{report.id}})" title="{{report.description}}"></marker>
+  </div>
+</map>

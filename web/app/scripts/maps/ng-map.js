@@ -1,54 +1,40 @@
-'use strict';
+angular.module('htc', []);
 
 /**
- * @ngdoc overview
- * @name webApp
- * @description
- * # webApp
- *
- * Main module of the application.
+ * @ngdoc service
+ * @name Attr2Options
+ * @description 
+ *   Converts tag attributes to options used by google api v3 objects, map, marker, polygon, circle, etc.
  */
-var app = angular.module('htc', [
-  'ngAnimate',
-  'ngRoute',
-  'htc.controllers',
-  'htc.services'
-]);
-
-
-//======== Map
-(function () {
+/* global google */
+(function() {
   'use strict';
 
   var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
-  var MOZ_HACK_REGEXP = /^moz([A-Z])/;
+  var MOZ_HACK_REGEXP = /^moz([A-Z])/;  
 
   function camelCase(name) {
     return name.
-    replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
-      return offset ? letter.toUpperCase() : letter;
-    }).
-    replace(MOZ_HACK_REGEXP, 'Moz$1');
+      replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+        return offset ? letter.toUpperCase() : letter;
+      }).
+      replace(MOZ_HACK_REGEXP, 'Moz$1');
   }
 
   function JSONize(str) {
-    try { // if parsable already, return as it is
+    try {       // if parsable already, return as it is
       JSON.parse(str);
       return str;
-    } catch (e) { // if not parsable, change little
+    } catch(e) { // if not parsable, change little
       return str
         // wrap keys without quote with valid double quote
-        .replace(/([\$\w]+)\s*:/g, function (_, $1) {
-          return '"' + $1 + '":';
-        })
+        .replace(/([\$\w]+)\s*:/g, function(_, $1){return '"'+$1+'":';})
         // replacing single quote wrapped ones to double quote 
-        .replace(/'([^']+)'/g, function (_, $1) {
-          return '"' + $1 + '"';
-        });
+        .replace(/'([^']+)'/g, function(_, $1){return '"'+$1+'"';});
     }
   }
 
-  var Attr2Options = function ($parse, $timeout, $log, NavigatorGeolocation, GeoCoder) {
+  var Attr2Options = function($parse, $timeout, $log, NavigatorGeolocation, GeoCoder) { 
 
     /**
      * Returns the attributes of an element as hash
@@ -56,81 +42,81 @@ var app = angular.module('htc', [
      * @param {HTMLElement} el html element
      * @returns {Hash} attributes
      */
-    var orgAttributes = function (el) {
+    var orgAttributes = function(el) {
       (el.length > 0) && (el = el[0]);
       var orgAttributes = {};
-      for (var i = 0; i < el.attributes.length; i++) {
+      for (var i=0; i<el.attributes.length; i++) {
         var attr = el.attributes[i];
         orgAttributes[attr.name] = attr.value;
       }
       return orgAttributes;
     };
 
-    var toOptionValue = function (input, options) {
-      var output, key = options.key,
-        scope = options.scope;
+    var toOptionValue = function(input, options) {
+      var output, key=options.key, scope=options.scope;
       try { // 1. Number?
         var num = Number(input);
         if (isNaN(num)) {
           throw "Not a number";
-        } else {
+        } else  {
           output = num;
         }
-      } catch (err) {
+      } catch(err) { 
         try { // 2.JSON?
           if (input.match(/^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/)) { // i.e "-1.0, 89.89"
-            input = "[" + input + "]";
+            input = "["+input+"]";
           }
           output = JSON.parse(JSONize(input));
           if (output instanceof Array) {
             var t1stEl = output[0];
             if (t1stEl.constructor == Object) { // [{a:1}] : not lat/lng ones
             } else if (t1stEl.constructor == Array) { // [[1,2],[3,4]] 
-              output = output.map(function (el) {
+              output =  output.map(function(el) {
                 return new google.maps.LatLng(el[0], el[1]);
               });
-            } else if (!isNaN(parseFloat(t1stEl)) && isFinite(t1stEl)) {
+            } else if(!isNaN(parseFloat(t1stEl)) && isFinite(t1stEl)) {
               return new google.maps.LatLng(output[0], output[1]);
             }
-          } else if (output === Object(output)) { // JSON is an object (not array or null)
+          }
+          else if (output === Object(output)) { // JSON is an object (not array or null)
             // check for nested hashes and convert to Google API options
             output = getOptions(output, options, true);
           }
-        } catch (err2) {
+        } catch(err2) {
           // 3. Object Expression. i.e. LatLng(80,-49)
           if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
             try {
-              var exp = "new google.maps." + input;
+              var exp = "new google.maps."+input;
               output = eval(exp); // TODO, still eval
-            } catch (e) {
+            } catch(e) {
               output = input;
-            }
-            // 4. Object Expression. i.e. MayTypeId.HYBRID 
+            } 
+          // 4. Object Expression. i.e. MayTypeId.HYBRID 
           } else if (input.match(/^([A-Z][a-zA-Z0-9]+)\.([A-Z]+)$/)) {
             try {
               var matches = input.match(/^([A-Z][a-zA-Z0-9]+)\.([A-Z]+)$/);
               output = google.maps[matches[1]][matches[2]];
-            } catch (e) {
+            } catch(e) {
               output = input;
-            }
-            // 5. Object Expression. i.e. HYBRID 
+            } 
+          // 5. Object Expression. i.e. HYBRID 
           } else if (input.match(/^[A-Z]+$/)) {
             try {
               var capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
               if (key.match(/temperatureUnit|windSpeedUnit|labelColor/)) {
-                capitalizedKey = capitalizedKey.replace(/s$/, "");
+                capitalizedKey = capitalizedKey.replace(/s$/,"");
                 output = google.maps.weather[capitalizedKey][input];
               } else {
                 output = google.maps[capitalizedKey][input];
               }
-            } catch (e) {
+            } catch(e) {
               output = input;
             }
-            // 6. Date Object as ISO String i.e. "2015-08-12T06:12:40.858Z"
+          // 6. Date Object as ISO String i.e. "2015-08-12T06:12:40.858Z"
           } else if (input.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/)) {
             try {
               output = new Date(input);
-            } catch (e) {
+            } catch(e) {
               output = input;
             }
           } else {
@@ -146,17 +132,17 @@ var app = angular.module('htc', [
 
       // convert output more for shape icons
       if (options.key == 'icons' && output instanceof Array) {
-        for (var i = 0; i < output.length; i++) {
+        for (var i=0; i<output.length; i++) {
           var el = output[i];
           if (el.icon.path.match(/^[A-Z_]+$/)) {
-            el.icon.path = google.maps.SymbolPath[el.icon.path];
+            el.icon.path =  google.maps.SymbolPath[el.icon.path];
           }
         }
       }
 
       // convert output more for marker icon
       if (options.key == 'icon' && output instanceof Object) {
-        if (("" + output.path).match(/^[A-Z_]+$/)) {
+        if ((""+output.path).match(/^[A-Z_]+$/)) {
           output.path = google.maps.SymbolPath[output.path];
         }
         for (var key in output) { //jshint ignore:line
@@ -172,9 +158,9 @@ var app = angular.module('htc', [
       return output;
     };
 
-    var getAttrsToObserve = function (attrs) {
+    var getAttrsToObserve = function(attrs) {
       var attrsToObserve = [];
-      if (attrs["ng-repeat"] || attrs.ngRepeat) { // if element is created by ng-repeat, don't observe any
+      if (attrs["ng-repeat"] || attrs.ngRepeat) {  // if element is created by ng-repeat, don't observe any
         //$log.warn("It is NOT ideal to have many observers or watcher with ng-repeat. Please use it with your own risk");
       }
       for (var attrName in attrs) { //jshint ignore:line
@@ -193,9 +179,9 @@ var app = angular.module('htc', [
      * @param {Hash} attrs tag attributes
      * @returns {Hash} filterd attributes
      */
-    var filter = function (attrs) {
+    var filter = function(attrs) {
       var options = {};
-      for (var key in attrs) {
+      for(var key in attrs) {
         if (key.match(/^\$/) || key.match(/^ng[A-Z]/)) {
           void(0);
         } else {
@@ -220,9 +206,9 @@ var app = angular.module('htc', [
      * @param {scope} scope angularjs scope
      * @returns {Hash} options converted attributess
      */
-    var getOptions = function (attrs, scope, doNotConverStringToNumber) {
+    var getOptions = function(attrs, scope, doNotConverStringToNumber) {
       var options = {};
-      for (var key in attrs) {
+      for(var key in attrs) {
         if (attrs[key]) {
           if (key.match(/^on[A-Z]/)) { //skip events, i.e. on-click
             continue;
@@ -236,10 +222,7 @@ var app = angular.module('htc', [
               if (doNotConverStringToNumber && attrs[key].match(/^[0-9]+$/)) {
                 options[key] = attrs[key];
               } else {
-                options[key] = toOptionValue(attrs[key], {
-                  scope: scope,
-                  key: key
-                });
+                options[key] = toOptionValue(attrs[key], {scope:scope, key: key});
               }
             }
           }
@@ -255,37 +238,35 @@ var app = angular.module('htc', [
      * @param {Hash} attrs tag attributes
      * @returns {Hash} events converted events
      */
-    var getEvents = function (scope, attrs) {
+    var getEvents = function(scope, attrs) {
       var events = {};
-      var toLowercaseFunc = function ($1) {
-        return "_" + $1.toLowerCase();
+      var toLowercaseFunc = function($1){
+        return "_"+$1.toLowerCase();
       };
-      var eventFunc = function (attrValue) {
+      var eventFunc = function(attrValue) {
         var matches = attrValue.match(/([^\(]+)\(([^\)]*)\)/);
         var funcName = matches[1];
-        var argsStr = matches[2].replace(/event[ ,]*/, ''); //remove string 'event'
-        var argsExpr = $parse("[" + argsStr + "]"); //for perf when triggering event
-        return function (event) {
+        var argsStr = matches[2].replace(/event[ ,]*/,'');  //remove string 'event'
+        var argsExpr = $parse("["+argsStr+"]"); //for perf when triggering event
+        return function(event) {
           var args = argsExpr(scope); //get args here to pass updated model values
-          function index(obj, i) {
-            return obj[i];
-          }
+          function index(obj,i) {return obj[i];}
           var f = funcName.split('.').reduce(index, scope);
           f && f.apply(this, [event].concat(args));
-          $timeout(function () {
+          $timeout( function() {
             scope.$apply();
           });
         };
       };
 
-      for (var key in attrs) {
+      for(var key in attrs) {
         if (attrs[key]) {
           if (!key.match(/^on[A-Z]/)) { //skip if not events
             continue;
           }
-
+          
           //get event name as underscored. i.e. zoom_changed
-          var eventName = key.replace(/^on/, '');
+          var eventName = key.replace(/^on/,'');
           eventName = eventName.charAt(0).toLowerCase() + eventName.slice(1);
           eventName = eventName.replace(/([A-Z])/g, toLowercaseFunc);
 
@@ -302,7 +283,7 @@ var app = angular.module('htc', [
      * @param {Hash} filtered filtered tag attributes
      * @returns {Hash} Google Map options
      */
-    var getControlOptions = function (filtered) {
+    var getControlOptions = function(filtered) {
       var controlOptions = {};
       if (typeof filtered != 'object') {
         return false;
@@ -310,19 +291,19 @@ var app = angular.module('htc', [
 
       for (var attr in filtered) {
         if (filtered[attr]) {
-          if (!attr.match(/(.*)ControlOptions$/)) {
+          if (!attr.match(/(.*)ControlOptions$/)) { 
             continue; // if not controlOptions, skip it
           }
 
           //change invalid json to valid one, i.e. {foo:1} to {"foo": 1}
           var orgValue = filtered[attr];
           var newValue = orgValue.replace(/'/g, '"');
-          newValue = newValue.replace(/([^"]+)|("[^"]+")/g, function ($0, $1, $2) {
+          newValue = newValue.replace(/([^"]+)|("[^"]+")/g, function($0, $1, $2) {
             if ($1) {
               return $1.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
             } else {
-              return $2;
-            }
+              return $2; 
+            } 
           });
           try {
             var options = JSON.parse(newValue);
@@ -332,7 +313,7 @@ var app = angular.module('htc', [
                 if (typeof value === 'string') {
                   value = value.toUpperCase();
                 } else if (key === "mapTypeIds") {
-                  value = value.map(function (str) {
+                  value = value.map( function(str) {
                     if (str.match(/^[A-Z]+$/)) { // if constant
                       return google.maps.MapTypeId[str.toUpperCase()];
                     } else { // else, custom map-type
@@ -343,7 +324,7 @@ var app = angular.module('htc', [
 
                 if (key === "style") {
                   var str = attr.charAt(0).toUpperCase() + attr.slice(1);
-                  var objName = str.replace(/Options$/, '') + "Style";
+                  var objName = str.replace(/Options$/,'')+"Style";
                   options[key] = google.maps[objName][value];
                 } else if (key === "position") {
                   options[key] = google.maps.ControlPosition[value];
@@ -374,7 +355,7 @@ var app = angular.module('htc', [
     }; // return
 
   };
-  Attr2Options.$inject = ['$parse', '$timeout', '$log', 'NavigatorGeolocation', 'GeoCoder'];
+  Attr2Options.$inject= ['$parse', '$timeout', '$log', 'NavigatorGeolocation', 'GeoCoder'];
 
   angular.module('htc').service('Attr2Options', Attr2Options);
 })();
@@ -386,9 +367,9 @@ var app = angular.module('htc', [
  *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q) service for Google Geocoder service
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
-  var GeoCoder = function ($q) {
+  var GeoCoder = function($q) {
     return {
       /**
        * @memberof GeoCoder
@@ -401,14 +382,14 @@ var app = angular.module('htc', [
        * ```
        * @returns {HttpPromise} Future object
        */
-      geocode: function (options) {
+      geocode : function(options) {
         var deferred = $q.defer();
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode(options, function (results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             deferred.resolve(results);
           } else {
-            deferred.reject('Geocoder failed due to: ' + status);
+            deferred.reject('Geocoder failed due to: '+ status);
           }
         });
         return deferred.promise;
@@ -427,10 +408,10 @@ var app = angular.module('htc', [
  *  Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q) service for navigator.geolocation methods
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var NavigatorGeolocation = function ($q) {
+  var NavigatorGeolocation = function($q) {
     return {
       /**
        * @memberof NavigatorGeolocation
@@ -447,23 +428,21 @@ var app = angular.module('htc', [
        * ```
        * @returns {HttpPromise} Future object
        */
-      getCurrentPosition: function (geoLocationOptions) {
+      getCurrentPosition: function(geoLocationOptions) {
         var deferred = $q.defer();
         if (navigator.geolocation) {
-
+          
           if (geoLocationOptions === undefined) {
-            geoLocationOptions = {
-              timeout: 5000
-            };
-          } else if (geoLocationOptions.timeout === undefined) {
+            geoLocationOptions = { timeout: 5000 };
+          }
+          else if (geoLocationOptions.timeout === undefined) {
             geoLocationOptions.timeout = 5000;
           }
-
+          
           navigator.geolocation.getCurrentPosition(
-            function (position) {
+            function(position) {
               deferred.resolve(position);
-            },
-            function (evt) {
+            }, function(evt) {
               void 0;
               deferred.reject(evt);
             },
@@ -475,15 +454,15 @@ var app = angular.module('htc', [
         return deferred.promise;
       },
 
-      watchPosition: function () {
+      watchPosition: function() {
         return "TODO";
       },
 
-      clearWatch: function () {
+      clearWatch: function() {
         return "TODO";
       }
     };
-  };
+  }; 
   NavigatorGeolocation.$inject = ['$q'];
 
   angular.module('htc').service('NavigatorGeolocation', NavigatorGeolocation);
@@ -497,10 +476,10 @@ var app = angular.module('htc', [
  *  for [Google StreetViewService](https://developers.google.com/maps/documentation/javascript/streetview)
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var StreetView = function ($q) {
+  var StreetView = function($q) {
 
     /**
      * Retrieves panorama id from the given map (and or position)
@@ -514,11 +493,11 @@ var app = angular.module('htc', [
      *   });
      * @returns {HttpPromise} Future object
      */
-    var getPanorama = function (map, latlng) {
+    var getPanorama = function(map, latlng) {
       latlng = latlng || map.getCenter();
       var deferred = $q.defer();
       var svs = new google.maps.StreetViewService();
-      svs.getPanoramaByLocation((latlng || map.getCenter), 100, function (data, status) {
+      svs.getPanoramaByLocation( (latlng||map.getCenter), 100, function (data, status) {
         // if streetView available
         if (status === google.maps.StreetViewStatus.OK) {
           deferred.resolve(data.location.pano);
@@ -539,10 +518,8 @@ var app = angular.module('htc', [
      * @example
      *   StreetView.setPanorama(map, panoId);
      */
-    var setPanorama = function (map, panoId) {
-      var svp = new google.maps.StreetViewPanorama(map.getDiv(), {
-        enableCloseButton: true
-      });
+    var setPanorama = function(map, panoId) {
+      var svp = new google.maps.StreetViewPanorama(map.getDiv(), {enableCloseButton: true});
       svp.setPano(panoId);
     };
 
@@ -572,24 +549,24 @@ var app = angular.module('htc', [
  *     <bicycling-layer></bicycling-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
-  angular.module('htc').directive('bicyclingLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('bicyclingLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getLayer = function (options, events) {
+    
+    var getLayer = function(options, events) {
       var layer = new google.maps.BicyclingLayer(options);
       for (var eventName in events) {
         google.maps.event.addListener(layer, eventName, events[eventName]);
       }
       return layer;
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -599,12 +576,12 @@ var app = angular.module('htc', [
 
         var layer = getLayer(options, events);
         mapController.addObject('bicyclingLayers', layer);
-        mapController.observeAttrSetObj(orgAttrs, attrs, layer); //observers
-        element.bind('$destroy', function () {
+        mapController.observeAttrSetObj(orgAttrs, attrs, layer);  //observers
+        element.bind('$destroy', function() {
           mapController.deleteObject('bicyclingLayers', layer);
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -623,24 +600,24 @@ var app = angular.module('htc', [
  *     <cloud-layer></cloud-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
-  angular.module('htc').directive('cloudLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('cloudLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getLayer = function (options, events) {
+    
+    var getLayer = function(options, events) {
       var layer = new google.maps.weather.CloudLayer(options);
       for (var eventName in events) {
         google.maps.event.addListener(layer, eventName, events[eventName]);
       }
       return layer;
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -649,12 +626,12 @@ var app = angular.module('htc', [
 
         var layer = getLayer(options, events);
         mapController.addObject('cloudLayers', layer);
-        mapController.observeAttrSetObj(orgAttrs, attrs, layer); //observers
-        element.bind('$destroy', function () {
+        mapController.observeAttrSetObj(orgAttrs, attrs, layer);  //observers
+        element.bind('$destroy', function() {
           mapController.deleteObject('cloudLayers', layer);
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -685,44 +662,44 @@ var app = angular.module('htc', [
  *  </map>
  *
  */
-(function () {
+(function() {
   'use strict';
-  angular.module('htc').directive('customControl', ['Attr2Options', '$compile', function (Attr2Options, $compile) {
+  angular.module('htc').directive('customControl', ['Attr2Options', '$compile', function(Attr2Options, $compile)  {
     'use strict';
     var parser = Attr2Options;
 
     return {
       restrict: 'E',
       require: '^map',
-      link: function (scope, element, attrs, mapController) {
-          var orgAttrs = parser.orgAttributes(element);
-          var filtered = parser.filter(attrs);
-          var options = parser.getOptions(filtered, scope);
-          var events = parser.getEvents(scope, filtered);
-          void 0;
+      link: function(scope, element, attrs, mapController) {
+        var orgAttrs = parser.orgAttributes(element);
+        var filtered = parser.filter(attrs);
+        var options = parser.getOptions(filtered, scope);
+        var events = parser.getEvents(scope, filtered);
+        void 0;
 
-          /**
-           * build a custom control element
-           */
-          var customControlEl = element[0].parentElement.removeChild(element[0]);
-          $compile(customControlEl.innerHTML.trim())(scope);
+        /**
+         * build a custom control element
+         */
+        var customControlEl = element[0].parentElement.removeChild(element[0]);
+        $compile(customControlEl.innerHTML.trim())(scope);
 
-          /**
-           * set events
-           */
-          for (var eventName in events) {
-            google.maps.event.addDomListener(customControlEl, eventName, events[eventName]);
-          }
+        /**
+         * set events
+         */
+        for (var eventName in events) {
+          google.maps.event.addDomListener(customControlEl, eventName, events[eventName]);
+        }
 
-          mapController.addObject('customControls', customControlEl);
-          scope.$on('mapInitialized', function (evt, map) {
-            var position = options.position;
-            map.controls[google.maps.ControlPosition[position]].push(customControlEl);
-          });
+        mapController.addObject('customControls', customControlEl);
+        scope.$on('mapInitialized', function(evt, map) {
+          var position = options.position;
+          map.controls[google.maps.ControlPosition[position]].push(customControlEl);
+        });
 
-        } //link
+      } //link
     }; // return
-  }]); // function
+  }]);// function
 })();
 
 /**
@@ -751,26 +728,26 @@ var app = angular.module('htc', [
  *   </map>
  *
  */
-(function () {
+(function() {
   'use strict';
   var parser, $timeout, $compile;
 
-  var CustomMarker = function (options) {
+  var CustomMarker = function(options) {
     options = options || {};
 
     this.el = document.createElement('div');
     this.el.style.display = 'inline-block';
     this.visible = true;
     for (var key in options) { /* jshint ignore:line */
-      this[key] = options[key];
+     this[key] = options[key];
     }
   };
 
-  var setCustomMarker = function () {
+  var setCustomMarker = function() {
 
     CustomMarker.prototype = new google.maps.OverlayView();
 
-    CustomMarker.prototype.setContent = function (html, scope) {
+    CustomMarker.prototype.setContent = function(html, scope) {
       this.el.innerHTML = html;
       this.el.style.position = 'absolute';
       if (scope) {
@@ -778,60 +755,60 @@ var app = angular.module('htc', [
       }
     };
 
-    CustomMarker.prototype.setPosition = function (position) {
+    CustomMarker.prototype.setPosition = function(position) {
       position && (this.position = position); /* jshint ignore:line */
       if (this.getProjection() && typeof this.position.lng == 'function') {
         var posPixel = this.getProjection().fromLatLngToDivPixel(this.position);
-        var x = Math.round(posPixel.x - (this.el.offsetWidth / 2));
+        var x = Math.round(posPixel.x - (this.el.offsetWidth/2));
         var y = Math.round(posPixel.y - this.el.offsetHeight - 10); // 10px for anchor
         this.el.style.left = x + "px";
         this.el.style.top = y + "px";
       }
     };
 
-    CustomMarker.prototype.setZIndex = function (zIndex) {
+    CustomMarker.prototype.setZIndex = function(zIndex) {
       zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
       this.el.style.zIndex = this.zIndex;
     };
 
-    CustomMarker.prototype.setVisible = function (visible) {
+    CustomMarker.prototype.setVisible = function(visible) {
       this.el.style.display = visible ? 'inline-block' : 'none';
       this.visible = visible;
     };
 
-    CustomMarker.prototype.addClass = function (className) {
+    CustomMarker.prototype.addClass = function(className) {
       var classNames = this.el.className.trim().split(' ');
       (classNames.indexOf(className) == -1) && classNames.push(className); /* jshint ignore:line */
       this.el.className = classNames.join(' ');
     };
 
-    CustomMarker.prototype.removeClass = function (className) {
+    CustomMarker.prototype.removeClass = function(className) {
       var classNames = this.el.className.split(' ');
       var index = classNames.indexOf(className);
       (index > -1) && classNames.splice(index, 1); /* jshint ignore:line */
       this.el.className = classNames.join(' ');
     };
 
-    CustomMarker.prototype.onAdd = function () {
+    CustomMarker.prototype.onAdd = function() {
       this.getPanes().overlayMouseTarget.appendChild(this.el);
     };
 
-    CustomMarker.prototype.draw = function () {
+    CustomMarker.prototype.draw = function() {
       this.setPosition();
       this.setZIndex(this.zIndex);
       this.setVisible(this.visible);
     };
 
-    CustomMarker.prototype.onRemove = function () {
+    CustomMarker.prototype.onRemove = function() {
       this.el.parentNode.removeChild(this.el);
       this.el = null;
     };
   };
 
-  var linkFunc = function (orgHtml, varsToWatch) {
+  var linkFunc = function(orgHtml, varsToWatch) {
     //console.log('orgHtml', orgHtml, 'varsToWatch', varsToWatch);
 
-    return function (scope, element, attrs, mapController) {
+    return function(scope, element, attrs, mapController) {
 
       var orgAttrs = parser.orgAttributes(element);
       var filtered = parser.filter(attrs);
@@ -845,8 +822,8 @@ var app = angular.module('htc', [
       void 0;
       var customMarker = new CustomMarker(options);
 
-      $timeout(function () { //apply contents, class, and location after it is compiled
-        scope.$watch('[' + varsToWatch.join(',') + ']', function (val) {
+      $timeout(function() { //apply contents, class, and location after it is compiled
+        scope.$watch('[' + varsToWatch.join(',') + ']', function(val) {
           customMarker.setContent(orgHtml, scope);
         });
 
@@ -858,7 +835,7 @@ var app = angular.module('htc', [
 
         if (!(options.position instanceof google.maps.LatLng)) {
           mapController.getGeoLocation(options.position).then(
-            function (latlng) {
+            function(latlng) {
               customMarker.setPosition(latlng);
             }
           );
@@ -872,7 +849,7 @@ var app = angular.module('htc', [
       }
       mapController.addObject('customMarkers', customMarker);
 
-      element.bind('$destroy', function () {
+      element.bind('$destroy', function() {
         //Is it required to remove event listeners when DOM is removed?
         mapController.deleteObject('customMarkers', customMarker);
       });
@@ -880,7 +857,7 @@ var app = angular.module('htc', [
     }; // linkFunc
   };
 
-  var customMarkerDirective = function (Attr2Options, _$timeout_, _$compile_) {
+  var customMarkerDirective = function(Attr2Options, _$timeout_, _$compile_)  {
     parser = Attr2Options;
     $timeout = _$timeout_;
     $compile = _$compile_;
@@ -889,21 +866,21 @@ var app = angular.module('htc', [
     return {
       restrict: 'E',
       require: '^map',
-      compile: function (element) {
+      compile: function(element) {
         var orgHtml = element.html();
         var matches = orgHtml.match(/{{([^}]+)}}/g);
         var varsToWatch = [];
-        (matches || []).forEach(function (match) { //filter out that contains '::', 'this.'
-          var toWatch = match.replace('{{', '').replace('}}', '');
+        (matches || []).forEach(function(match) { //filter out that contains '::', 'this.'
+          var toWatch = match.replace('{{','').replace('}}','');
           if (match.indexOf('::') == -1 && match.indexOf('this.') == -1 && varsToWatch.indexOf(toWatch) == -1) {
-            varsToWatch.push(match.replace('{{', '').replace('}}', ''));
+            varsToWatch.push(match.replace('{{','').replace('}}',''));
           }
         });
 
         return linkFunc(orgHtml, varsToWatch);
       }
     }; // return
-  }; // function
+  };// function
   customMarkerDirective.$inject = ['Attr2Options', '$timeout', '$compile'];
 
   angular.module('htc').directive('customMarker', customMarkerDirective);
@@ -935,10 +912,10 @@ var app = angular.module('htc', [
  *   </map> 
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var getDirectionsRenderer = function (options, events) {
+  var getDirectionsRenderer = function(options, events) {
     if (options.panel) {
       options.panel = document.getElementById(options.panel) || document.querySelector(options.panel);
     }
@@ -949,33 +926,33 @@ var app = angular.module('htc', [
     return renderer;
   };
 
-  var directions = function (Attr2Options, $timeout, NavigatorGeolocation) {
+  var directions = function(Attr2Options, $timeout, NavigatorGeolocation) {
     var parser = Attr2Options;
     var directionsService = new google.maps.DirectionsService();
 
-    var updateRoute = function (renderer, options) {
+    var updateRoute = function(renderer, options) {
       /* filter out valid keys only for DirectionsRequest object*/
       var request = options;
       request.travelMode = request.travelMode || 'DRIVING';
       var validKeys = [
         'origin', 'destination', 'travelMode', 'transitOptions', 'unitSystem',
-        'durationInTraffic', 'waypoints', 'optimizeWaypoints',
+        'durationInTraffic', 'waypoints', 'optimizeWaypoints', 
         'provideRouteAlternatives', 'avoidHighways', 'avoidTolls', 'region'
       ];
-      for (var key in request) {
+      for(var key in request){
         (validKeys.indexOf(key) === -1) && (delete request[key]);
       }
 
-      if (request.waypoints) {
+      if(request.waypoints) {
         // Check fo valid values
-        if (request.waypoints == "[]" || request.waypoints == "") delete request.waypoints;
+        if(request.waypoints == "[]" || request.waypoints == "")  delete request.waypoints;
       }
 
-      var showDirections = function (request) {
+      var showDirections = function(request) {
         void 0;
-        directionsService.route(request, function (response, status) {
+        directionsService.route(request, function(response, status) {
           if (status == google.maps.DirectionsStatus.OK) {
-            $timeout(function () {
+            $timeout(function() {
               renderer.setDirections(response);
             });
           }
@@ -984,22 +961,22 @@ var app = angular.module('htc', [
 
       if (request.origin && request.destination) {
         if (request.origin == 'current-location') {
-          NavigatorGeolocation.getCurrentPosition().then(function (ll) {
+          NavigatorGeolocation.getCurrentPosition().then(function(ll) {
             request.origin = new google.maps.LatLng(ll.coords.latitude, ll.coords.longitude);
             showDirections(request);
           });
         } else if (request.destination == 'current-location') {
-          NavigatorGeolocation.getCurrentPosition().then(function (ll) {
+          NavigatorGeolocation.getCurrentPosition().then(function(ll) {
             request.destination = new google.maps.LatLng(ll.coords.latitude, ll.coords.longitude);
             showDirections(request);
           });
         } else {
           showDirections(request);
         }
-      }
+      } 
     };
 
-    var linkFunc = function (scope, element, attrs, mapController) {
+    var linkFunc = function(scope, element, attrs, mapController) {
       var orgAttrs = parser.orgAttributes(element);
       var filtered = parser.filter(attrs);
       var options = parser.getOptions(filtered);
@@ -1008,20 +985,18 @@ var app = angular.module('htc', [
 
       var renderer = getDirectionsRenderer(options, events);
       mapController.addObject('directionsRenderers', renderer);
-
-      attrsToObserve.forEach(function (attrName) {
-        (function (attrName) {
-          attrs.$observe(attrName, function (val) {
+      
+      attrsToObserve.forEach(function(attrName) {
+        (function(attrName) {
+          attrs.$observe(attrName, function(val) {
             if (attrName == 'panel') {
-              $timeout(function () {
+              $timeout(function(){
                 var panel = document.getElementById(val) || document.querySelector(val);
                 void 0;
                 panel && renderer.setPanel(panel);
               });
             } else if (options[attrName] !== val) { //apply only if changed
-              var optionValue = parser.toOptionValue(val, {
-                key: attrName
-              });
+              var optionValue = parser.toOptionValue(val, {key: attrName});
               void 0;
               options[attrName] = optionValue;
               updateRoute(renderer, options);
@@ -1030,14 +1005,14 @@ var app = angular.module('htc', [
         })(attrName);
       });
 
-      scope.$on('mapInitialized', function (event, map) {
+      scope.$on('mapInitialized', function(event, map) {
         updateRoute(renderer, options);
       });
-      scope.$on('$destroy', function (event, map) {
+      scope.$on('$destroy', function(event, map) {
         mapController.deleteObject('directionsRenderers', renderer);
       });
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
@@ -1069,16 +1044,16 @@ var app = angular.module('htc', [
  *  currently, for out solution, we have the shapes/markers in our own controller, and we use some css classes to change the shape button
  *  to a remove button (<div>X</div>) and have the remove operation in our own controller.
  */
-(function () {
+(function() {
   'use strict';
-  angular.module('htc').directive('drawingManager', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('drawingManager', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
 
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -1094,11 +1069,11 @@ var app = angular.module('htc', [
           drawingMode: options.drawingmode,
           drawingControl: options.drawingcontrol,
           drawingControlOptions: controlOptions.drawingControlOptions,
-          circleOptions: options.circleoptions,
-          markerOptions: options.markeroptions,
-          polygonOptions: options.polygonoptions,
-          polylineOptions: options.polylineoptions,
-          rectangleOptions: options.rectangleoptions
+          circleOptions:options.circleoptions,
+          markerOptions:options.markeroptions,
+          polygonOptions:options.polygonoptions,
+          polylineOptions:options.polylineoptions,
+          rectangleOptions:options.rectangleoptions
         });
 
 
@@ -1129,13 +1104,13 @@ var app = angular.module('htc', [
  *     <dynamic-maps-engine-layer layer-id="06673056454046135537-08896501997766553811"></dynamic-maps-engine-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('dynamicMapsEngineLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('dynamicMapsEngineLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
 
-    var getDynamicMapsEngineLayer = function (options, events) {
+    var getDynamicMapsEngineLayer = function(options, events) {
       var layer = new google.maps.visualization.DynamicMapsEngineLayer(options);
 
       for (var eventName in events) {
@@ -1145,12 +1120,12 @@ var app = angular.module('htc', [
       return layer;
     };
 
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
         var events = parser.getEvents(scope, filtered, events);
@@ -1159,7 +1134,7 @@ var app = angular.module('htc', [
         var layer = getDynamicMapsEngineLayer(options, events);
         mapController.addObject('mapsEngineLayers', layer);
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -1179,13 +1154,13 @@ var app = angular.module('htc', [
  *     </fusion-tables-layer>
  *   </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('fusionTablesLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('fusionTablesLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
 
-    var getLayer = function (options, events) {
+    var getLayer = function(options, events) {
       var layer = new google.maps.FusionTablesLayer(options);
 
       for (var eventName in events) {
@@ -1195,12 +1170,12 @@ var app = angular.module('htc', [
       return layer;
     };
 
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
         var events = parser.getEvents(scope, filtered, events);
@@ -1209,7 +1184,7 @@ var app = angular.module('htc', [
         var layer = getLayer(options, events);
         mapController.addObject('fusionTablesLayers', layer);
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -1228,17 +1203,17 @@ var app = angular.module('htc', [
  *     <heatmap-layer data="taxiData"></heatmap-layer>
  *   </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('heatmapLayer', ['Attr2Options', '$window', function (Attr2Options, $window) {
+  angular.module('htc').directive('heatmapLayer', ['Attr2Options', '$window', function(Attr2Options, $window) {
     var parser = Attr2Options;
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var filtered = parser.filter(attrs);
 
         /**
@@ -1261,7 +1236,7 @@ var app = angular.module('htc', [
 
         mapController.addObject('heatmapLayers', layer);
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -1306,13 +1281,13 @@ var app = angular.module('htc', [
  *  </map>
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var infoWindow = function (Attr2Options, $compile, $timeout, $parse) {
+  var infoWindow = function(Attr2Options, $compile, $timeout, $parse)  {
     var parser = Attr2Options;
 
-    var getInfoWindow = function (options, events, element) {
+    var getInfoWindow = function(options, events, element) {
       var infoWindow;
 
       /**
@@ -1343,17 +1318,17 @@ var app = angular.module('htc', [
       if (angular.element(template).length != 1) {
         throw "info-window working as a template must have a container";
       }
-      infoWindow.__template = template.replace(/\s?ng-non-bindable[='"]+/, "");
+      infoWindow.__template = template.replace(/\s?ng-non-bindable[='"]+/,"");
 
-      infoWindow.__compile = function (scope, anchor) {
+      infoWindow.__compile = function(scope, anchor) {
         anchor && (scope['this'] = anchor);
         var el = $compile(infoWindow.__template)(scope);
         infoWindow.setContent(el[0]);
         scope.$apply();
       };
 
-      infoWindow.__open = function (map, scope, anchor) {
-        $timeout(function () {
+      infoWindow.__open = function(map, scope, anchor) {
+        $timeout(function() {
           infoWindow.__compile(scope, anchor);
           if (anchor && anchor.getPosition) {
             infoWindow.open(map, anchor);
@@ -1369,8 +1344,8 @@ var app = angular.module('htc', [
       return infoWindow;
     };
 
-    var linkFunc = function (scope, element, attrs, mapController) {
-      element.css('display', 'none');
+    var linkFunc = function(scope, element, attrs, mapController) {
+      element.css('display','none');
 
       var orgAttrs = parser.orgAttributes(element);
       var filtered = parser.filter(attrs);
@@ -1384,7 +1359,7 @@ var app = angular.module('htc', [
       }
       var infoWindow = getInfoWindow(options, events, element);
       if (address) {
-        mapController.getGeoLocation(address).then(function (latlng) {
+        mapController.getGeoLocation(address).then(function(latlng) {
           infoWindow.setPosition(latlng);
           infoWindow.__open(mapController.map, scope, latlng);
           var geoCallback = attrs.geoCallback;
@@ -1395,7 +1370,7 @@ var app = angular.module('htc', [
       mapController.addObject('infoWindows', infoWindow);
       mapController.observeAttrSetObj(orgAttrs, attrs, infoWindow); /* observers */
 
-      scope.$on('mapInitialized', function (evt, map) {
+      scope.$on('mapInitialized', function(evt, map) {
         infoWindow.visible && infoWindow.__open(map, scope);
         if (infoWindow.visibleOnMarker) {
           var markerId = infoWindow.visibleOnMarker;
@@ -1407,12 +1382,12 @@ var app = angular.module('htc', [
        * provide showInfoWindow method to scope
        */
 
-      scope.showInfoWindow = function (e, id, marker) {
+      scope.showInfoWindow  = function(e, id, marker) {
         var infoWindow = mapController.map.infoWindows[id];
         var anchor = marker ? marker : (this.getPosition ? this : null);
         infoWindow.__open(mapController.map, scope, anchor);
-        if (mapController.singleInfoWindow) {
-          if (mapController.lastInfoWindow) scope.hideInfoWindow(e, mapController.lastInfoWindow);
+        if(mapController.singleInfoWindow) {
+          if(mapController.lastInfoWindow) scope.hideInfoWindow(e, mapController.lastInfoWindow);
           mapController.lastInfoWindow = id;
         }
       };
@@ -1420,8 +1395,8 @@ var app = angular.module('htc', [
       /**
        * provide hideInfoWindow method to scope
        */
-      scope.hideInfoWindow = scope.hideInfoWindow ||
-        function (event, id) {
+      scope.hideInfoWindow  = scope.hideInfoWindow ||
+        function(event, id) {
           var infoWindow = mapController.map.infoWindows[id];
           infoWindow.close();
         };
@@ -1465,25 +1440,25 @@ var app = angular.module('htc', [
  *     <kml-layer url="https://gmaps-samples.googlecode.com/svn/trunk/ggeoxml/cta.kml" ></kml-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('kmlLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('kmlLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getKmlLayer = function (options, events) {
+    
+    var getKmlLayer = function(options, events) {
       var kmlLayer = new google.maps.KmlLayer(options);
       for (var eventName in events) {
         google.maps.event.addListener(kmlLayer, eventName, events[eventName]);
       }
       return kmlLayer;
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -1492,12 +1467,12 @@ var app = angular.module('htc', [
 
         var kmlLayer = getKmlLayer(options, events);
         mapController.addObject('kmlLayers', kmlLayer);
-        mapController.observeAttrSetObj(orgAttrs, attrs, kmlLayer); //observers
-        element.bind('$destroy', function () {
+        mapController.observeAttrSetObj(orgAttrs, attrs, kmlLayer);  //observers
+        element.bind('$destroy', function() {
           mapController.deleteObject('kmlLayers', kmlLayer);
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -1518,23 +1493,23 @@ var app = angular.module('htc', [
  *     <map-data load-geo-json="https://storage.googleapis.com/maps-devrel/google.json"></map-data>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('mapData', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('mapData', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
         var events = parser.getEvents(scope, filtered, events);
 
         void 0;
-        scope.$on('mapInitialized', function (event, map) {
+        scope.$on('mapInitialized', function(event, map) {
           /**
            * options
            */
@@ -1559,7 +1534,7 @@ var app = angular.module('htc', [
           }
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -1597,22 +1572,22 @@ var app = angular.module('htc', [
  *     </map>
  *   </div>
  */
-(function () {
+(function() {
   'use strict';
   var $timeout, $compile, src, savedHtml;
 
-  var preLinkFunc = function (scope, element, attrs) {
-    var mapsUrl = attrs.mapLazyLoadParams || attrs.mapLazyLoad;
-
-    window.lazyLoadCallback = function () {
+  var preLinkFunc = function(scope, element, attrs) {
+    var mapsUrl = attrs.mapLazyLoadParams || attrs.mapLazyLoad;    
+    
+    window.lazyLoadCallback = function() {
       void 0;
-      $timeout(function () { /* give some time to load */
+      $timeout(function() { /* give some time to load */
         element.html(savedHtml);
         $compile(element.contents())(scope);
       }, 100);
     };
 
-    if (window.google === undefined || window.google.maps === undefined) {
+    if(window.google === undefined || window.google.maps === undefined) {
       var scriptEl = document.createElement('script');
       void 0;
       scriptEl.src = mapsUrl + (mapsUrl.indexOf('?') > -1 ? '&' : '?') + 'callback=lazyLoadCallback';
@@ -1623,32 +1598,32 @@ var app = angular.module('htc', [
     }
   };
 
-  var compileFunc = function (tElement, tAttrs) {
+  var compileFunc = function(tElement, tAttrs) {
 
     (!tAttrs.mapLazyLoad) && void 0;
-    savedHtml = tElement.html();
+    savedHtml = tElement.html(); 
     src = tAttrs.mapLazyLoad;
 
     /**
      * if already loaded, stop processing it
      */
-    if (document.querySelector('script[src="' + src + (src.indexOf('?') > -1 ? '&' : '?') + 'callback=lazyLoadCallback"]')) {
+    if (document.querySelector('script[src="'+src+(src.indexOf('?') > -1 ? '&' : '?')+'callback=lazyLoadCallback"]')) {
       return false;
     }
 
-    tElement.html(''); // will compile again after script is loaded
+    tElement.html('');  // will compile again after script is loaded
     return {
       pre: preLinkFunc
     };
   };
 
-  var mapLazyLoad = function (_$compile_, _$timeout_) {
+  var mapLazyLoad = function(_$compile_, _$timeout_) {
     $compile = _$compile_, $timeout = _$timeout_;
     return {
       compile: compileFunc
     }
   };
-  mapLazyLoad.$inject = ['$compile', '$timeout'];
+  mapLazyLoad.$inject = ['$compile','$timeout'];
 
   angular.module('htc').directive('mapLazyLoad', mapLazyLoad);
 })();
@@ -1668,19 +1643,18 @@ var app = angular.module('htc', [
  *     <map-type name="coordinate" object="coordinateMapType"></map-type>
  *   </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('mapType', ['Attr2Options', '$window', function (Attr2Options, $window) {
+  angular.module('htc').directive('mapType', ['Attr2Options', '$window', function(Attr2Options, $window) {
     var parser = Attr2Options;
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
-        var mapTypeName = attrs.name,
-          mapTypeObject;
+      link: function(scope, element, attrs, mapController) {
+        var mapTypeName = attrs.name, mapTypeObject;
         if (!mapTypeName) {
           throw "invalid map-type name";
         }
@@ -1695,12 +1669,12 @@ var app = angular.module('htc', [
           throw "invalid map-type object";
         }
 
-        scope.$on('mapInitialized', function (evt, map) {
+        scope.$on('mapInitialized', function(evt, map) {
           map.mapTypes.set(mapTypeName, mapTypeObject);
         });
         mapController.addObject('mapTypes', mapTypeObject);
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -1782,7 +1756,7 @@ var app = angular.module('htc', [
     var linkFunc = function (scope, element, attrs, ctrl) {
       var orgAttrs = parser.orgAttributes(element);
 
-      scope.google = google; //used by $scope.eval in Attr2Options to avoid eval()
+      scope.google = google;  //used by $scope.eval in Attr2Options to avoid eval()
 
       /**
        * create a new `div` inside map tag, so that it does not touch map element
@@ -1926,7 +1900,7 @@ var app = angular.module('htc', [
 })();
 
 /* global google */
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -1941,24 +1915,22 @@ var app = angular.module('htc', [
    * @property {Hash} markers collection of Markers initiated within `map` directive
    * @property {Hash} shapes collection of shapes initiated within `map` directive
    */
-  var MapController = function ($scope, $q, NavigatorGeolocation, GeoCoder, Attr2Options) {
+  var MapController = function($scope, $q, NavigatorGeolocation, GeoCoder, Attr2Options) { 
     var parser = Attr2Options;
     var _this = this;
 
-    var observeAndSet = function (attrs, attrName, object) {
-      attrs.$observe(attrName, function (val) {
+    var observeAndSet = function(attrs, attrName, object) {
+      attrs.$observe(attrName, function(val) {
         if (val) {
           void 0;
-          var setMethod = parser.camelCase('set-' + attrName);
-          var optionValue = parser.toOptionValue(val, {
-            key: attrName
-          });
+          var setMethod = parser.camelCase('set-'+attrName);
+          var optionValue = parser.toOptionValue(val, {key: attrName});
           void 0;
           if (object[setMethod]) { //if set method does exist
             /* if an location is being observed */
-            if (attrName.match(/center|position/) &&
+            if (attrName.match(/center|position/) && 
               typeof optionValue == 'string') {
-              _this.getGeoLocation(optionValue).then(function (latlng) {
+              _this.getGeoLocation(optionValue).then(function(latlng) {
                 object[setMethod](latlng);
               });
             } else {
@@ -1979,7 +1951,7 @@ var app = angular.module('htc', [
      * @param groupName the name of collection that object belongs to
      * @param obj  an object to add into a collection, i.e. marker, shape
      */
-    this.addObject = function (groupName, obj) {
+    this.addObject = function(groupName, obj) {
       /**
        * objects, i.e. markers and shapes, are initialized before map is initialized
        * so, we collect those objects, then, we will add to map when map is initialized
@@ -2009,7 +1981,7 @@ var app = angular.module('htc', [
      * @param {Array} objs the collection of objects. i.e., map.markers
      * @param {Object} obj the object to be removed. i.e., marker
      */
-    this.deleteObject = function (groupName, obj) {
+    this.deleteObject = function(groupName, obj) {
       /* delete from group */
       if (obj.map) {
         var objs = obj.map[groupName];
@@ -2029,9 +2001,9 @@ var app = angular.module('htc', [
      * @function addObjects
      * @param {Array} objects the collection of objects. i.e., map.markers
      */
-    this.addObjects = function (objects) {
-      for (var i = 0; i < objects.length; i++) {
-        var obj = objects[i];
+    this.addObjects = function(objects) {
+      for (var i=0; i<objects.length; i++) {
+        var obj=objects[i];
         if (obj instanceof google.maps.Marker) {
           this.addObject('markers', obj);
         } else if (obj instanceof google.maps.Circle ||
@@ -2054,28 +2026,26 @@ var app = angular.module('htc', [
      * @param {Object} geoLocationOptions the navigator geolocation options. i.e. { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }. If none specified, { timeout: 5000 }. If timeout not specified, timeout: 5000 added
      * @returns {Promise} latlng the location of the address
      */
-    this.getGeoLocation = function (string, geoLocationOptions) {
+    this.getGeoLocation = function(string, geoLocationOptions) {
       var deferred = $q.defer();
       if (!string || string.match(/^current/i)) { // current location
         NavigatorGeolocation.getCurrentPosition(geoLocationOptions).then(
-          function (position) {
+          function(position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
-            var latLng = new google.maps.LatLng(lat, lng);
+            var latLng = new google.maps.LatLng(lat,lng);
             deferred.resolve(latLng);
           },
-          function (error) {
+          function(error) {
             deferred.reject(error);
           }
         );
       } else {
-        GeoCoder.geocode({
-          address: string
-        }).then(
-          function (results) {
+        GeoCoder.geocode({address: string}).then(
+          function(results) {
             deferred.resolve(results[0].geometry.location);
           },
-          function (error) {
+          function(error) {
             deferred.reject(error);
           }
         );
@@ -2092,12 +2062,12 @@ var app = angular.module('htc', [
      * @param {Hash} attrs    attributes after its initialization
      * @param {Object} obj    map object that an action is to be done
      */
-    this.observeAttrSetObj = function (orgAttrs, attrs, obj) {
+    this.observeAttrSetObj = function(orgAttrs, attrs, obj) {
       var attrsToObserve = parser.getAttrsToObserve(orgAttrs);
       if (Object.keys(attrsToObserve).length) {
         void 0;
       }
-      for (var i = 0; i < attrsToObserve.length; i++) {
+      for (var i=0; i<attrsToObserve.length; i++) {
         observeAndSet(attrs, attrsToObserve[i], obj);
       }
     };
@@ -2105,7 +2075,7 @@ var app = angular.module('htc', [
     /**
      * include all markers
      */
-    this.zoomToIncludeMarkers = function () {
+    this.zoomToIncludeMarkers = function() {
       var bounds = new google.maps.LatLngBounds();
       for (var marker in this.map.markers) {
         bounds.extend(this.map.markers[marker].getPosition());
@@ -2132,13 +2102,13 @@ var app = angular.module('htc', [
  *     <maps-engine-layer layer-id="06673056454046135537-08896501997766553811"></maps-engine-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('mapsEngineLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('mapsEngineLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
 
-    var getMapsEngineLayer = function (options, events) {
+    var getMapsEngineLayer = function(options, events) {
       var layer = new google.maps.visualization.MapsEngineLayer(options);
 
       for (var eventName in events) {
@@ -2148,12 +2118,12 @@ var app = angular.module('htc', [
       return layer;
     };
 
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
         var events = parser.getEvents(scope, filtered, events);
@@ -2162,7 +2132,7 @@ var app = angular.module('htc', [
         var layer = getMapsEngineLayer(options, events);
         mapController.addObject('mapsEngineLayers', layer);
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -2203,14 +2173,14 @@ var app = angular.module('htc', [
  *   </map>
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var getMarker = function (options, events) {
+  var getMarker = function(options, events) {
     var marker;
 
     if (!(options.position instanceof google.maps.LatLng)) {
-      options.position = new google.maps.LatLng(0, 0);
+      options.position = new google.maps.LatLng(0,0);
     }
     marker = new google.maps.Marker(options);
 
@@ -2229,9 +2199,9 @@ var app = angular.module('htc', [
     return marker;
   };
 
-  var marker = function (Attr2Options, $parse) {
+  var marker = function(Attr2Options, $parse) {
     var parser = Attr2Options;
-    var linkFunc = function (scope, element, attrs, mapController) {
+    var linkFunc = function(scope, element, attrs, mapController) {
       var orgAttrs = parser.orgAttributes(element);
       var filtered = parser.filter(attrs);
       var markerOptions = parser.getOptions(filtered, scope);
@@ -2245,7 +2215,7 @@ var app = angular.module('htc', [
       var marker = getMarker(markerOptions, markerEvents);
       mapController.addObject('markers', marker);
       if (address) {
-        mapController.getGeoLocation(address).then(function (latlng) {
+        mapController.getGeoLocation(address).then(function(latlng) {
           marker.setPosition(latlng);
           markerOptions.centered && marker.map.setCenter(latlng);
           var geoCallback = attrs.geoCallback;
@@ -2257,7 +2227,7 @@ var app = angular.module('htc', [
        * set observers
        */
       mapController.observeAttrSetObj(orgAttrs, attrs, marker); /* observers */
-      element.bind('$destroy', function () {
+      element.bind('$destroy', function() {
         mapController.deleteObject('markers', marker);
       });
     };
@@ -2270,7 +2240,7 @@ var app = angular.module('htc', [
   };
 
   marker.$inject = ['Attr2Options', '$parse'];
-  angular.module('htc').directive('marker', marker);
+  angular.module('htc').directive('marker', marker); 
 
 })();
 
@@ -2290,17 +2260,17 @@ var app = angular.module('htc', [
  *     <overlay-map-type index="0" object="coordinateMapType"></map-type>
  *   </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('overlayMapType', ['Attr2Options', '$window', function (Attr2Options, $window) {
+  angular.module('htc').directive('overlayMapType', ['Attr2Options', '$window', function(Attr2Options, $window) {
     var parser = Attr2Options;
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var overlayMapTypeObject;
         var initMethod = attrs.initMethod || "insertAt";
         if (attrs.object) {
@@ -2314,7 +2284,7 @@ var app = angular.module('htc', [
           throw "invalid map-type object";
         }
 
-        scope.$on('mapInitialized', function (evt, map) {
+        scope.$on('mapInitialized', function(evt, map) {
           if (initMethod == "insertAt") {
             var index = parseInt(attrs.index, 10);
             map.overlayMapTypes.insertAt(index, overlayMapTypeObject);
@@ -2324,7 +2294,7 @@ var app = angular.module('htc', [
         });
         mapController.addObject('overlayMapTypes', overlayMapTypeObject);
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -2345,14 +2315,14 @@ var app = angular.module('htc', [
  *   <input places-auto-complete types="['geocode']" on-place-changed="myCallback(place)" />
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var placesAutoComplete = function (Attr2Options, $timeout) {
+  var placesAutoComplete = function(Attr2Options, $timeout) {
     var parser = Attr2Options;
 
-    var linkFunc = function (scope, element, attrs, ngModelCtrl) {
-      if (attrs.placesAutoComplete === 'false') {
+    var linkFunc = function(scope, element, attrs, ngModelCtrl) {
+      if (attrs.placesAutoComplete ==='false') {
         return false;
       }
       var filtered = parser.filter(attrs);
@@ -2364,20 +2334,18 @@ var app = angular.module('htc', [
         google.maps.event.addListener(autocomplete, eventName, events[eventName]);
       }
 
-      var updateModel = function () {
-        $timeout(function () {
+      var updateModel = function() {
+        $timeout(function(){
           ngModelCtrl && ngModelCtrl.$setViewValue(element.val());
-        }, 100);
+        },100);
       }
       google.maps.event.addListener(autocomplete, 'place_changed', updateModel);
       element[0].addEventListener('change', updateModel);
 
-      attrs.$observe('types', function (val) {
+      attrs.$observe('types', function(val) {
         if (val) {
           void 0;
-          var optionValue = parser.toOptionValue(val, {
-            key: 'types'
-          });
+          var optionValue = parser.toOptionValue(val, {key: 'types'});
           void 0;
           autocomplete.setTypes(optionValue);
         }
@@ -2392,7 +2360,7 @@ var app = angular.module('htc', [
   };
 
   placesAutoComplete.$inject = ['Attr2Options', '$timeout'];
-  angular.module('htc').directive('placesAutoComplete', placesAutoComplete);
+  angular.module('htc').directive('placesAutoComplete', placesAutoComplete); 
 
 })();
 
@@ -2459,45 +2427,41 @@ var app = angular.module('htc', [
  *    [shape example](https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/shape.html)
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
 
-  var getShape = function (options, events) {
+  var getShape = function(options, events) {
     var shape;
 
     var shapeName = options.name;
-    delete options.name; //remove name bcoz it's not for options
+    delete options.name;  //remove name bcoz it's not for options
     void 0;
 
     /**
      * set options
      */
-    switch (shapeName) {
-    case "circle":
-      if (!(options.center instanceof google.maps.LatLng)) {
-        options.center = new google.maps.LatLng(0, 0);
-      }
-      shape = new google.maps.Circle(options);
-      break;
-    case "polygon":
-      shape = new google.maps.Polygon(options);
-      break;
-    case "polyline":
-      shape = new google.maps.Polyline(options);
-      break;
-    case "rectangle":
-      shape = new google.maps.Rectangle(options);
-      break;
-    case "groundOverlay":
-    case "image":
-      var url = options.url;
-      var opts = {
-        opacity: options.opacity,
-        clickable: options.clickable,
-        id: options.id
-      };
-      shape = new google.maps.GroundOverlay(url, options.bounds, opts);
-      break;
+    switch(shapeName) {
+      case "circle":
+        if (!(options.center instanceof google.maps.LatLng)) {
+          options.center = new google.maps.LatLng(0,0);
+        } 
+        shape = new google.maps.Circle(options);
+        break;
+      case "polygon":
+        shape = new google.maps.Polygon(options);
+        break;
+      case "polyline":
+        shape = new google.maps.Polyline(options);
+        break;
+      case "rectangle":
+        shape = new google.maps.Rectangle(options);
+        break;
+      case "groundOverlay":
+      case "image":
+        var url = options.url;
+        var opts = {opacity: options.opacity, clickable: options.clickable, id:options.id};
+        shape = new google.maps.GroundOverlay(url, options.bounds, opts);
+        break;
     }
 
     /**
@@ -2511,10 +2475,10 @@ var app = angular.module('htc', [
     return shape;
   };
 
-  var shape = function (Attr2Options, $parse) {
+  var shape = function(Attr2Options, $parse) {
     var parser = Attr2Options;
 
-    var linkFunc = function (scope, element, attrs, mapController) {
+    var linkFunc = function(scope, element, attrs, mapController) {
       var orgAttrs = parser.orgAttributes(element);
       var filtered = parser.filter(attrs);
       var shapeOptions = parser.getOptions(filtered);
@@ -2529,7 +2493,7 @@ var app = angular.module('htc', [
       mapController.addObject('shapes', shape);
 
       if (address && shapeType == 'circle') {
-        mapController.getGeoLocation(address).then(function (latlng) {
+        mapController.getGeoLocation(address).then(function(latlng) {
           shape.setCenter(latlng);
           shape.centered && shape.map.setCenter(latlng);
           var geoCallback = attrs.geoCallback;
@@ -2540,8 +2504,8 @@ var app = angular.module('htc', [
       /**
        * set observers
        */
-      mapController.observeAttrSetObj(orgAttrs, attrs, shape);
-      element.bind('$destroy', function () {
+      mapController.observeAttrSetObj(orgAttrs, attrs, shape); 
+      element.bind('$destroy', function() {
         mapController.deleteObject('shapes', shape);
       });
     };
@@ -2550,7 +2514,7 @@ var app = angular.module('htc', [
       restrict: 'E',
       require: '^map',
       link: linkFunc
-    }; // return
+     }; // return
   };
   shape.$inject = ['Attr2Options', '$parse'];
 
@@ -2586,13 +2550,13 @@ var app = angular.module('htc', [
  *   </map>
  */
 /* global google */
-(function () {
+(function() {
   'use strict';
-
-  var streetViewPanorama = function (Attr2Options) {
+   
+  var streetViewPanorama = function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getStreetViewPanorama = function (map, options, events) {
+  
+    var getStreetViewPanorama = function(map, options, events) {
       var svp, container;
       if (options.container) {
         container = document.getElementById(options.container);
@@ -2612,7 +2576,7 @@ var app = angular.module('htc', [
       return svp;
     };
 
-    var linkFunc = function (scope, element, attrs, mapController) {
+    var linkFunc = function(scope, element, attrs, mapController) {
       var orgAttrs = parser.orgAttributes(element);
       var filtered = parser.filter(attrs);
       var options = parser.getOptions(filtered);
@@ -2621,19 +2585,19 @@ var app = angular.module('htc', [
 
       var svpEvents = parser.getEvents(scope, filtered);
       void 0;
-
-      scope.$on('mapInitialized', function (evt, map) {
+ 
+      scope.$on('mapInitialized', function(evt, map) {
         var svp = getStreetViewPanorama(map, svpOptions, svpEvents);
 
         map.setStreetView(svp);
         (!svp.getPosition()) && svp.setPosition(map.getCenter());
-        google.maps.event.addListener(svp, 'position_changed', function () {
+        google.maps.event.addListener(svp, 'position_changed', function() {
           if (svp.getPosition() !== map.getCenter()) {
             map.setCenter(svp.getPosition());
           }
         });
         //needed for geo-callback
-        var listener = google.maps.event.addListener(map, 'center_changed', function () {
+        var listener = google.maps.event.addListener(map, 'center_changed', function() {
           svp.setPosition(map.getCenter());
           google.maps.event.removeListener(listener);
         });
@@ -2668,25 +2632,25 @@ var app = angular.module('htc', [
  *     <traffic-layer></traffic-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('trafficLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('trafficLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getLayer = function (options, events) {
+    
+    var getLayer = function(options, events) {
       var layer = new google.maps.TrafficLayer(options);
       for (var eventName in events) {
         google.maps.event.addListener(layer, eventName, events[eventName]);
       }
       return layer;
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -2695,12 +2659,12 @@ var app = angular.module('htc', [
 
         var layer = getLayer(options, events);
         mapController.addObject('trafficLayers', layer);
-        mapController.observeAttrSetObj(orgAttrs, attrs, layer); //observers
-        element.bind('$destroy', function () {
+        mapController.observeAttrSetObj(orgAttrs, attrs, layer);  //observers
+        element.bind('$destroy', function() {
           mapController.deleteObject('trafficLayers', layer);
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -2719,25 +2683,25 @@ var app = angular.module('htc', [
  *     <transit-layer></transit-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('transitLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('transitLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getLayer = function (options, events) {
+    
+    var getLayer = function(options, events) {
       var layer = new google.maps.TransitLayer(options);
       for (var eventName in events) {
         google.maps.event.addListener(layer, eventName, events[eventName]);
       }
       return layer;
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -2746,12 +2710,12 @@ var app = angular.module('htc', [
 
         var layer = getLayer(options, events);
         mapController.addObject('transitLayers', layer);
-        mapController.observeAttrSetObj(orgAttrs, attrs, layer); //observers
-        element.bind('$destroy', function () {
+        mapController.observeAttrSetObj(orgAttrs, attrs, layer);  //observers
+        element.bind('$destroy', function() {
           mapController.deleteObject('transitLayers', layer);
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
 
@@ -2770,25 +2734,25 @@ var app = angular.module('htc', [
  *     <weather-layer></weather-layer>
  *    </map>
  */
-(function () {
+(function() {
   'use strict';
 
-  angular.module('htc').directive('weatherLayer', ['Attr2Options', function (Attr2Options) {
+  angular.module('htc').directive('weatherLayer', ['Attr2Options', function(Attr2Options) {
     var parser = Attr2Options;
-
-    var getLayer = function (options, events) {
+    
+    var getLayer = function(options, events) {
       var layer = new google.maps.weather.WeatherLayer(options);
       for (var eventName in events) {
         google.maps.event.addListener(layer, eventName, events[eventName]);
       }
       return layer;
     };
-
+    
     return {
       restrict: 'E',
       require: '^map',
 
-      link: function (scope, element, attrs, mapController) {
+      link: function(scope, element, attrs, mapController) {
         var orgAttrs = parser.orgAttributes(element);
         var filtered = parser.filter(attrs);
         var options = parser.getOptions(filtered);
@@ -2798,66 +2762,11 @@ var app = angular.module('htc', [
 
         var layer = getLayer(options, events);
         mapController.addObject('weatherLayers', layer);
-        mapController.observeAttrSetObj(orgAttrs, attrs, layer); //observers
-        element.bind('$destroy', function () {
+        mapController.observeAttrSetObj(orgAttrs, attrs, layer);  //observers
+        element.bind('$destroy', function() {
           mapController.deleteObject('weatherLayers', layer);
         });
       }
-    }; // return
+     }; // return
   }]);
 })();
-
-//End Map
-
-// Define all angular modules that will be used to get them in other files
-angular.module('htc.controllers', []);
-angular.module('htc.services', []);
-
-app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-  $httpProvider.defaults.withCredentials = true;
-
-  $routeProvider
-    .when('/', {
-      templateUrl: 'views/main.html',
-      controller: 'mainController',
-      controllerAs: 'mainCtrl'
-    })
-    .when('/home', {
-      templateUrl: 'views/home.html',
-      controller: 'homeController',
-      controllerAs: 'homeCtrl'
-    })
-    .when('/abuse', {
-      templateUrl: 'views/abuse.html',
-      controller: 'abuseController',
-      controllerAs: 'abuseCtrl'
-    })
-    .when('/showAbuse/:id', {
-      templateUrl: 'views/showAbuse.html',
-      controller: 'showAbuseController',
-      controllerAs: 'showAbuseCtrl'
-    })
-    .when('/user', {
-      templateUrl: 'views/user.html',
-      controller: 'userController',
-      controllerAs: 'userCtrl'
-    })
-    .when('/showUser/:id', {
-      templateUrl: 'views/showUser.html',
-      controller: 'showUserController',
-      controllerAs: 'showUserCtrl'
-    })
-    .when('/report', {
-      templateUrl: 'views/report.html',
-      controller: 'reportController',
-      controllerAs: 'reportCtrl'
-    })
-    .when('/showReport/:id', {
-      templateUrl: 'views/showReport.html',
-      controller: 'showReportController',
-      controllerAs: 'showReportCtrl'
-    })
-    .otherwise({
-      redirectTo: '/'
-    });
-}]);
