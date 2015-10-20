@@ -1,24 +1,25 @@
 <ion-view>
-	<ion-nav-title>
-		<p class="htcTitle">Help the City</p>
-	</ion-nav-title>
-	<ion-content>
-		<div class="list">
-			<div>
-				<div id="textOfLogin">
-					Login
-				</div>
-			</div>
-			<form name="form" novalidate class="form" ng-class="{submitted:form.submitted}">
-				<label class="item item-input item-stacked-label">
-					<span class="input-label">E-mail</span>
-					<input type="email" placeholder="Email" name="email" ng-model="user.email" required/>
-				</label>
-				<label class="item item-input item-stacked-label">
-					<span class="input-label">Senha</span>
-					<input type="password" placeholder="Senha" name="password" ng-model="user.password" required/>
-				</label>
-				<input type="submit" class="button" id="button-login" ng-click="validate(form) && login()" value="Entrar" />
-			</form>
-	</ion-content>
+  <ion-nav-title>
+    <p class="htcTitle">Help the City</p>
+  </ion-nav-title>
+  <ion-content>
+    <div id="titleLogin">
+      <div id="textOfLogin">
+        Login
+      </div>
+    </div>
+    <form name="form" novalidate class="form" ng-class="{submitted:form.submitted}">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">E-mail</span>
+        <input type="email" placeholder="Email" name="email" ng-model="user.email" required/>
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Senha</span>
+        <input type="password" placeholder="Senha" name="password" ng-model="user.password" required/>
+      </label>
+      <div class="divBtnEntrar">
+        <input type="submit" class="button" id="button-login" ng-click="validate(form) && login()" value="Entrar" />
+      </div>
+    </form>
+  </ion-content>
 </ion-view>

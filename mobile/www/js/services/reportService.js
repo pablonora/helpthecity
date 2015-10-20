@@ -7,16 +7,14 @@ angular.module('htc.services')
   return {
     
     //Create report
-    createReport: function (report, cb, err) {
+    createReport: function (report, cb) {
       $http.post(routerService.createReportUrl, JSON.stringify(report)).then(function (response) {
         cb(response);
-      }, function (response) {
-				if(err) err(response.data);
-			});
+      });
     },
     
     //Get list of reports
-    getListOfReportsWithUser: function (cb, err) {
+      getListOfReportsWithUser: function (cb, err) {
       $http.get(routerService.getListOfReportsWithUser).then(function (response) {
 				reports = response.data;
         cb(reports);
