@@ -13,9 +13,9 @@ angular.module('htc.controllers')
 
 		userService.login(data, function (user) {
 			localStorageService.setObject('user', user);
-			$location.path('/tab/listOfReports');
-			//$ionicHistory.clearCache();
-			//$ionicHistory.clearHistory();
+			$location.path('/');
+			$ionicHistory.clearCache();
+			$ionicHistory.clearHistory();
 		}, function (err) {
 			if (err === '') {
 				popupService.showAlert('O servidor está indisponível, tente novamente mais tarde');

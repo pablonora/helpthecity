@@ -2,6 +2,7 @@ angular.module('htc.controllers')
 
 .controller('reportController', ['$location', '$scope', '$http', 'reportService', 'popupService', 'connectionHandlerService', function ($location, $scope, $http, reportService, popupService, connectionHandlerService) {
 	$scope.listOfReports = [];
+	$scope.report = {};
 
 	$scope.map = {
 		center: {
@@ -15,9 +16,9 @@ angular.module('htc.controllers')
 	$scope.createReport = function () {
 		var data = {
 			report: {
-				date: '2015-10-03 18:08:25.715-03',
-				description: 'teste',
-				image: 'teste',
+				date: Date.now() / 1000,
+				description: $scope.report.description,
+				image: $scope.report.image,
 				latitude: -22.206368,
 				longitude: -45.909593,
 				precision: 200,

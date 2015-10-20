@@ -12,6 +12,6 @@ angular.module('htc.services')
 	};
 
 	return {
-		disconnect: _disconnect;
+		disconnect: _disconnect
 	};
 }]);
