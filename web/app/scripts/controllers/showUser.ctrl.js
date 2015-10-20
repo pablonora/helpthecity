@@ -50,7 +50,6 @@ angular.module('htc.controllers')
       }
     };
 
-
     $http.put(routerService.updateUserUrl + $scope.id, JSON.stringify(data)).then(function (response) {
       console.log(response);
       $location.path('/user');

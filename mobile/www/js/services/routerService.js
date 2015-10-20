@@ -3,7 +3,7 @@
 angular.module('htc.services')
 
 .factory('routerService', function () {
-  var baseURL = 'http://192.168.0.100:5000/htc/api/';
+  var baseURL = 'http://192.168.0.107:5000/htc/api/';
 
   return {
     /*Abuse*/

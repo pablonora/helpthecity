@@ -40,9 +40,9 @@ module.exports = function (app, config) {
 		cookie : { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 }
 	}));
 	app.use(function (req, res, next) {
-		var maria = '192.168.255.2',
-			andre = '192.168.5.126',
-			pablo = '192.168.0.100',
+		var maria = '192.168.0.110',
+			andre = '192.168.0.110',
+			pablo = '192.168.0.110',
 			proxy_fai = '192.168.255.2',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
