@@ -1,18 +1,19 @@
 .form .ng-invalid.ng-touched {
-	box-shadow: 0px 0px 5px red;
+  box-shadow: 0px 0px 5px red;
 }
 
 .form.submitted .ng-invalid {
-	box-shadow: 0px 0px 5px red;
+  box-shadow: 0px 0px 5px red;
 }
 
 .form .ng-valid.ng-touched {
-	box-shadow: none;
+  box-shadow: none;
 }
 
 .form.submitted .ng-valid {
-	box-shadow: none;
+  box-shadow: none;
 }
+
 
 /*****************************************************************
 /*Popup's classes
@@ -25,81 +26,129 @@
 .popup-buttons.row 
 .popup-buttons .button
 */
+
 .popup-title {
   color: #006064 !important;
 }
 
-.popup-body{
+.popup-body {
   color: #000 !important;
 }
 
 .popup-buttons .button {
   background: #006064 !important;
 }
+
+
 /*****************************************************+************/
 
 .htcTitle {
-	color: white;
-	text-align: center;
+  color: white;
+  text-align: center !important;
 }
 
 .buttonBack {
-	color: white;
+  color: white;
+}
+
+.buttonEnviar {
+  width: 30%;
+  margin-top: 3%;
+  margin-left: 35%;
+  color: #006064;
+  background-color: white;
 }
 
 .button-send {
-	width: 30%;
-	margin-top: 3%;
-	margin-left: 50%;
-	color: #006064;
-	background-color: white;
+  width: 30%;
+  margin-top: 10%;
+  color: #006064 !important;
+  background-color: white;
 }
 
-#button-login {
-	width: 30%;
-	margin-top: 3%;
-	margin-left: 35%;
-	color: #006064;
-	background-color: white;
+#divBtnEnviar {
+  overflow: hidden;
+  text-align: center;
 }
 
 .icon {
-	color: #fff;
+  color: #fff;
 }
+
+.iconHTC {
+  color: #006064;
+}
+
 
 /*===HOME===*/
 
 #backgroundHome {
-	background-color: #006064;
+  background-color: #006064;
+}
+
+#divHome {
+  overflow: hidden;
+  text-align: center;
 }
 
 #logoHome {
-	margin-left: 25%;
-	margin-top: 25%
+  margin-top: 30%;
+  text-align: center;
 }
 
-#buttonHome {
-	width: 50%;
-	margin-top: 3%;
-	margin-left: 24%;
-	color: azure;
-	background-color: #006064;
+.buttonHome {
+  width: 50%;
+  margin-bottom: 2%;
+  text-align: center;
+  color: azure;
+  background-color: #006064;
 }
 
 
 /*===LOGIN===*/
 
-#textOfLogin {
-	margin-left: 35%;
-	margin-top: 10%;
-	margin-bottom: 10%;
-	color: #006064;
-	font-size: 20pt;
+.divBtnEntrar {
+  overflow: hidden;
+  text-align: center;
+}
+
+#titleLogin {
+  text-align: center;
+  margin-bottom: 10%;
+}
+
+] #textOfLogin {
+  margin-top: 10%;
+  color: #006064;
+  font-size: 20pt;
+}
+
+#button-login {
+  width: 30%;
+  margin-top: 10%;
+  color: #006064;
+  background-color: white;
+}
+
+
+/*=== REGISTER USER===*/
+
+#divRegisterUser {
+  overflow: hidden;
+  text-align: center !important;
+  width: 100%;
 }
 
 
 /*===LIST OF REPORTS===*/
 
 .like {
-	background-color: red;
+  background-color: red;
+}
+
+
+/*===MAPS===*/
+
+.angular-google-map-container {
+  height: 300px;
 }

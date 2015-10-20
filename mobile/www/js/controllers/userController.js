@@ -54,7 +54,7 @@ angular.module('htc.controllers')
 			}
 		);
 	};
-
+	
 	$scope.validate = function (form) {
 		var result = true;
 		form.submitted = true;

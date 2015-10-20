@@ -3,36 +3,35 @@
   margin: 0 auto;
 }
 
-.welcome-title{
-	text-align:center;
-	font-size: 80px;
+.welcome-title {
+  text-align: center;
+  font-size: 80px;
 }
 
 .logo-login {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 10px;
-    display: block;
-
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 10px;
+  display: block;
 }
 
 .logo-home {
-    width: 63px;
-    height: 63px;
-    margin: 100 auto 10px;
-    display: block;
+  width: 63px;
+  height: 63px;
+  margin: 100 auto 10px;
+  display: block;
 }
 
-.user-photo{
-    width: 63px;
-    height: 63px;
-    margin: 100 auto 10px;
-    display: block;
+.user-photo {
+  width: 63px;
+  height: 63px;
+  margin: 100 auto 10px;
+  display: block;
 }
 
-.report-image{
-    width: 200px;
-    height: 200px;
-    margin: 100 auto 10px;
-    display: block;
+.report-image {
+  width: 200px;
+  height: 200px;
+  margin: 100 auto 10px;
+  display: block;
 }

@@ -3,6 +3,14 @@ angular.module('htc.controllers')
 .controller('reportController', ['$location', '$scope', '$http', 'reportService', 'popupService', 'connectionHandlerService', function ($location, $scope, $http, reportService, popupService, connectionHandlerService) {
 	$scope.listOfReports = [];
 
+	$scope.map = {
+		center: {
+			latitude: -15.7918215,
+			longitude: -47.8795161
+		},
+		zoom: 4
+	};
+
 	/* Register report */
 	$scope.createReport = function () {
 		var data = {
@@ -53,10 +61,5 @@ angular.module('htc.controllers')
 				saveToPhotoAlbum: false
 			}
 		);
-	};
-
-	/*Up*/
-	$scope.likeReport = function () {
-		$scope.like = "like";
 	};
 }]);

@@ -8,4 +8,9 @@ angular.module('htc.controllers')
     $scope.reports = reports.data;
     console.log(reports.data);
   });
+
+  $scope.click = function (event,id) {
+    console.log();
+    location.href = "/#/showReport/"+id;
+  }
 }]);

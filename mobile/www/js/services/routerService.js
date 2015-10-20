@@ -12,10 +12,14 @@ angular.module('htc.services')
     readAbuseCategoriesUrl: baseURL + 'abuseCategory/',
     /*Login*/
     loginUrl: baseURL + 'login',
+    
+    createAbuseUrl: baseURL + 'abuse',
+
     /*Report*/
     createReportUrl: baseURL + 'report',
     getListOfReportsWithUser: baseURL + 'reportsWithUsers',
     /*User*/
+
     createUserUrl: baseURL + 'user',
     getUserUrl: baseURL + 'user/',
     updateUserUrl: baseURL + 'user/'
