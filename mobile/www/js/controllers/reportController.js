@@ -1,6 +1,6 @@
 angular.module('htc.controllers')
 
-.controller('reportController', ['$ionicHistory', '$location', '$scope', '$http', '$location', 'routerService', 'localStorageService', 'reportService', function ($ionicHistory, $location, $scope, $http, $location, routerService, localStorageService, reportService) {
+.controller('reportController', ['$location', '$scope', '$http', 'reportService', 'popupService', 'connectionHandlerService', function ($location, $scope, $http, reportService, popupService, connectionHandlerService) {
 	$scope.listOfReports = [];
 
 	/* Register report */
@@ -18,23 +18,20 @@ angular.module('htc.controllers')
 			}
 		};
 		reportService.createReport(data, function (response) {
-			console.log(response);
+			$location.path('/tab/listOfReports');
+		}, function (err) {
+			if (err === 'Access denied') {
+				connectionHandlerService.disconnect();
+			}
 		});
-		$location.path('/tab/listOfReports');
 	};
 
 	$scope.getListOfReports = function () {
 		reportService.getListOfReportsWithUser(function (reports) {
 			$scope.listOfReports = reports;
-			console.log($scope.listOfReports);
 		}, function (err) {
 			if (err === 'Access denied') {
-				$scope.$apply(function () {
-					$location.path('/login');
-					localStorageService.clear();
-					$ionicHistory.clearCache();
-					$ionicHistory.clearHistory();
-				});
+				connectionHandlerService.disconnect();
 			}
 		});
 	};
@@ -60,7 +57,6 @@ angular.module('htc.controllers')
 
 	/*Up*/
 	$scope.likeReport = function () {
-		console.log("entrou");
 		$scope.like = "like";
 	};
 }]);

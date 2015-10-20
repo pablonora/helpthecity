@@ -1,8 +1,7 @@
 angular.module('htc.services')
 
 .factory('popupService', ['$ionicPopup', function ($ionicPopup) {
-	return {
-		showConfirm: function (title, template, cb) {
+	var _showConfirm = function (title, template, cb) {
 			if (title == null) title = '';
 			if (template == null) template = '';
 
@@ -15,7 +14,7 @@ angular.module('htc.services')
 				if (cb) cb(res);
 			});
 		},
-		showAlert: function (title, template, cb) {
+		_showAlert = function (title, template, cb) {
 			if (title == null) title = '';
 			if (template == null) template = '';
 
@@ -27,6 +26,10 @@ angular.module('htc.services')
 			alertPopup.then(function (res) {
 				if (cb) cb(res);
 			});
-		}
+		};
+
+	return {
+		showConfirm: _showConfirm,
+		showAlert: _showAlert
 	};
 }]);

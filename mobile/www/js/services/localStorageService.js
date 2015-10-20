@@ -3,24 +3,32 @@
 angular.module('htc.services')
 
 .factory('localStorageService', ['$window', function ($window) {
-	return {
-		set: function (key, value) {
+	var _set = function (key, value) {
 			$window.localStorage[key] = value;
 		},
-		get: function (key, defaultValue) {
+		_get = function (key, defaultValue) {
 			return $window.localStorage[key] || defaultValue;
 		},
-		setObject: function (key, value) {
+		_setObject = function (key, value) {
 			$window.localStorage[key] = JSON.stringify(value);
 		},
-		getObject: function (key, defaulValue) {
+		_getObject = function (key, defaulValue) {
 			return JSON.parse($window.localStorage[key] || defaulValue);
 		},
-		clear: function () {
+		_clear = function () {
 			$window.localStorage.clear();
 		},
-		checkLoggedIn: function () {
+		_checkLoggedIn = function () {
 			return this.getObject('user', null) != null;
-		}
+		};
+
+
+	return {
+		set: _set,
+		get: _get,
+		setObject: _setObject,
+		getObject: _getObject,
+		clear: _clear,
+		checkLoggedIn: _checkLoggedIn
 	};
 }]);

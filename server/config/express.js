@@ -26,25 +26,31 @@ module.exports = function (app, config) {
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
-	app.use(cookieParser());
+	app.use(cookieParser('supernova'));
 	app.use(compress());
 	app.use(express.static(config.root + '/public'));
 	app.use(methodOverride());
 	app.use(session({
 		secret: 'supernova',
-		saveUninitialized: true,
-		resave: true
+		name: 'htc.sid',
+		saveUninitialized: false,
+		rolling: true,
+		resave: false,
+		expires: false,
+		cookie : { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 }
 	}));
 	app.use(function (req, res, next) {
-		var maria = '192.168.4.52',
-			andre = '192.168.4.240',
-			pablo = '192.168.0.108',
+		var maria = '192.168.255.2',
+			andre = '192.168.5.126',
+			pablo = '192.168.0.100',
+			proxy_fai = '192.168.255.2',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
 		ip = ip[ip.length - 1];
 		if (ip === maria) origin += ip + ':3000';
 		else if (ip === andre) origin += ip + ':9000';
 		else if (ip === pablo) origin += ip + ':3000';
+		else if (ip === proxy_fai) origin += ip + ':3000';
 
 		res.header('Access-Control-Allow-Origin', origin);
 		res.header('Access-Control-Allow-Credentials', true);
