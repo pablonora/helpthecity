@@ -81,7 +81,8 @@ var ReportDAO = {
 		return models.Report.findAll({
 			include: [{
 				model: models.User
-				}]
+				}],
+			order: 'date DESC'
 		}).then(function (reports) {
 			reports.forEach(function (report) {
 				report.User.password = '';
@@ -120,5 +121,6 @@ function createQuery(criteria) {
 	if (criteria.userId) {
 		query += ' AND "userId" = ' + criteria.userId;
 	}
+	query += 'ORDER BY date';
 	return query;
 };

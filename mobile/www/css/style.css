@@ -140,6 +140,14 @@
 }
 
 
+/*===CREATE REPORT===*/
+
+.imgReport {
+  width: 200px;
+  height: 200px;
+}
+
+
 /*===LIST OF REPORTS===*/
 
 .like {
@@ -161,6 +169,10 @@
 	margin-left: 2% !important;
 }
 
+.imgReport {
+  width: 100%;
+  height: 100%;
+}
 
 /*===MAPS===*/
 
