@@ -167,13 +167,13 @@ angular.module('htc.controllers')
 		};
 		reportService.createReport(data, function (response) {
 			popupService.showAlert(null, 'Ocorrência cadastrada com sucesso', function () {
-				$location.path('/home');
+				$location.path('/');
 			});
+			$scope.report = {};
 		}, function (err) {
 			if (err === 'Access denied') {
 				connectionHandlerService.disconnect();
 			}
 		});
-		$scope.report = {};
 	};
 }]);

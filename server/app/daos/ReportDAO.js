@@ -82,7 +82,8 @@ var ReportDAO = {
 			include: [{
 				model: models.User
 				}],
-			order: 'date DESC'
+			order: 'date DESC',
+			limit: 5
 		}).then(function (reports) {
 			reports.forEach(function (report) {
 				report.User.password = '';

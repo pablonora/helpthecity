@@ -18,13 +18,12 @@ angular.module('htc.services')
 				if (err) err(response.data);
 			});
 		},
-		_get = function (reportId) {
-			for (var i = 0; i < reports.length; i++) {
-				if (reports[i].id === parseInt(reportId)) {
-					return reports[i];
-				}
-			}
-			return null;
+		_getReportById = function (id, cb, err) {
+			$http.get(routerService.getReportById + id).then(function (response) {
+				cb(response.data);
+			}, function (response) {
+				if (err) err(response.data);
+			});
 		},
 		_increaseRelevance = function (data, cb, err) {
 			$http.post(routerService.increaseRelevance, JSON.stringify(data)).then(function (response) {
@@ -79,7 +78,7 @@ angular.module('htc.services')
 	return {
 		createReport: _createReport,
 		getListOfReportsWithUser: _getListOfReportsWithUser,
-		get: _get,
+		getReportById: _getReportById,
 		increaseRelevance: _increaseRelevance,
 		decreaseRelevance: _decreaseRelevance,
 		getRelevance: _getRelevance,

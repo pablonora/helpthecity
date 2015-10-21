@@ -18,6 +18,7 @@ angular.module('htc.services')
     /*Report*/
     createReportUrl: baseURL + 'report',
     getListOfReportsWithUser: baseURL + 'reportsWithUsers',
+    getReportById: baseURL + 'report/',
     
 		/*User*/
     createUserUrl: baseURL + 'user',
