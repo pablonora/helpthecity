@@ -4,13 +4,6 @@ angular.module('htc.controllers')
     $scope.report = {};
 
     /* Inicio do mapa */
-    $scope.map = {
-      center: {
-        latitude: -15.7918215,
-        longitude: -47.8795161
-      },
-      zoom: 15
-    };
     $scope.options = {
       scrollwheel: false
     };
@@ -47,31 +40,51 @@ angular.module('htc.controllers')
         return;
       $scope.coordsUpdates++;
     });
-    $timeout(function () {
-      $scope.marker.coords = {
-        latitude: -15.7918215,
-        longitude: -47.8795161
-      };
-      $scope.dynamicMoveCtr++;
-      $timeout(function () {
-        $scope.marker.coords = {
-          latitude: -15.7918215,
-          longitude: -47.8795161
-        };
-        $scope.dynamicMoveCtr++;
-      }, 2000);
-    }, 1000);
 
+    /* Localização */
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        $scope.map = {
+          center: {
+            latitude: pos.lat,
+            longitude: pos.lng
+          },
+          zoom: 15
+        };
+
+        $timeout(function () {
+          $scope.marker.coords = {
+            latitude: pos.lat,
+            longitude: pos.lng
+          };
+          $scope.dynamicMoveCtr++;
+          $timeout(function () {
+            $scope.marker.coords = {
+              latitude: pos.lat,
+              longitude: pos.lng
+            };
+            $scope.dynamicMoveCtr++;
+          }, 2000);
+        }, 1000);
+
+
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        map.setCenter(pos);
+      }, function () {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
     /* Fim do mapa */
 
 
-    $scope.map = {
-      center: {
-        latitude: -15.7918215,
-        longitude: -47.8795161
-      },
-      zoom: 4
-    };
 
     /* Register report */
     $scope.createReport = function () {
@@ -111,6 +124,7 @@ angular.module('htc.controllers')
       navigator.camera.getPicture(
         function onSuccess(imageData) {
           $scope.report.image = "data:image/jpeg;base64," + imageData;
+          $scope.$apply();
         },
         function (message) {}, {
           quality: 50,

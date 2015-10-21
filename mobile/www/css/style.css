@@ -140,6 +140,14 @@
 }
 
 
+/*===CREATE REPORT===*/
+
+.imgReport {
+  width: 200px;
+  height: 200px;
+}
+
+
 /*===LIST OF REPORTS===*/
 
 .like {

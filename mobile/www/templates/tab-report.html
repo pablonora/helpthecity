@@ -22,19 +22,15 @@
     <label class="item item-input">
       <input ng-model="abuse.description" type="text" placeholder="Deixe seu comentário">
     </label>
-    <button class="button button-clear icon-left ion-image" ng-click="getImage()">Adicione uma foto</button>
+      
+        <img class="imgReport" ng-src="{{report.image}}">
+        <button class="button button-clear" ng-click="getImage()">Adicione uma foto</button>
+        
 
     <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options">
       <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
       </ui-gmap-marker>
     </ui-gmap-google-map>
-    <div ng-cloak>
-      <ul>
-        <li>coords update ctr: {{coordsUpdates}}</li>
-        <li>dynamic move ctr: {{dynamicMoveCtr}}</li>
-      </ul>
-    </div>
-
     <button class="button buttonEnviar" ng-click="createReport()">Enviar</button>
   </ion-content>
 </ion-view>

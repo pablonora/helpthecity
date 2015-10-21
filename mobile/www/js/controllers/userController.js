@@ -95,11 +95,14 @@ angular.module('htc.controllers')
         email: $scope.user.email,
         name: $scope.user.name,
         gender: $scope.user.gender,
-        password: $scope.user.password
+        password: $scope.user.password,
+        type: $scope.user.type,
+        cpf: $scope.user.cpf,
+        coverageRadius: $scope.user.coverageRadius,
+        active: $scope.user.active
       }
     };
     userService.updateUser(data, function (user) {
-      $ionicHistory.goBack();
       localStorageService.set('user', user);
       $location.path('/tab-editProfile');
     }, function (err) {
@@ -108,7 +111,7 @@ angular.module('htc.controllers')
       }
     });
   };
-    $scope.validateUpdate = function (form) {
+  $scope.validateUpdate = function (form) {
     var result = true;
     form.submitted = true;
     if (!form.$valid) {
@@ -120,10 +123,10 @@ angular.module('htc.controllers')
         form.email.$setValidity('required', false);
         result = false;
       }
-      if ($scope.user.password == null || $scope.user.password == '') {
-        form.password.$setValidity('required', false);
-        result = false;
-      }
+      //      if ($scope.user.password == null || $scope.user.password == '') {
+      //        form.password.$setValidity('required', false);
+      //        result = false;
+      //      }
       if ($scope.user.gender == null || $scope.user.gender == '') {
         form.gender.$setValidity('required', false);
         result = false;
