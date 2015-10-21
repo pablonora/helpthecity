@@ -13,13 +13,13 @@ module.exports = function (app) {
 				return id;
 			});
 		},
-		delete: function (id) {
-			return app.daos.Up.delete(id).then(function (ok) {
+		delete: function (userId, reportId) {
+			return app.daos.Up.delete(userId, reportId).then(function (ok) {
 				return ok;
 			});
 		},
-		readById: function (id) {
-			return app.daos.Up.readById(id).then(function (up) {
+		readById: function (userId, reportId) {
+			return app.daos.Up.readById(userId, reportId).then(function (up) {
 				return up;
 			});
 		},

@@ -3,6 +3,7 @@ angular.module('htc.controllers')
 .controller('reportController', ['$location', '$scope', '$http', 'reportService', 'popupService', 'connectionHandlerService', function ($location, $scope, $http, reportService, popupService, connectionHandlerService) {
 	$scope.listOfReports = [];
 	$scope.report = {};
+	$scope.class = {};
 
 	$scope.map = {
 		center: {
@@ -38,6 +39,15 @@ angular.module('htc.controllers')
 	$scope.getListOfReports = function () {
 		reportService.getListOfReportsWithUser(function (reports) {
 			$scope.listOfReports = reports;
+			reports.forEach(function (report) {
+				reportService.getRelevance(report.User.id, report.id, function (up) {
+					$scope.class['report' + up.reportId] = 'red';
+				}, function (err) {
+					if (err === 'Access denied') {
+						connectionHandlerService.disconnect();
+					}
+				});
+			});
 		}, function (err) {
 			if (err === 'Access denied') {
 				connectionHandlerService.disconnect();
@@ -62,5 +72,31 @@ angular.module('htc.controllers')
 				saveToPhotoAlbum: false
 			}
 		);
+	};
+
+	$scope.changeRelevance = function (userId, reportId) {
+		var data = {
+			up: {
+				date: Date.now() / 1000,
+				userId: userId,
+				reportId: reportId
+			}
+		};
+
+		if ($scope.class['report' + reportId] !== 'red') {
+			$scope.class['report' + reportId] = 'red';
+			reportService.increaseRelevance(data, function (response) {}, function (err) {
+				if (err === 'Access denied') {
+					connectionHandlerService.disconnect();
+				}
+			});
+		} else {
+			$scope.class['report' + reportId] = null;
+			reportService.decreaseRelevance(userId, reportId, function (response) {}, function (err) {
+				if (err === 'Access denied') {
+					connectionHandlerService.disconnect();
+				}
+			});
+		}
 	};
 }]);

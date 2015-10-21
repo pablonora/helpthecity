@@ -12,8 +12,8 @@ module.exports = function (app) {
 			});
 		},
 		update: function (user) {
-			return app.daos.User.update(user).then(function (user) {
-				return user;
+			return app.daos.User.update(user).then(function (id) {
+				return id;
 			});
 		},
 		delete: function (id) {

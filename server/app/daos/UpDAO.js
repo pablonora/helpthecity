@@ -5,7 +5,7 @@ var models = require('../models'),
 
 var UpDAO = {
 	create: function (up) {
-		return sequelize.query('INSERT INTO up(date, "userId", "reportId") VALUES (to_timestamp(?), ?, ?) RETURNING id', {
+		return sequelize.query('INSERT INTO up(date, "userId", "reportId") VALUES (to_timestamp(?), ?, ?)', {
 			replacements: [
         up.date,
         up.userId,
@@ -20,7 +20,7 @@ var UpDAO = {
 		});
 	},
 	update: function (up) {
-		return sequelize.query('UPDATE up SET date=to_timestamp(?), "userId"=?, "reportId"=? WHERE "userId" = ? AND "reportId" = ? RETURNING id', {
+		return sequelize.query('UPDATE up SET date=to_timestamp(?), "userId"=?, "reportId"=? WHERE "userId" = ? AND "reportId" = ?', {
 			replacements: [
         up.date,
         up.userId,
@@ -36,9 +36,12 @@ var UpDAO = {
 			return err.message;
 		});
 	},
-	delete: function (id) {
-		return sequelize.query('DELETE FROM up WHERE id = ?', {
-			replacements: [id],
+	delete: function (userId, reportId) {
+		return sequelize.query('DELETE FROM up WHERE "userId" = ? AND "reportId" = ?', {
+			replacements: [
+				userId,
+				reportId
+			],
 			type: sequelize.QueryTypes.DELETE,
 			model: models.Up
 		}).then(function (ok) {
@@ -47,9 +50,12 @@ var UpDAO = {
 			return err.message;
 		});
 	},
-	readById: function (id) {
-		return sequelize.query('SELECT * FROM up WHERE id = ?', {
-			replacements: [id],
+	readById: function (userId, reportId) {
+		return sequelize.query('SELECT * FROM up WHERE "userId" = ? AND "reportId" = ?', {
+			replacements: [
+				userId,
+				reportId
+			],
 			type: sequelize.QueryTypes.SELECT,
 			model: models.Up
 		}).then(function (up) {

@@ -1,7 +1,8 @@
 'use strict';
 
 var models = require('../models'),
-	sequelize = models.sequelize;
+	sequelize = models.sequelize,
+	bcrypt = require('bcryptjs');
 
 var UserDAO = {
 	create: function (user) {
@@ -40,8 +41,20 @@ var UserDAO = {
         user.coverageRadius,
         user.id
 			];
+
+			return sequelize.query(query, {
+				replacements: replacements,
+				type: sequelize.QueryTypes.UPDATE,
+				model: models.User
+			}).then(function (id) {
+				return id[0];
+			}).catch(function (err) {
+				return err.message;
+			});
 		} else {
-			if (user.oldPassword === readById(user.id).data.password) {
+			bcrypt.compare(user.oldPassword, this.readUserWithPassword(user.id).password, function (err, res) {
+				if (err) return 'An unexpected error has ocurred';
+				if (!res) return 'Password doesn\'t match';
 				query = 'UPDATE "user" SET name=?, active=?, image=?, email=?, type=?, password=?, gender=?, "coverageRadius"=? WHERE id = ? RETURNING id';
 				replacements = [
 					user.name,
@@ -54,19 +67,18 @@ var UserDAO = {
 					user.coverageRadius,
 					user.id
 				];
-			} else {
-				throw new Error('Password doesn\'t match');
-			}
+			});
+
+			return sequelize.query(query, {
+				replacements: replacements,
+				type: sequelize.QueryTypes.UPDATE,
+				model: models.User
+			}).then(function (id) {
+				return id[0];
+			}).catch(function (err) {
+				return err.message;
+			});
 		}
-		return sequelize.query(query, {
-			replacements: replacements,
-			type: sequelize.QueryTypes.UPDATE,
-			model: models.User
-		}).then(function (id) {
-			return id[0];
-		}).catch(function (err) {
-			return err.message;
-		});
 	},
 	delete: function (id) {
 		return sequelize.query('DELETE FROM "user" WHERE id = ?', {
@@ -116,6 +128,17 @@ var UserDAO = {
 		}).catch(function (err) {
 			return err.message;
 		});
+	},
+	readUserWithPassword: function (id) {
+		return sequelize.query('SELECT * FROM "user" WHERE id = ?', {
+			replacements: [id],
+			type: sequelize.QueryTypes.SELECT,
+			model: models.User
+		}).then(function (user) {
+			return user[0];
+		}).catch(function (err) {
+			return err.message;
+		})
 	}
 };
 

@@ -2,14 +2,14 @@
 
 angular.module('htc.controllers')
 
-.controller('userController', ['$ionicHistory', '$scope', '$location', 'userService', 'localStorageService', function ($ionicHistory, $scope, $location, userService, localStorageService) {
+.controller('userController', ['$ionicHistory', '$scope', '$location', 'userService', 'localStorageService', 'popupService', function ($ionicHistory, $scope, $location, userService, localStorageService, popupService) {
 	$scope.user = localStorageService.getObject('user', null) || {
 		active: 'Y',
-		coverageRadius: 1,
+		coverageRadius: 10,
 		image: 'img/user-icon.png',
 		type: 'U'
 	};
-
+	
 	/*Create User*/
 	$scope.createUser = function () {
 		var data = {
@@ -54,7 +54,7 @@ angular.module('htc.controllers')
 			}
 		);
 	};
-	
+
 	$scope.validate = function (form) {
 		var result = true;
 		form.submitted = true;
@@ -71,7 +71,17 @@ angular.module('htc.controllers')
 				form.password.$setValidity('required', false);
 				result = false;
 			}
-			if ($scope.user.cpf == null || $scope.user.cpf == '' || $scope.user.cpf.length != 11) {
+			if ($scope.user.confirmPassword == null || $scope.user.confirmPassword == '') {
+				form.confirmPassword.$setValidity('required', false);
+				result = false;
+			}
+			if ($scope.user.password !== $scope.user.confirmPassword) {
+				form.password.$setValidity('required', false);
+				form.confirmPassword.$setValidity('required', false);
+				popupService.showAlert('Senha e confirmação de senha não conferem');
+				return false;
+			}
+			if ($scope.user.cpf == null || $scope.user.cpf == '' || $scope.user.cpf.length !== 11) {
 				form.cpf.$setValidity('required', false);
 				result = false;
 			}

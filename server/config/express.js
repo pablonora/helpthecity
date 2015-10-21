@@ -22,8 +22,9 @@ module.exports = function (app, config) {
   // app.use(favicon(config.root + '/public/img/favicon.ico'));
 
 	app.use(logger('dev'));
-	app.use(bodyParser.json());
+	app.use(bodyParser.json({limit: '3mb'}));
 	app.use(bodyParser.urlencoded({
+		limt: '3mb',
 		extended: true
 	}));
 	app.use(cookieParser('supernova'));
@@ -40,15 +41,15 @@ module.exports = function (app, config) {
 		cookie : { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 }
 	}));
 	app.use(function (req, res, next) {
-		var maria = '192.168.255.2',
-			andre = '192.168.5.126',
-			pablo = '192.168.0.100',
+		var maria = '192.168.0.109',
+			andre = '192.168.0.110',
+			pablo = '192.168.0.107',
 			proxy_fai = '192.168.255.2',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
 		ip = ip[ip.length - 1];
 		if (ip === maria) origin += ip + ':3000';
-		else if (ip === andre) origin += ip + ':9000';
+		else if (ip === andre) origin += ip + ':3000';
 		else if (ip === pablo) origin += ip + ':3000';
 		else if (ip === proxy_fai) origin += ip + ':3000';
 

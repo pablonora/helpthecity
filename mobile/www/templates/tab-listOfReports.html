@@ -1,19 +1,21 @@
 <ion-view>
-  <ion-nav-title>
-    <span class="htcTitle">Help the City</span>
-  </ion-nav-title>
-  <ion-content ng-init="getListOfReports()">
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="report in listOfReports" type="item-text-wrap">
-        <img ng-src="{{report.User.image}}" alt="Imagem do Perfil">
-        <p>{{report.User.name}}</p>
-        <p>{{report.description}}</p>
-        <p><img ng-src="{{report.image}}" alt="Imagem da Ocorrência"></p>
-        <div>
-          <a class="button button-clear icon-left ion-thumbsup" ng-class="like" ng-click="likeReport()">Curtir</a>
-          <a class="button button-clear icon-left ion-navicon" href="#/abuse?userId={{report.User.id}}&reportId={{report.reportId}}">Denunciar</a>
-        </div>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+	<ion-nav-title>
+		<span class="htcTitle">Help the City</span>
+	</ion-nav-title>
+	<ion-content ng-init="getListOfReports()">
+		<ion-list>
+			<ion-item class="list card" ng-repeat="report in listOfReports">
+				<div class="item item-avatar">
+					<img ng-src="{{report.User.image}}" alt="Imagem do Perfil">
+					<p id="nameUser">{{report.User.name}}</p>
+				</div>
+				<p id="descriptionRelevance">{{report.description}}</p>
+				<p><img ng-src="{{report.image}}" alt="Imagem da Ocorrência"></p>
+				<div class="btnCenter">
+					<a class="button button-clear ion-arrow-graph-up-right" ng-class="class" ng-click="increaseRelevance(report.User.id, report.id)">Relevante</a>
+					<a class="button button-clear icon-left ion-navicon" href="#/tab/listOfReports/abuse?userId={{report.User.id}}&reportId={{report.id}}">Denunciar</a>
+				</div>
+			</ion-item>
+		</ion-list>
+	</ion-content>
 </ion-view>

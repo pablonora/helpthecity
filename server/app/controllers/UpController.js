@@ -15,12 +15,12 @@ module.exports = function (app) {
       });
     },
     delete: function (req, res) {
-      app.services.Up.delete(req.params.id).then(function (result) {
+      app.services.Up.delete(req.query.userId, req.query.reportId).then(function (result) {
         res.json(result);
       });
     },
     readById: function (req, res) {
-      app.services.Up.readById(req.params.id).then(function (result) {
+      app.services.Up.readById(req.query.userId, req.query.reportId).then(function (result) {
         res.json(result);
       });
     },

@@ -6,7 +6,7 @@ module.exports = function (app, config) {
 
   app.post(config.url + '/up', auth, Up.create);
   app.put(config.url + '/up/:id', auth, Up.update);
-  app.delete(config.url + '/up/:id', auth, Up.delete);
-  app.get(config.url + '/up/:id', auth, Up.readById);
-  app.get(config.url + '/up', auth, Up.readByCriteria);
+  app.delete(config.url + '/up', auth, Up.delete);
+  app.get(config.url + '/up', auth, Up.readById);
+  app.get(config.url + '/up/all', auth, Up.readByCriteria);
 };

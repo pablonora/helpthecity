@@ -26,6 +26,27 @@ angular.module('htc.services')
 			}
 			return null;
 		},
+		_increaseRelevance = function (data, cb, err) {
+			$http.post(routerService.increaseRelevance, JSON.stringify(data)).then(function (response) {
+				cb(response.data);
+			}, function (response) {
+				if (err) err(response.data);
+			});
+		},
+		_decreaseRelevance = function (userId, reportId, cb, err) {
+			$http.delete(routerService.decreaseRelevance + '?userId=' + userId + '&reportId=' + reportId).then(function (response) {
+				cb(response.data);
+			}, function (response) {
+				if (err) err(response.data);
+			});
+		},
+		_getRelevance  = function (userId, reportId, cb, err) {
+			$http.get(routerService.getRelevance + '?userId=' + userId + '&reportId=' + reportId).then(function (response) {
+				cb(response.data);
+			}, function (response) {
+				if (err) err(response.data);
+			});
+		},
 		_getPostDate = function (report) {
 			var diff = new Date() - report.date;
 			var milliseconds, seconds, minutes, hours, days, months, years;
@@ -55,14 +76,13 @@ angular.module('htc.services')
 			return result;
 		};
 
-
 	return {
 		createReport: _createReport,
 		getListOfReportsWithUser: _getListOfReportsWithUser,
 		get: _get,
-		relevance: function (report) {
-			report.relevance++;
-		},
+		increaseRelevance: _increaseRelevance,
+		decreaseRelevance: _decreaseRelevance,
+		getRelevance: _getRelevance,
 		getPostDate: _getPostDate
 	};
 }]);

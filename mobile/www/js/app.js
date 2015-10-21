@@ -1,10 +1,11 @@
 'use strict';
 
-var app = angular.module('htc', ['ionic', 'htc.controllers', 'htc.services', 'uiGmapgoogle-maps']);
+var app = angular.module('htc', ['ionic', 'htc.controllers', 'htc.services', 'htc.directives', 'uiGmapgoogle-maps']);
 
 // Define all angular modules that will be used to get them in other files
 angular.module('htc.controllers', []);
 angular.module('htc.services', []);
+angular.module('htc.directives', []);
 
 app.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
@@ -136,10 +137,10 @@ app.config(['$ionicConfigProvider', '$stateProvider', '$urlRouterProvider', '$ht
       }
     })
     /*===Abuse===*/
-    .state('abuse', {
-      url: '/abuse?:userId?:reportId',
+    .state('tab.listOfReports-abuse', {
+      url: '/listOfReports/abuse?:userId?:reportId',
       views: {
-        "tab-map": {
+        "tab-listOfReports": {
           templateUrl: 'templates/tab-abuse.html',
           controller: 'abuseController',
           controllerAs: 'abuseCtrl',
@@ -149,7 +150,6 @@ app.config(['$ionicConfigProvider', '$stateProvider', '$urlRouterProvider', '$ht
         needAuth: needAuth
       }
     })
-
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');
 
