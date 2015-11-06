@@ -42,14 +42,15 @@ module.exports = function (app, config) {
 	}));
 	app.use(function (req, res, next) {
 		var maria = '192.168.0.109',
-			andre = '192.168.0.110',
-			pablo = '192.168.0.107',
+			andre = '192.168.10.3',
+			pablo = '192.168.10.6',
 			proxy_fai = '192.168.255.2',
 			ip = req.connection.remoteAddress.split(':'),
 			origin = 'http://';
 		ip = ip[ip.length - 1];
+		console.log(ip);
 		if (ip === maria) origin += ip + ':3000';
-		else if (ip === andre) origin += ip + ':3000';
+		else if (ip === andre) origin += ip + ':9000';
 		else if (ip === pablo) origin += ip + ':3000';
 		else if (ip === proxy_fai) origin += ip + ':3000';
 

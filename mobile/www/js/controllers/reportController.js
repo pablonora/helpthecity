@@ -126,6 +126,7 @@ angular.module('htc.controllers')
 	};
 
 	$scope.changeRelevance = function (userId, reportId) {
+
 		var data = {
 			up: {
 				date: Date.now() / 1000,
@@ -149,6 +150,10 @@ angular.module('htc.controllers')
 				}
 			});
 		}
+	};
+	
+	$scope.getRelevance = function (reportId) {
+		return $scope.up['report' + reportId];
 	};
 
 	/* Register report */

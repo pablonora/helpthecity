@@ -12,7 +12,7 @@
 				<p id="descriptionRelevance">{{report.description}}</p>
 				<p><img ng-src="{{report.image}}" alt="Imagem da Ocorrência"></p>
 				<div class="btnCenter">
-					<a class="button button-clear ion-arrow-graph-up-right" ng-class="class" ng-click="increaseRelevance(report.User.id, report.id)">Relevante</a>
+					<a class="button button-clear ion-arrow-graph-up-right" ng-class="getRelevance(report.id)" ng-click="changeRelevance(report.User.id, report.id)">Relevante</a>
 					<a class="button button-clear icon-left ion-navicon" href="#/tab/listOfReports/abuse?userId={{report.User.id}}&reportId={{report.id}}">Denunciar</a>
 				</div>
 			</ion-item>
