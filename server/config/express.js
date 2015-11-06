@@ -42,7 +42,7 @@ module.exports = function (app, config) {
 	}));
 	app.use(function (req, res, next) {
 		var maria = '192.168.0.109',
-			andre = '192.168.10.3',
+			andre = '192.168.10.5',
 			pablo = '192.168.10.6',
 			proxy_fai = '192.168.255.2',
 			ip = req.connection.remoteAddress.split(':'),
